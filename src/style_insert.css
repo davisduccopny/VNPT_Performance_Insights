@@ -1,0 +1,80 @@
+/* PART INSERT */
+
+
+.st-key-container_plan_insert_header,.st-key-container_make_project_header{
+    border-bottom: #3d9df3 3px solid;
+    padding-bottom: 1%;
+}
+/* .h3_header_insert_vnpt{
+    font-size: 2.2rem;
+    font-weight: 700;
+    padding: 0;
+} */
+
+.st-key-button_insert_plan [data-testid="stButton"] p, .st-key-button_insert_project [data-testid="stButton"] p{
+    font-weight: bold;
+}
+.st-key-button_insert_plan [data-testid="stBaseButton-primary"], .st-key-button_insert_project [data-testid="stBaseButton-primary"]{
+    background-color: rgb(255, 75, 75);
+}
+.st-key-button_view_plan [data-testid="stButton"] p{
+    font-weight: bold;
+}
+.stSelectbox [data-testid="stWidgetLabel"] p {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.stNumberInput [data-testid="stWidgetLabel"] p {
+    font-weight: 600;
+    font-size: 1rem;
+
+}
+.stFileUploader [data-testid="stWidgetLabel"] p {
+    font-weight: 600;
+    font-size: 1rem;
+}
+.st-key-container_plan_insert_header [data-testid="stHorizontalBlock"],.st-key-container_make_project_header [data-testid="stHorizontalBlock"]{
+gap: 0.3rem;
+}
+/* [data-testid="stPopoverButton"]{
+    background-color: rgb(0, 94, 124);
+    color: white;
+    
+} */
+[data-testid="stPopoverButton"] p{
+    font-weight: bold;
+}
+/* PART SEARCH TERM */
+.st-key-search_term > [data-testid="stTextInput"]{
+    display: flex;
+}
+.st-key-container_first_document{
+    margin-top: 2%;
+    
+}
+
+.st-key-container_first_document [data-testid="stColumn"]{
+    background-color:white;
+    padding:10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+ 
+}
+.st-key-container_title_manage_expand{
+    border-bottom: rgb(61, 157, 243) 3px solid;
+}
+.st-key-container_iframe{
+    background-color:white;
+    padding:10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}
+.st-key-container_second_service_content{
+    background-color:white;
+    /* padding:10px 10px; */
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}

@@ -1,0 +1,57 @@
+[[pages]]
+path = "pages_view/home.py"
+name = "Trang chủ"
+icon = ":material/home:"
+
+[[pages]]
+name = "Todo check"
+icon = ""
+is_section = true
+
+[[pages]]
+path = "pages_view/todo_check.py"
+name = "Quản lý công việc"
+icon = ":material/note_alt:"
+
+[[pages]]
+name = "Reports"
+icon = ""
+is_section = true
+
+[[pages]]
+path = "pages_view/view.py"
+name = "Xem dữ liệu"
+icon = ":material/dashboard:"
+
+[[pages]]
+path = "pages_view/insert.py"
+name = "Thêm dữ liệu"
+icon = ":material/add_diamond:"
+
+[[pages]]
+path = "pages_view/delete.py"
+name = "Xóa dữ liệu"
+icon = ":material/delete:"
+
+[[pages]]
+path = "pages_view/explaination.py"
+name = "Giải trình"
+icon = ":material/explore:"
+
+[[pages]]
+name = "Account"
+icon = ""
+is_section = true
+
+[[pages]]
+path = "pages_view/expand.py"
+name = "Mở rộng"
+icon = ":material/top_panel_open:"
+
+[[pages]]
+path = "pages_view/users.py"
+name = "Người dùng"
+icon = ":material/manage_accounts:"
+
+
+

@@ -1,0 +1,7 @@
+[data-testid="stSidebarUserContent"]{
+    padding: 1rem 1.5rem 6rem;
+
+}
+[data-testid=stMainBlockContainer ] {
+    padding: 0rem 4.5rem 10rem;
+}

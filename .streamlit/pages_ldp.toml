@@ -1,0 +1,44 @@
+[[pages]]
+path = "pages_view/home.py"
+name = "Trang chủ"
+icon = ":material/home:"
+
+[[pages]]
+name = "Reports"
+icon = ""
+is_section = true
+
+[[pages]]
+path = "pages_ldp/view_ldp.py"
+name = "Xem dữ liệu"
+icon = ":material/dashboard:"
+
+[[pages]]
+path = "pages_ldp/insert_ldp.py"
+name = "Thêm dữ liệu"
+icon = ":material/add_diamond:"
+
+[[pages]]
+path = "pages_ldp/delete_ldp.py"
+name = "Xóa dữ liệu"
+icon = ":material/delete:"
+
+[[pages]]
+path = "pages_view/explaination.py"
+name = "Giải trình"
+icon = ":material/explore:"
+
+[[pages]]
+name = "Account"
+icon = ""
+is_section = true
+
+[[pages]]
+path = "pages_ldp/expand_ldp.py"
+name = "Mở rộng"
+icon = ":material/top_panel_open:"
+
+[[pages]]
+path = "pages_view/users.py"
+name = "Người dùng"
+icon = ":material/manage_accounts:"

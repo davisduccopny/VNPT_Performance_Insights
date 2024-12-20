@@ -1,0 +1,106 @@
+[data-testid="stAppViewContainer"] > .stMain {
+    background-color: whitesmoke;
+    color: --primary;
+}
+.st-key-search_term > [data-testid="stTextInput"]{
+    display: flex;
+}
+.stk-key-search_task_line_lv_db > [data-testid="stTextInput"]{
+    display: flex;
+}
+.st-key-container_header_todocheck{
+    background-color:white;
+    padding:10px 10px 10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    /* border: 5px solid #b0b1ca; */
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}
+.st-key-container_cols_search .stColumn{
+    box-shadow: none;
+}
+.st-key-container_cols_search h2{
+    padding-top:0;
+    padding-bottom: 5px;
+}
+.st-key-container_main_task_dashboard .stColumn{
+    background-color:white;
+    padding:10px 10px 10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}
+.st-key-form_placeholder_right_add .stColumn{
+    padding: 0;
+    box-shadow: none;
+}
+.st-key-container_table_second_task_main{
+    background-color:white;
+    padding: 10px 0;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}
+.st-key-option_show_radio_calendar_first .stSelectbox{
+    display: inline-flex;
+    vertical-align: middle;
+}
+.st-key-container_first_main_line_level .stColumn{
+    border-radius: 16px;
+}
+.st-key-container_first_main_line_level .stMetric [data-testid="stMetricValue"] {
+    font-weight: bolder;
+}
+.st-key-ctn_first_main_title,.st-key-ctn_first_main_metric_01,.st-key-ctn_first_main_metric_02,.st-key-ctn_first_main_metric_03{
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    background-color:white;
+    border-radius: 16px;
+}
+.st-key-container_second_main_line_level{
+    background-color:white;
+    padding: 10px 0;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;        
+}
+.st-key-container_thirst_main_line_level{
+    background-color:white;
+    padding: 10px 0;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;        
+}
+.st-key-container_four_main_line_level{
+    background-color:white;
+    padding: 10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;        
+}
+[data-testid="stVegaLiteChart"] canvas{
+    width: 100% !important;
+}
+.st-key-ctn_first_main_metric_01{
+    border-left: 5px solid #007171;
+}
+.st-key-ctn_first_main_metric_02{
+    border-left: 5px solid #00a6a6;
+}
+.st-key-ctn_first_main_metric_03{
+    border-left: 5px solid #f29b09;
+}
+.st-key-container_first_main_line_level .stSelectbox{
+    display: inline-flex;
+    vertical-align: middle;
+}
+.st-key-container_first_main_line_level .stSelectbox .st-b7,.st-key-container_four_main_line_level .stSelectbox .st-b7{
+    background-color: white;
+}
+
+[data-testid="stPlotlyChart"] div {
+    box-shadow: none !important; 
+}

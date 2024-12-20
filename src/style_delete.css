@@ -1,0 +1,37 @@
+/* PART FOR DELETE PAGE */
+.st-key-container_header_plan_delete, .st-key-container_header_do_delete{
+    margin-top: 1%;
+}
+.st-key-delete_plan [data-testid="stButton"] p, .st-key-delete_do_out_db [data-testid="stButton"] p{
+    font-weight: bold;
+    padding:0 10px;
+}
+/* .stForm {
+    padding: 0;
+} */
+.st-key-search_term > [data-testid="stTextInput"]{
+    display: flex;
+}
+.st-key-container_title_delete{
+    margin: 0;
+}
+.st-key-container_delete_second{
+background-color:white;
+padding:10px 5px ;
+border-radius:15px;
+font-weight: bolder;
+/* border: 5px solid #b0b1ca; */
+box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+}
+.st-key-container_header_plan_delete, .st-key-container_header_do_delete{
+    background-color: #c4d8e5;
+    padding: 2% 1%;
+    border-radius: 15px;
+}
+.st-key-container_title_delete{
+    border-bottom: rgb(61, 157, 243) 3px solid;
+}
+.st-key-delete_plan, .st-key-delete_do_out_db{
+    text-align: right;
+    /* margin-right: 10px; */
+}

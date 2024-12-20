@@ -1,0 +1,58 @@
+[data-testid=metric-container] {
+    box-shadow: 0 0 4px #686664;
+    padding: 10px;
+}
+[data-testid=stMainBlockContainer ] {
+        padding: 0.5rem 5rem 10rem;
+}
+[data-testid="stAppViewContainer"] > .stMain {
+    background-color: whitesmoke;
+    color: --primary;
+}
+.st-key-ctn_header_explain .stColumn {
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    background-color:white;
+    border-radius: 16px;
+    border-left: 5px solid  #00a6a6;
+}
+.st-key-ctn_first_main_explain .stColumn{
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    background-color:white;
+    border-radius: 16px;
+}
+.st-key-ctn_header_explain .stColumn:hover, .st-key-ctn_first_main_explain .stColumn:hover, .st-key-ctn_second_main_explain .stColumn:hover{
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
+.st-key-ctn_header_explain .stSelectbox .st-b7{
+    background-color: white;
+}
+.st-key-ctn_second_main_explain .stColumn{
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    background-color:white;
+    border-radius: 16px;
+}
+.st-key-ctn_chidren_second_main_explain .stColumn{
+    box-shadow: none;
+}
+.st-key-ctn_children_1,.st-key-ctn_children_2,.st-key-ctn_children_3,.st-key-ctn_children_4{
+    padding: 10px 10px 10px 10px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    background-color:white;
+    border-radius: 16px;
+}
+.st-key-ctn_children_1{
+    border-left: 5px solid #007171;
+}
+.st-key-ctn_children_2{
+    border-left: 5px solid #00a6a6;
+}
+.st-key-ctn_children_3{
+    border-left: 5px solid #f29b09;
+}
+.st-key-ctn_children_4{
+    border-left: 5px solid #f29b67;
+}
