@@ -3,5 +3,10 @@
 
 }
 [data-testid=stMainBlockContainer ] {
-    padding: 0rem 4.5rem 10rem;
+    padding: 1rem 4.5rem 10rem;
+}
+
+.st-key-container_title_table_view_ldp{
+    border-bottom: rgb(61, 157, 243) 3px solid;
+    padding-bottom: 5px;
 }

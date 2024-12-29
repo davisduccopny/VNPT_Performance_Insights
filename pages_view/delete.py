@@ -83,6 +83,7 @@ class FRONTEND_DESIGN_DELETE():
     def streamlit_menu_sidebar_delete(self):
         # st.sidebar.write("Chế độ xem:")
         with st.sidebar:
+            module_config.show_expander_sidebar()
             selected = option_menu(
                 menu_title= None,  # required
                 options=["Kế hoạch", "Thực hiện"],  # required

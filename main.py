@@ -19,12 +19,13 @@ if "is_logged_in" not in st.session_state or not st.session_state.is_logged_in:
     login()
 
 if st.session_state.is_logged_in:
-    load_data_for_all()
-    load_data_service_for_all()
+    
     # Home
     home_page = st.Page("pages_view/home.py", title="Trang chủ", icon=":material/home:", default=True)
     users_page = st.Page("pages_view/users.py", title="Người dùng", icon=":material/manage_accounts:")
     if st.session_state.type_process != 'LDPVNPT':
+        load_data_for_all()
+        load_data_service_for_all()
         nav = get_nav_from_toml(".streamlit/pages.toml")
         
         if st.session_state.role_access_admin == 'admin':

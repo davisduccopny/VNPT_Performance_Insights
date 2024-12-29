@@ -82,6 +82,23 @@ def update_task_in_db(task_id, title, service_id, employee_id, status, start_dat
         if conn.is_connected():
             cursor.close()
             conn.close()
+
+def delete_task_in_db(task_id):
+    conn = module_config.connect_to_mysql()
+    try:
+        if conn.is_connected():
+            cursor = conn.cursor()
+            delete_query = "DELETE FROM tasks WHERE id = %s"
+            cursor.execute(delete_query, (task_id,))
+            conn.commit()
+            return True
+    except Error as e:
+        st.error(f"Error while connecting to MySQL: {e}")
+    finally:
+        if conn.is_connected():
+            cursor.close()
+            conn.close() 
+ 
             
 @st.dialog("Thêm công việc mới!")
 def add_new_task_2(data_service):
@@ -142,7 +159,7 @@ def add_new_task_2(data_service):
                         st.warning("##### Vui lòng nhập đầy đủ thông tin!")
 
 @st.dialog("Chỉnh sửa công việc!")
-def update_task(data_service,data_tasks,task_id_update):
+def update_task(data_service,data_tasks,task_id_update,action_on_board_calendar):
     array_status_update = ["Chưa hoàn thành","Đã hoàn thành","Chờ"]
     array_loaidoanhthu_update = ["Hiện hữu","Phát triển mới"]
     array_service_update = data_service["ten_dv"].unique()
@@ -159,52 +176,78 @@ def update_task(data_service,data_tasks,task_id_update):
     if "dialog_open_update_tasks" not in st.session_state:
         st.session_state.dialog_open_update_tasks = False
     if st.session_state.dialog_open_update_tasks:
-        container_dialog_update_task = st.container(key="container_dialog_update_task")
-        with container_dialog_update_task:                
-            cols_dialog_update_task = st.columns([1,1])
-            with cols_dialog_update_task[0]:
-                title_task_update = st.text_input("Tiêu đề",selected_task["title"].values[0], key="title_task_update")
-                service_task_update = st.selectbox("Dịch vụ",data_service["ten_dv"].unique(),index=service_id_index,key="service_task_update")
-                id_service_task_selected = data_service[data_service["ten_dv"] == service_task_update]["ma_dv_id66"].values[0]
-                start_date_task_update = st.date_input("Ngày bắt đầu",pd.to_datetime(selected_task["start_date"].values[0]).date(),key="start_date_task_update")
-        
-            with cols_dialog_update_task[1]:
-                status_task_update = st.selectbox("Trạng thái",array_status_update,status_index, key="status_task_update")
-                revenue_task_update = st.number_input("Doanh thu",float(selected_task["revenue"].values[0]), key="revenue_task_update")
-                end_date_task_update = st.date_input("Ngày kết thúc",pd.to_datetime(selected_task["end_date"].values[0]).date(), key="end_date_task_update")
-                loaidoanhthu_update_task = st.selectbox("Loại doanh thu",array_loaidoanhthu_update,loaidoanhthu_index, key="loaidoanhthu_update_task")
-            notes_task_update = st.text_area("Ghi chú",selected_task["notes"].values[0], key="notes_task_update")
-            if status_task_update == "Chưa hoàn thành":
-                color_picker_update_task = "#FF6C6C"
-            elif status_task_update == "Đã hoàn thành":
-                color_picker_update_task = "rgb(111 238 128)"
-            else:
-                color_picker_update_task = "rgb(241 245 87)"
-            cols_second_task_confirm = st.columns([1,1])
-            button_update_tasks = cols_second_task_confirm[0].button(
-                    "Cập nhật",
-                    key="button_update_task_confirm",
-                    icon=":material/add_diamond:",
+        if action_on_board_calendar == "Sửa":
+            container_dialog_update_task = st.container(key="container_dialog_update_task")
+            with container_dialog_update_task:                
+                cols_dialog_update_task = st.columns([1,1])
+                with cols_dialog_update_task[0]:
+                    title_task_update = st.text_input("Tiêu đề",selected_task["title"].values[0], key="title_task_update")
+                    service_task_update = st.selectbox("Dịch vụ",data_service["ten_dv"].unique(),index=service_id_index,key="service_task_update")
+                    id_service_task_selected = data_service[data_service["ten_dv"] == service_task_update]["ma_dv_id66"].values[0]
+                    start_date_task_update = st.date_input("Ngày bắt đầu",pd.to_datetime(selected_task["start_date"].values[0]).date(),key="start_date_task_update")
+            
+                with cols_dialog_update_task[1]:
+                    status_task_update = st.selectbox("Trạng thái",array_status_update,status_index, key="status_task_update")
+                    revenue_task_update = st.number_input("Doanh thu",float(selected_task["revenue"].values[0]), key="revenue_task_update")
+                    end_date_task_update = st.date_input("Ngày kết thúc",pd.to_datetime(selected_task["end_date"].values[0]).date(), key="end_date_task_update")
+                    loaidoanhthu_update_task = st.selectbox("Loại doanh thu",array_loaidoanhthu_update,loaidoanhthu_index, key="loaidoanhthu_update_task")
+                notes_task_update = st.text_area("Ghi chú",selected_task["notes"].values[0], key="notes_task_update")
+                if status_task_update == "Chưa hoàn thành":
+                    color_picker_update_task = "#FF6C6C"
+                elif status_task_update == "Đã hoàn thành":
+                    color_picker_update_task = "rgb(111 238 128)"
+                else:
+                    color_picker_update_task = "rgb(241 245 87)"
+                cols_second_task_confirm = st.columns([1,1])
+                button_update_tasks = cols_second_task_confirm[0].button(
+                        "Cập nhật",
+                        key="button_update_task_confirm",
+                        icon=":material/add_diamond:",
+                        type="secondary",use_container_width=True
+                        )
+                button_cancel_tasks = cols_second_task_confirm[1].button("Hủy", key="button_cancel_task",icon=":material/close:",type="secondary",use_container_width=True)
+                if button_cancel_tasks:
+                    st.session_state.dialog_open_update_tasks = False
+                    st.rerun()
+                if button_update_tasks:
+                        if title_task_update and service_task_update and start_date_task_update and status_task_update and revenue_task_update and end_date_task_update:
+                            if update_task_in_db(int(task_id_update),title_task_update,id_service_task_selected,st.session_state.employee_id,status_task_update,start_date_task_update,end_date_task_update,revenue_task_update,notes_task_update,color_picker_update_task,datetime.datetime.now(),loaidoanhthu_update_task):
+                                st.success("##### Cập nhật công việc thành công!")
+                                time.sleep(1)
+                                st.session_state.dialog_open_update_tasks = False
+                                load_tasks.clear()
+                                st.session_state["events"] = str(uuid.uuid4())
+                                st.rerun()
+                            else:
+                                st.warning("##### Có lỗi xảy ra, vui lòng thử lại sau!")
+                        else:
+                            st.warning("##### Vui lòng nhập đầy đủ thông tin!")
+        else:
+            st.write("##### Bạn có chắc chắn muốn xóa công việc này không?")
+            cols_delete_task = st.columns([1,1])
+            button_delete_task = cols_delete_task[0].button(
+                    "Xóa",
+                    key="button_delete_task_confirm",
+                    icon=":material/delete_forever:",
                     type="secondary",use_container_width=True
                     )
-            button_cancel_tasks = cols_second_task_confirm[1].button("Hủy", key="button_cancel_task",icon=":material/close:",type="secondary",use_container_width=True)
-            if button_cancel_tasks:
+            button_cancel_delete_task = cols_delete_task[1].button("Hủy", key="button_cancel_delete_task",icon=":material/close:",type="secondary",use_container_width=True)
+            if button_delete_task:
+                status_del = delete_task_in_db(int(task_id_update))
+                if status_del:
+                    st.success("##### Xóa công việc thành công!")
+                    time.sleep(1)
+                    st.session_state.dialog_open_update_tasks = False
+                    load_tasks.clear()
+                    st.session_state["events"] = str(uuid.uuid4())
+                    st.rerun()
+                else:
+                    st.warning("##### Có lỗi xảy ra, vui lòng thử lại sau!")
+            if button_cancel_delete_task:
                 st.session_state.dialog_open_update_tasks = False
+                st.session_state["events"] = str(uuid.uuid4())
                 st.rerun()
-            if button_update_tasks:
-                    if title_task_update and service_task_update and start_date_task_update and status_task_update and revenue_task_update and end_date_task_update:
-                        if update_task_in_db(int(task_id_update),title_task_update,id_service_task_selected,st.session_state.employee_id,status_task_update,start_date_task_update,end_date_task_update,revenue_task_update,notes_task_update,color_picker_update_task,datetime.datetime.now(),loaidoanhthu_update_task):
-                            st.success("##### Cập nhật công việc thành công!")
-                            time.sleep(1)
-                            st.session_state.dialog_open_update_tasks = False
-                            load_tasks.clear()
-                            st.session_state["events"] = str(uuid.uuid4())
-                            st.rerun()
-                        else:
-                            st.warning("##### Có lỗi xảy ra, vui lòng thử lại sau!")
-                    else:
-                        st.warning("##### Vui lòng nhập đầy đủ thông tin!")
-
+                
 # PART FOR LINE LEVEL DASHBOARD 
 def list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after_load,data_task_all, year_selected, month_selected,loaidoanhthu_selected):
     kehoach_after_load = kehoach_after_load[(kehoach_after_load["line"]== st.session_state.line_access) &

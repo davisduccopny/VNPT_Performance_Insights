@@ -34,3 +34,7 @@
     - Trang mở rộng:
         + Quản lý nhân sự.
         + Documentation.
+
+5. Các note quan trọng:
+    - Đối với dữ liệu tổng hợp (theo năm): Lấy trường line ở bảng thực hiện và kế hoạch để làm label "LDPVNPT".
+    - TYPE PROCESS là phân biệt giữa level Line và level phòng.

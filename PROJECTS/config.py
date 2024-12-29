@@ -3,7 +3,6 @@ from mysql.connector import pooling, Error
 from mysql.connector import OperationalError, InternalError
 import mysql.connector.pooling
 import streamlit as st
-from st_pages import Page, Section, hide_pages, add_page_title, get_nav_from_toml
 import os
 import base64
 import time
@@ -159,4 +158,15 @@ def add_sidebar_footer():
                     
                     </style>
                     """, unsafe_allow_html=True)
-
+def show_expander_sidebar():
+    container_sidebar_expander_show = st.sidebar.container(key="container_sidebar_expander_show")
+    click_epander = container_sidebar_expander_show.checkbox("Mở rộng", False,key="click_expander_show")
+    if click_epander:
+        st.sidebar.markdown("""
+                    <style>
+                    [data-testid="stSidebarNavItems"] {
+                        max-height: none !important;
+                        overflow-y: auto; 
+                    }
+                    </style>
+                    """,unsafe_allow_html=True)

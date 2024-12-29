@@ -29,12 +29,23 @@ background-color:white;
 padding:10px 5px;
 border-radius:15px;
 font-weight: bolder;
-/* border: 5px solid #b0b1ca; */
-box-shadow: -10px 5px 10px rgba(81, 85, 195, 0.2), 
-                10px 5px 10px rgba(81, 85, 195, 0.2), 
-                0px 10px 10px rgba(81, 85, 195, 0.2);
-
+box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
+
+.st-key-container_head_select_option [data-testid="stColumn"]{
+    background-color:white;
+    padding:5px 5px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+}
+.st-key-container_head_select_option .stButtonGroup, .st-key-container_head_select_option .st-key-pills_em_select_dashboard, .st-key-container_head_select_option .st-key-table_option_view_pills{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
 .st-key-container_main_vertical_block [data-testid="stColumn"] p,.st-key-container_main_vertical_block [data-testid="stColumn"] h1,.st-key-container_main_vertical_block [data-testid="stColumn"] h2,.st-key-container_main_vertical_block [data-testid="stColumn"] h3,.st-key-container_main_vertical_block [data-testid="stColumn"] h4,.st-key-container_main_vertical_block [data-testid="stColumn"] h5,.st-key-container_main_vertical_block [data-testid="stColumn"] h6{
 font-weight: 600;
 font-size: 1.2rem;
@@ -47,10 +58,14 @@ font-size: 1.2rem;
     }
 /* set background for dashboard */
 .st-key-container_main_vertical_block,.st-key-container_main_service_design{
-    background-color: #7FC8F8;
-    padding: 2% 1%;
+    /* background-color: #7FC8F8; */
+    padding:0 1%;
     border-radius: 15px;
     margin-top: 0;
+}
+[data-testid="stAppViewContainer"] > .stMain {
+    background-color: whitesmoke;
+    color: --primary;
 }
 /* PART VIEW DASHBOARD SERVICE TABLE*/
 #view_stream_service_table {
@@ -79,8 +94,22 @@ font-size: 1.2rem;
 } */
 .st-key-container_title_table_view{
     border-bottom: rgb(61, 157, 243) 3px solid;
+    padding: 10px 10px;
     padding-bottom: 5px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
 }
-/* .st-key-container_column_table_view_1,.st-key-container_column_table_view_2,.st-key-container_column_table_view_3{
-    height: 10%;
-} */
+
+.st-key-menu_sidebar_view_button .stButtonGroup{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.st-key-container_header_service .stColumn{border-left: 5px solid #00a6a6;
+}
+.st-key-container_header_services .stColumn{border-left: 5px solid #00a6a6;
+}
+.st-key-container_main_vertical_block .stColumn:hover, .st-key-container_main_service_design .stColumn:hover, .st-key-container_info_table_view .stColumn:hover{
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}

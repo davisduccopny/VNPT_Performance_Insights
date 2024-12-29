@@ -17,11 +17,11 @@ def query_to_dataframe(query, conn):
 def load_data():
     conn = module_config.connect_to_mysql()
     try:
-        thuchien = query_to_dataframe(f"SELECT * FROM thuchien WHERE type_process = '{st.session_state.type_process}';", conn)
+        thuchien = query_to_dataframe(f"SELECT * FROM thuchien WHERE type_process = 'LINE' AND IDnhanvien != 'LDPVNPT';", conn)
         kehoach = query_to_dataframe(f"SELECT * FROM kehoach WHERE type_process = '{st.session_state.type_process}';", conn)
         nhanvien = query_to_dataframe("SELECT * FROM nhanvien", conn)
         dichvu = query_to_dataframe("SELECT * FROM dichvu", conn)
-        line = query_to_dataframe("SELECT * FROM line_manage", conn)
+        line = query_to_dataframe("SELECT * FROM line_manage WHERE ma_line != 'LDPVNPT';", conn)
         for month in range(1, 13):
             kehoach[f"t{month}"] = kehoach[f"t{month}"] * 1000000
         return thuchien, kehoach, nhanvien, dichvu, line
@@ -127,6 +127,17 @@ def container_first_process_column(dichvu_after_load,filtered_thuchien,filtered_
     process_data_dv["Kế hoạch"] = process_data_dv["nhom_dv"].apply(
         lambda dv: filtered_kehoach[filtered_kehoach["id_dv_606"] == dv][[f"t{month}" for month in selected_months]].sum().sum()
     )
+    for dv in filtered_kehoach["id_dv_606"].unique():
+        if dv not in process_data_dv["nhom_dv"].values:
+            kehoach_sum = filtered_kehoach[filtered_kehoach["id_dv_606"] == dv][[f"t{month}" for month in selected_months]].sum().sum()
+            if kehoach_sum != 0:
+                new_row = pd.DataFrame([{
+                    "nhom_dv": dv,
+                    "doanhthu": 0,
+                    "Kế hoạch": kehoach_sum,
+                    "% Hoàn thành": "0"
+                }])
+                process_data_dv = pd.concat([process_data_dv, new_row], ignore_index=True)
     process_data_dv["% Hoàn thành"] = process_data_dv.apply(
         lambda row: 100 if row["Kế hoạch"] == 0 else (row["doanhthu"] / row["Kế hoạch"]) * 100, axis=1
     )
@@ -752,6 +763,7 @@ def map_kehoach_to_form_3_employee(kq_kehoach, kq_dataframe):
                 print(f"Dịch vụ '{service}' không được tìm thấy trong DataFrame 'kq_dataframe'.")
 
         return kq_dataframe
+
 # PART FOR TABLE VIEW FOR SERVICE
     # FORM 1
 def filter_kehoach_by_service(kehoach_after_load,nhanvien_after_load,line_nv, selected_service,selected_month,year_insert,loaidoanhthu):

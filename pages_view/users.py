@@ -53,11 +53,12 @@ class FRONTEND_UI_DESIGN():
                             st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
                             return None
     def sidebar_ui(self):
+        with st.sidebar:
+            module_config.show_expander_sidebar()
         container_sidebar_user = st.sidebar.container(key="container_sidebar_user")
         container_sidebar_user.markdown("<h3 style='text-align: center; padding:0; margin-bottom:5px;'>👨‍💼 NGƯỜI DÙNG</h3>", unsafe_allow_html=True)
         # container_sidebar_user.divider()
         with container_sidebar_user:
-
             selected = option_menu(
                 menu_title= None,  # required
                 options=["Chung", "Mật khẩu","Hiển thị", "Khác"],  # required

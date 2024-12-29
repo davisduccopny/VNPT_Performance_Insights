@@ -130,6 +130,29 @@ def insertData_kehoach_to_database(line, year,loaidoanhthu, data,conn):
     else:
         return False
 
+def update_table_kehoach(data_show_updated):
+    conn = module_config.connect_to_mysql()
+    cursor = conn.cursor()
+    try:
+        update_query = """
+            UPDATE kehoach
+            SET t1 = %s, t2 = %s, t3 = %s, t4 = %s, t5 = %s, t6 = %s, t7 = %s, t8 = %s, t9 = %s, t10 = %s, t11 = %s, t12 = %s
+            WHERE id = %s
+        """
+        for index, row in data_show_updated.iterrows():
+            cursor.execute(update_query, (
+                row['t1'], row['t2'], row['t3'], row['t4'], row['t5'], row['t6'], 
+                row['t7'], row['t8'], row['t9'], row['t10'], row['t11'], row['t12'], 
+                row['id']
+            ))
+        conn.commit()
+        return True
+    except Error as e:
+        return e
+    finally:
+        cursor.close()
+        conn.close()
+
     
    
 def query_kehoach_by_line_year(line_test, year_test,loaidoanhthu,conn):

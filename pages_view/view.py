@@ -97,8 +97,8 @@ class DESIGN_FRONTEND():
         }
         )
         return selected
-    def sidebar_option(self):
-        selected = st.sidebar.radio("Dữ liệu theo dõi:",["👩‍💻 Nhân viên", "🌁 Dịch vụ"],horizontal=True)
+    def sidebar_option(self,cols_head_select_option_revenue):
+        selected = cols_head_select_option_revenue[0].pills("🌀",["👩‍💻 Nhân viên", "🌁 Dịch vụ"],default="👩‍💻 Nhân viên",key="pills_em_select_dashboard")
         st_toggle_check = st.sidebar.empty()
         if selected == "👩‍💻 Nhân viên":
             if st_toggle_check.toggle("Chọn nhiều tháng", False, key="select_multiple_month"):
@@ -122,10 +122,10 @@ class DESIGN_FRONTEND():
             selected_data_kind = dv_mapping[selected_dv]
         selected_year = st.sidebar.selectbox("Chọn năm", kehoach_after_load["year_insert"].astype(int).unique())
         return selected,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind
-    def table_sidebar_option(self,radio_type_view_table):
+    def table_sidebar_option(self,radio_type_view_table,cols_head_select_option_revenue):
+        selected = cols_head_select_option_revenue[0].pills("🌀",["👩‍💻 Nhân viên", "🌁 Dịch vụ"], key="table_option_view_pills",default="👩‍💻 Nhân viên")
         container_sidebar_table = st.sidebar.container(key="container_sidebar_table")
         with container_sidebar_table:
-            selected = st.radio("Dữ liệu theo dõi:",["👩‍💻 Nhân viên", "🌁 Dịch vụ"], key="table_option_view_sidebar",horizontal=True)
             selected_months = st.selectbox("Chọn tháng",range(1,13), key="selected_months_table")
             selected_loaidoanhthu = st.selectbox("Chọn loại doanh thu", thuchien_after_load["loaidoanhthu"].unique(), key="loaidoanhthu_table_option")
             line_nv = st.session_state.line_access
@@ -766,18 +766,25 @@ class BACKEND_TABLE_VIEW():
 class MAIN_APP():
     def __init__(self):
         pass
-        
-    def main(self,selected):
+    def run_view(self):
+        with st.sidebar:
+            module_config.show_expander_sidebar()
+        ctn_head_select_option = st.container(key="container_head_select_option")
+        with ctn_head_select_option:
+            cols_head_select_option_revenue = ctn_head_select_option.columns([1,1])
+            selected_menu_sidebar = cols_head_select_option_revenue[1].pills(" ",["Dạng Dashboard", "Dạng bảng"],default="Dạng Dashboard", key="menu_sidebar_view_button")
+        return selected_menu_sidebar,cols_head_select_option_revenue
+    def main(self,selected,cols_head_select_option_revenue):
         class_design_frontend = DESIGN_FRONTEND()
-        if selected == "Board":
-            selected_option,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind = class_design_frontend.sidebar_option()
+        if selected == "Dạng Dashboard":
+            selected_option,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind = class_design_frontend.sidebar_option(cols_head_select_option_revenue)
             if selected_option == "👩‍💻 Nhân viên":
                 class_design_frontend.employee_design_frontend(selected_months,line_nv, selected_year, selected_loaidoanhthu, selected_data_kind)
             else:
                 class_design_frontend.service_design_frontend(selected_months,line_nv, selected_year, selected_loaidoanhthu, selected_data_kind)
-        elif selected == "Table":
+        elif selected == "Dạng bảng":
             radio_type_view_table,export_excel_table_file,submit_view_option = class_design_frontend.ui_info_no_search()
-            selected_option,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind = class_design_frontend.table_sidebar_option(radio_type_view_table)
+            selected_option,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind = class_design_frontend.table_sidebar_option(radio_type_view_table,cols_head_select_option_revenue)
             class_design_frontend.table_employee_design(selected_option,selected_months,line_nv,selected_year,selected_loaidoanhthu,selected_data_kind,radio_type_view_table)
             if submit_view_option:
                 BACKEND_TABLE_VIEW().table_generate_backend(selected_months,line_nv,selected_year,selected_loaidoanhthu,selected_data_kind,selected_option,radio_type_view_table,submit_view_option,False)
@@ -788,8 +795,8 @@ class MAIN_APP():
 thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = module_view.load_data()     
 design_frontend_class = DESIGN_FRONTEND()
 main_app_class = MAIN_APP()
-selected_menu_sidebar = design_frontend_class.streamlit_menu_sidebar()
-main_app_class.main(selected_menu_sidebar)
+selected_menu_sidebar,cols_head_select_option_revenue = main_app_class.run_view()
+main_app_class.main(selected_menu_sidebar,cols_head_select_option_revenue)
 container_menu = st.sidebar.container(key="container_menu_view")
 module_config.add_sidebar_footer()
 

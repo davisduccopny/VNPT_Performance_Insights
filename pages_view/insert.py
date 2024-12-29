@@ -4,6 +4,7 @@ import streamlit.components.v1 as components
 from streamlit_option_menu import option_menu
 import io
 import time
+import datetime
 import streamlit.components.v1 as components
 import PROJECTS.config as module_config
 import PROJECTS.module_insert as module_insert
@@ -30,7 +31,7 @@ with open('src/style_insert.css', encoding="utf-8")as f:
 class ORTHER_FUNCTION_INSERT():
     def __init__(self):
         pass
-
+    
     def check_duplicate(self,data, column_name):
         """Kiểm tra trùng dữ liệu trong cột cụ thể."""
         duplicates = data[column_name].duplicated(keep=False)
@@ -125,11 +126,21 @@ class ORTHER_FUNCTION_INSERT():
                 return df
             except Exception as e:
                 st.error(f"Đã xảy ra lỗi: {str(e)}")
+    
 
         
 class FRONTEND_DESIGN_INSERT():
     def __init__(self):
-        pass
+        self.array_year_insert = range(2021,2030)
+        self.now_year_index = self.array_year_insert.index(datetime.datetime.now().year)
+        self.employee_list = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
+        self.array_explan_em = self.employee_list[["ma_nv", "ten_nv"]].drop_duplicates()
+        self.em_select_array = {row["ma_nv"]: row["ten_nv"] for _, row in self.array_explan_em.iterrows()}
+        self.employee_keys = list(self.em_select_array.keys())
+    def spinner_load(self):
+        with st.spinner("✨Đang thực hiện thao tác..."):
+            time.sleep(2)
+    
     def ui_info(self, text):
         st.markdown(f"<h3 style='text-align: left; padding:0'>{text}</h3>", unsafe_allow_html=True)
     def ui_info_add_search(self, text,loai_data):
@@ -148,8 +159,11 @@ class FRONTEND_DESIGN_INSERT():
                         else:
                             st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
                             return None
+    
             
     def streamlit_menu_sidebar_insert(self):
+        with st.sidebar:
+            module_config.show_expander_sidebar()
         container_sidebar_add_data = st.sidebar.container(key="container_sidebar_add_data")
         container_sidebar_add_data.markdown("<h3 style='text-align: center; padding:0; margin-bottom:5px;'>👨‍💼 THÊM DỮ LIỆU</h3>", unsafe_allow_html=True)
         with container_sidebar_add_data:
@@ -195,77 +209,124 @@ class FRONTEND_DESIGN_INSERT():
     def ui_plan_insert(self):
         container_plan_header = st.container(key="container_plan_insert_header")
         with container_plan_header:
-            col_plan_insert_header = st.columns([30,10,10])
+            col_plan_insert_header = st.columns([20,10,10])
             with col_plan_insert_header[0]:
                 self.ui_info(text="THÊM DỮ LIỆU - 📝KẾ HOẠCH")
-            with col_plan_insert_header[2]:
-                button_insert_plan = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_plan", type="primary", help="🔍Thêm dữ liệu vào csdl", use_container_width=True)
             with col_plan_insert_header[1]:
-                with st.popover("Xem data", icon="👁️‍🗨️", help="🔍Xem data đang tồn tại trong csdl.", use_container_width=True):
-                    radio_preview_plan = st.radio(label="Chọn loại doanh thu", options=["Hiện hữu","Phát triển mới"], key="radio_preview_plan",horizontal=True)
-                    input_year_preview_plan = st.number_input("Nhập năm", min_value=2021, max_value=2030, key="input_year_preview_plan")
-                    button_view_plan = st.button("🔍Xem data", key="button_view_plan", type="primary")
-        col_plan_insert_1,col_plan_insert_2 = st.columns(2)
-        with col_plan_insert_1:
-            selected_year_plan = st.selectbox("Chọn năm kế hoạch", [2021,2022,2023,2024,2025], key="selected_year_plan")
-        with col_plan_insert_2:
-            selected_revenue_plan = st.selectbox("Chọn doanh thu kế hoạch", ["Hiện hữu","Phát triển mới"], key="selected_revenue_plan")
-        file_upload_insert_value = ORTHER_FUNCTION_INSERT().upload_excel(key="file_upload_plan_insert")
-            # part insert data
-        if button_insert_plan:
-            with st.spinner("✨Đang thực hiện thao tác..."):
-                time.sleep(2)
-            if file_upload_insert_value is not None:
-                module_config.create_db_pool()
-                conn = module_config.connect_to_mysql()
-                check_missing_columns_df = module_insert.validate_columns(file_upload_insert_value)
-                if check_missing_columns_df is False:
-                    check_status_duplicate = module_insert.query_kehoach_by_line_year(st.session_state.line_access, selected_year_plan,selected_revenue_plan,conn)
-                    if (check_status_duplicate.empty):
-                        st.session_state.dialog_open = True
+                with st.popover("Thao tác",use_container_width=True, icon=":material/tune:"):
+                    radio_option_action_in_plan = st.radio("📌Chọn chế độ:", ["Thêm", "Sửa","Xem"], key="radio_option_action_in_plan")
+            with col_plan_insert_header[2]:
+                button_insert_plan = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_plan",type="primary", 
+                                               help="🔍Thêm dữ liệu vào csdl", use_container_width=True,
+                                               on_click=self.spinner_load,
+                                               disabled=(radio_option_action_in_plan == "Xem"))
+            
+        if radio_option_action_in_plan == "Thêm":
+            col_plan_insert_1,col_plan_insert_2 = st.columns(2)
+            with col_plan_insert_1:
+                selected_year_plan = st.selectbox("Chọn năm kế hoạch",self.array_year_insert, self.now_year_index , key="selected_year_plan")
+            with col_plan_insert_2:
+                selected_revenue_plan = st.selectbox("Chọn doanh thu kế hoạch", ["Hiện hữu","Phát triển mới"], key="selected_revenue_plan")
+            file_upload_insert_value = ORTHER_FUNCTION_INSERT().upload_excel(key="file_upload_plan_insert")
+                # part insert data
+            if button_insert_plan:
+                if file_upload_insert_value is not None:
+                    module_config.create_db_pool()
+                    conn = module_config.connect_to_mysql()
+                    check_missing_columns_df = module_insert.validate_columns(file_upload_insert_value)
+                    if check_missing_columns_df is False:
+                        check_status_duplicate = module_insert.query_kehoach_by_line_year(st.session_state.line_access, selected_year_plan,selected_revenue_plan,conn)
+                        if (check_status_duplicate.empty):
+                            st.session_state.dialog_open = True
+                        else:
+                            st.toast("##### Dữ liệu đã tồn tại trong cơ sở dữ liệu!", icon="❌")
+                            time.sleep(2)
                     else:
-                        st.toast("##### Dữ liệu đã tồn tại trong cơ sở dữ liệu!", icon="❌")
+                        st.toast(f"##### Dữ liệu không đủ! Các cột bị thiếu: {', '.join(check_missing_columns_df)}",icon="⚠️")
                         time.sleep(2)
                 else:
-                    st.toast(f"##### Dữ liệu không đủ! Các cột bị thiếu: {', '.join(check_missing_columns_df)}",icon="⚠️")
+                    st.toast("##### Vui lòng tải lên file excel trước khi thực hiện thao tác!",icon="⚠️")
                     time.sleep(2)
-            else:
-                st.toast("##### Vui lòng tải lên file excel trước khi thực hiện thao tác!",icon="⚠️")
-                time.sleep(2)
-        if st.session_state.get("dialog_open", False):
-            module_config.show_confirmation_dialog("thêm dữ liệu kế hoạch")
-        if "confirmation" in st.session_state:
-            if st.session_state.confirmation == "Yes":
-                with st.spinner("✨Đang thực hiện thao tác..."):
-                    time.sleep(2)
-                module_config.create_db_pool()
-                conn = module_config.connect_to_mysql()
-                st.session_state.confirmation = None
-                result_services = module_insert.query_dichvu_from_database(conn)
-                data_insert_df = module_insert.select_rows_kehoach_for_insert(file_upload_insert_value, result_services)
-                result_insert_to_database = module_insert.insertData_kehoach_to_database(st.session_state.line_access,selected_year_plan,selected_revenue_plan,data_insert_df,conn)
-                if result_insert_to_database:
-                    st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
-                    module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu kế hoạch năm {selected_year_plan} loại - {selected_revenue_plan}")
-                    module_users.load_action_check_user.clear()
-                    time.sleep(2)
-                    # st.cache_data.clear()
-                    module_view.load_data.clear()
-                    st.rerun()
-                else:
-                    st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
-                    time.sleep(2)
-            # part view data
-        if button_view_plan:
-            with st.spinner("✨Đang thực hiện thao tác..."):
-                time.sleep(2)
-            module_config.create_db_pool()
-            conn = module_config.connect_to_mysql()
-            data_kehoach_preview = module_insert.query_kehoach_by_line_year(st.session_state.line_access, input_year_preview_plan,radio_preview_plan,conn)
-            if data_kehoach_preview.empty:
+            if st.session_state.get("dialog_open", False):
+                module_config.show_confirmation_dialog("thêm dữ liệu kế hoạch")
+            if "confirmation" in st.session_state:
+                if st.session_state.confirmation == "Yes":
+                    with st.spinner("✨Đang thực hiện thao tác..."):
+                        time.sleep(2)
+                    module_config.create_db_pool()
+                    conn = module_config.connect_to_mysql()
+                    st.session_state.confirmation = None
+                    result_services = module_insert.query_dichvu_from_database(conn)
+                    data_insert_df = module_insert.select_rows_kehoach_for_insert(file_upload_insert_value, result_services)
+                    result_insert_to_database = module_insert.insertData_kehoach_to_database(st.session_state.line_access,selected_year_plan,selected_revenue_plan,data_insert_df,conn)
+                    if result_insert_to_database:
+                        st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
+                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu kế hoạch năm {selected_year_plan} loại - {selected_revenue_plan}")
+                        module_users.load_action_check_user.clear()
+                        time.sleep(2)
+                        module_view.load_data.clear()
+                        st.rerun()
+                    else:
+                        st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
+                        time.sleep(2)
+        elif radio_option_action_in_plan == "Sửa":
+            st.success("📌Chọn thông tin cần để sửa")
+            cols_update_plan = st.columns(3)
+            selected_year_update_plan = cols_update_plan[0].selectbox("Chọn năm kế hoạch",self.array_year_insert, self.now_year_index , key="selected_year_update_plan")
+            selected_revenue_update_plan = cols_update_plan[1].selectbox("Chọn doanh thu kế hoạch", ["Hiện hữu","Phát triển mới"], key="selected_revenue_update_plan")
+            selected_employee_update_plan = cols_update_plan[2].selectbox("Nhân viên",
+                                                options=self.employee_keys,
+                                                format_func=lambda x: self.em_select_array[x] if x else ""
+                                                , key="selected_employee_update_plan")
+
+            data_source_update_plan = kehoach_after_load[(kehoach_after_load["year_insert"] == selected_year_update_plan) & 
+                                                         (kehoach_after_load["loaidoanhthu"] == selected_revenue_update_plan) & 
+                                                         (kehoach_after_load["ma_nv"] == selected_employee_update_plan) &
+                                                         (kehoach_after_load["line"] == st.session_state.line_access)]
+            if data_source_update_plan.empty:
                 st.warning("Không có dữ liệu!")
             else:
-                st.dataframe(data_kehoach_preview, use_container_width=True)
+                data_show_edit_plan = data_source_update_plan[["id_dv_606","t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12"]]
+                for col in ["t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12"]:
+                    data_show_edit_plan[col] = data_show_edit_plan[col] / 1000000
+                data_show_edit_plan["ten_dv"] = data_show_edit_plan["id_dv_606"].map(dichvu_after_load.set_index("ma_dv_id66")["ten_dv"])
+                data_show_edit_plan = data_show_edit_plan[["id_dv_606", "ten_dv", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11", "t12"]]
+                edited_data_editor = st.data_editor(data_show_edit_plan, num_rows="fixed"
+                                                    ,key="data_plan_editor_key", use_container_width=True,
+                                                    disabled=(("id_dv_606","ten_dv")),hide_index=True)
+                if button_insert_plan:
+                    # Replace None or empty values with 0
+                    edited_data_editor = edited_data_editor.fillna(0)
+                    edited_data_editor = edited_data_editor.replace("", 0)
+                    edited_data_editor = edited_data_editor.drop(columns=["ten_dv"])
+                    data_show_updated = data_source_update_plan.copy()
+                    data_show_updated.update(edited_data_editor)
+                    
+                    return_value_update = module_insert.update_table_kehoach(data_show_updated)
+                    if return_value_update is True:
+                        st.toast("##### Dữ liệu đã được cập nhật thành công!", icon="✅")
+                        time.sleep(1.5)
+                        module_view.load_data.clear()
+                        st.rerun()
+                    else:
+                        st.toast("##### Cập nhật dữ liệu thất bại!", icon="❌")
+                        st.warning(return_value_update)
+                        time.sleep(1.5)
+            
+            # part view data
+        else:
+            cols_plan_view_before = st.columns(2)
+            radio_preview_plan = cols_plan_view_before[0].radio(label="Chọn loại doanh thu", options=["Hiện hữu","Phát triển mới"], key="radio_preview_plan",horizontal=True)
+            input_year_preview_plan = cols_plan_view_before[1].number_input("Nhập năm", min_value=2023, max_value=2030, key="input_year_preview_plan")
+            button_view_plan = st.button("Xem data",icon=":material/frame_inspect:", key="button_view_plan", type="primary",on_click=self.spinner_load)
+            if button_view_plan:
+                module_config.create_db_pool()
+                conn = module_config.connect_to_mysql()
+                data_kehoach_preview = module_insert.query_kehoach_by_line_year(st.session_state.line_access, input_year_preview_plan,radio_preview_plan,conn)
+                if data_kehoach_preview.empty:
+                    st.warning("Không có dữ liệu!")
+                else:
+                    st.dataframe(data_kehoach_preview, use_container_width=True)
         
     def ui_make_project_insert(self):
         container_make_header = st.container(key="container_make_project_header")
@@ -495,7 +556,7 @@ class FRONTEND_DESIGN_INSERT():
                                 st.markdown(f"**{doc['title']}**")
                                 st.write(f"Tác giả: **{doc['author']}**")
                                 st.button("Xem chi tiết", icon=":material/description:" ,key=f"doc_{doc['id']}", on_click=show_document_detail, args=(doc["id"],))
-
+    
 class MAIN_APP_INSERT():
     def __init__(self):
         pass
@@ -513,7 +574,7 @@ class MAIN_APP_INSERT():
             ui.ui_document_design(search_term)
             
         
-
+thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = module_view.load_data()  
 ui = FRONTEND_DESIGN_INSERT()
 main_app_insert = MAIN_APP_INSERT()
 selected_sidebar_menu = ui.streamlit_menu_sidebar_insert()

@@ -264,7 +264,7 @@ class TODOCHECK_UI_DESIGN():
                         else:
                             st.warning("##### Vui lòng nhập đầy đủ thông tin!")
     
-    def calendar_show_first_for_emlv(self,data_task_all,option_show_radio):
+    def calendar_show_first_for_emlv(self,data_task_all,option_show_radio,action_on_board_calendar):
         # event
         if "employee_id" in st.session_state:
             data_task_all_show = data_task_all[data_task_all["employee_id"] == st.session_state.employee_id]
@@ -392,7 +392,7 @@ class TODOCHECK_UI_DESIGN():
             task_id_updated = state.get("eventClick")["event"]["id"]
             st.write(task_id_updated)
             st.session_state.dialog_open_update_tasks = True
-            module_todo.update_task(data_service_all,data_task_all,task_id_updated)
+            module_todo.update_task(data_service_all,data_task_all,task_id_updated,action_on_board_calendar)
         if state.get("eventsSet") is not None:
             st.session_state["events"] = state["eventsSet"]
             
@@ -417,10 +417,12 @@ class TODOCHECK_UI_DESIGN():
         container_main_task_dashboard = st.container(key="container_main_task_dashboard")
         with container_main_task_dashboard:
             calendar_first_cols = st.columns([3,1])
-            with calendar_first_cols[0]:
-                set_even_set = self.calendar_show_first_for_emlv(data_task_all,options_show_radio)
             with calendar_first_cols[1]:
+                action_on_board_calendar = st.selectbox("Hành động với sự kiện được chọn:",["Sửa","Xóa"], key="action_on_board_calendar")
                 tool_for_ui.render_task_view("employee_lv")
+            with calendar_first_cols[0]:
+                set_even_set = self.calendar_show_first_for_emlv(data_task_all,options_show_radio,action_on_board_calendar)
+            
 
         container_table_second_task_main = st.container(key="container_table_second_task_main")
         with container_table_second_task_main:
@@ -615,7 +617,7 @@ class MAIN_TODO():
         self.fronend_class = TODOCHECK_UI_DESIGN()
     def sidebar_todocheck(self):
         with st.sidebar:
-            st.markdown("<h4 style='text-align: center; font-size: 1.2rem; font-weight: bold;'>TODO CHECK</h4>", unsafe_allow_html=True)
+            module_config.show_expander_sidebar()
             selected = option_menu(
                     menu_title= None,  # required
                     options=["Dashboard", "Công việc của tôi", "Thông báo"],  # required
@@ -663,7 +665,7 @@ class MAIN_TODO():
                 container_cols_search = st.container(key="container_cols_search")
                 cols_search = container_cols_search.columns([5,3]) 
                 cols_search[0].header(text,divider=True)                  
-                option_show_radio_dashboard = cols_search[1].selectbox("",["Dạng ngày","Dạng danh sách","Theo dịch vụ","Theo nhân viên"],
+                option_show_radio_dashboard = cols_search[1].selectbox(" ",["Dạng ngày","Dạng danh sách","Theo dịch vụ","Theo nhân viên"],
                                 on_change=TOOL_FOR_UI().update_ui_calendar
                                 , key="option_show_radio_calendar_first")
             with todocols[1]:

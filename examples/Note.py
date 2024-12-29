@@ -1,23 +1,24 @@
-from streamlit_elements import elements, dashboard, mui
+import streamlit as st
+import pandas as pd
 
-# Ví dụ dữ liệu
-columns = [
-    {"field": "id", "headerName": "ID", "width": 70},
-    {"field": "name", "headerName": "Name", "width": 130},
-    {"field": "age", "headerName": "Age", "width": 90},
-]
-rows = [
-    {"id": 1, "name": "Alice", "age": 25},
-    {"id": 2, "name": "Bob", "age": 30},
-    {"id": 3, "name": "Charlie", "age": 35},
-]
+st.title("Hiển thị file Excel với nhiều tab")
 
-# Streamlit Elements
-with elements("demo_grid"):
-    mui.DataGrid(
-        rows=rows,
-        columns=columns,
-        pageSize=5,
-        checkboxSelection=True,
-        style={"height": 400, "width": "100%","borderRadius": 3, "overflow": "hidden"}
-    )
+# Tải file Excel lên
+uploaded_file = st.file_uploader("Tải lên file Excel", type=["xlsx", "xls"])
+
+if uploaded_file:
+    # Đọc file Excel
+    excel_file = pd.ExcelFile(uploaded_file)
+    sheet_names = excel_file.sheet_names  # Lấy danh sách tên sheet
+    
+    # Chọn sheet để hiển thị
+    selected_sheet = st.selectbox("Chọn tab (sheet) để hiển thị:", sheet_names)
+    
+    # Đọc dữ liệu của sheet được chọn
+    sheet_data = excel_file.parse(selected_sheet)
+    
+    # Hiển thị dữ liệu
+    st.write(selected_sheet)
+    
+    
+    st.dataframe(sheet_data)
