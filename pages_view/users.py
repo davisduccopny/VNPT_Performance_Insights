@@ -4,6 +4,7 @@ from streamlit_option_menu import option_menu
 import time
 import PROJECTS.config as module_config
 import PROJECTS.module_view as module_view
+from LDP_MODULE.ldp_view import load_data_ldp,load_line_manage
 import PROJECTS.module_expand as module_expand
 import PROJECTS.module_users as module_users
 
@@ -61,7 +62,7 @@ class FRONTEND_UI_DESIGN():
         with container_sidebar_user:
             selected = option_menu(
                 menu_title= None,  # required
-                options=["Chung", "Mật khẩu","Hiển thị", "Khác"],  # required
+                options=["Chung", "Mật khẩu","Hiển thị", "Khác"] if st.session_state.type_process != 'LDPVNPT' else ["Mật khẩu","Hiển thị", "Khác"],
                 icons=[],  
                 menu_icon= None,  
                 default_index=0,  
@@ -308,7 +309,7 @@ class MAIN_USER():
     def user(self):
         
         selected = self.frontend.sidebar_ui()
-        if selected == "Chung":
+        if selected == "Chung" and (st.session_state.type_process != 'LDPVNPT'):
             self.frontend.ui_info("👨‍💼 NGƯỜI DÙNG","Xem thông tin")
             ma_nv,diplay_name,role,line_access = self.load_data_for_user()
             self.frontend.general_user_ui(st.session_state.usernamevnpt,diplay_name,role,line_access)
@@ -335,7 +336,12 @@ class MAIN_USER():
         return filter_thuchien, filter_kehoach
 
 data_user = module_users.load_data_for_user(st.session_state.usernamevnpt)
-thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load, line_after_load = module_view.load_data()   
+if st.session_state.type_process != 'LDPVNPT':
+    thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load, line_after_load = module_view.load_data()   
+else:
+    thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = load_data_ldp()
+    line_after_load = load_line_manage()
+    
 main_user = MAIN_USER()
 main_user.user()
 module_config.add_sidebar_footer()

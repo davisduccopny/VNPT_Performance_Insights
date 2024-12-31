@@ -3,6 +3,7 @@ import time
 from PROJECTS.module_login import login
 from PROJECTS.module_insert import load_data_service as load_data_service_for_all
 from PROJECTS.module_view import load_data as load_data_for_all
+from LDP_MODULE.ldp_view import load_data_ldp 
 from st_pages import add_page_title, get_nav_from_toml, hide_pages
 if "is_logged_in" not in st.session_state or not st.session_state.is_logged_in:
     page_title = "VNPT-PERFORMANCE-INSIGHTS"
@@ -34,6 +35,9 @@ if st.session_state.is_logged_in:
             hide_pages(["Thêm dữ liệu", "Xóa dữ liệu","Giải trình"])
             pg = st.navigation(nav)
     else:
+        load_data_ldp()
+        load_data_for_all()
+        load_data_service_for_all()
         nav = get_nav_from_toml(".streamlit/pages_ldp.toml")
         pg = st.navigation(nav)
     pg.run()
