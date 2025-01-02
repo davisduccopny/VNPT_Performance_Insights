@@ -17,6 +17,7 @@ if "is_logged_in" not in st.session_state or not st.session_state.is_logged_in:
     st.session_state.role_access_admin = False
     st.session_state.line_access = None
     st.session_state.type_process = None
+    st.cache_data.clear()
     login()
 
 if st.session_state.is_logged_in:
@@ -36,7 +37,6 @@ if st.session_state.is_logged_in:
             pg = st.navigation(nav)
     else:
         load_data_ldp()
-        load_data_for_all()
         load_data_service_for_all()
         nav = get_nav_from_toml(".streamlit/pages_ldp.toml")
         pg = st.navigation(nav)

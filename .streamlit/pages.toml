@@ -25,7 +25,7 @@ icon = ":material/dashboard:"
 
 [[pages]]
 path = "pages_view/insert.py"
-name = "Thêm dữ liệu"
+name = "Quản lý dữ liệu"
 icon = ":material/add_diamond:"
 
 [[pages]]

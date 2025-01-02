@@ -25,6 +25,11 @@ if not st.session_state.get("is_logged_in", False):
     st.session_state.line_access = None
     st.switch_page("main.py")
     st.stop()
+if st.session_state.line_access != "LDPVNPT":
+    st.warning("Chế độ xem tham khảo, không cho phép chỉnh sửa!")
+    disabled_widget_experimental = True
+else:
+    disabled_widget_experimental = False
 
 
 
@@ -151,7 +156,7 @@ class FRONTEND_DESIGN_DELETE():
             
         container_header_plan_delete = st.container(key="container_header_plan_delete")
         cols_plan_delete = container_header_plan_delete.columns([3,3,9.5,6,0.5])
-        button_delete_kehoach = cols_plan_delete[3].button("Xóa khỏi csdl", key="delete_plan", type="primary",icon=":material/delete:")
+        button_delete_kehoach = cols_plan_delete[3].button("Xóa khỏi csdl", key="delete_plan", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental)
         button_refress_pade = cols_plan_delete[0].button("Load", key="refress_page_delete_plan", type="secondary",use_container_width=True,icon=":material/published_with_changes:")
         button_export_excel =cols_plan_delete[1].download_button("Excel", key="export_excel_page_plan",use_container_width=True, help="Xuất excel",
                                                                         data=output_xlsx_download.getvalue(),
@@ -208,7 +213,7 @@ class FRONTEND_DESIGN_DELETE():
         container_header_do_delete = st.container(key="container_header_do_delete")
         with container_header_do_delete:
             cols_do_delete = container_header_do_delete.columns([3,3,9.5,6,0.5])
-            button_delete_do = cols_do_delete[3].button("Xóa khỏi csdl", key="delete_do_out_db", type="primary",icon=":material/delete:")
+            button_delete_do = cols_do_delete[3].button("Xóa khỏi csdl", key="delete_do_out_db", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental)
             button_refress_pade = cols_do_delete[0].button("Load", key="refress_page_delete", type="secondary",use_container_width=True,icon=":material/published_with_changes:")
             button_export_excel =cols_do_delete[1].download_button("Excel", key="export_excel_page_do",use_container_width=True, help="Xuất excel",
                                                                         data=output_xlsx_download.getvalue(),

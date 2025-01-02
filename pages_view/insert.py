@@ -104,12 +104,13 @@ class ORTHER_FUNCTION_INSERT():
                 type="secondary",use_container_width=True
             )
             if button_insert_service:
-                if dialog_insert_name_service and id_service_insert_dialog:
-                    if category_service_dialog_insert == None or category_service_dialog_insert == "":
-                        category_service_dialog_insert = None
-                    self.insert_service_to_database_ui(id_service_insert_dialog,dialog_insert_name_service,category_service_dialog_insert)
-                else:
-                    st.warning("Vui lòng nhập đủ thông tin!", icon="⚠️")
+                with st.spinner("✨Đang thực hiện thao tác..."):
+                    if dialog_insert_name_service and id_service_insert_dialog:
+                        if category_service_dialog_insert == None or category_service_dialog_insert == "":
+                            category_service_dialog_insert = None
+                        self.insert_service_to_database_ui(id_service_insert_dialog,dialog_insert_name_service,category_service_dialog_insert)
+                    else:
+                        st.warning("Vui lòng nhập đủ thông tin!", icon="⚠️")
             button_cancel_service = cols_insert_service_dialog[1].button("Hủy",type="primary", icon=":material/close:", key="button_cancel_service",use_container_width=True)
         if button_cancel_service:
             st.session_state.confirmation_service_insert_dialog = "No"
@@ -137,9 +138,6 @@ class FRONTEND_DESIGN_INSERT():
         self.array_explan_em = self.employee_list[["ma_nv", "ten_nv"]].drop_duplicates()
         self.em_select_array = {row["ma_nv"]: row["ten_nv"] for _, row in self.array_explan_em.iterrows()}
         self.employee_keys = list(self.em_select_array.keys())
-    def spinner_load(self):
-        with st.spinner("✨Đang thực hiện thao tác..."):
-            time.sleep(2)
     
     def ui_info(self, text):
         st.markdown(f"<h3 style='text-align: left; padding:0'>{text}</h3>", unsafe_allow_html=True)
@@ -169,8 +167,10 @@ class FRONTEND_DESIGN_INSERT():
         with container_sidebar_add_data:
             selected = option_menu(
                 menu_title= None,  # required
-                options=["Kế hoạch", "Thực hiện","Quản lý dịch vụ","Biểu mẫu"],  # required
-                icons=["eyedropper", "bar-chart-line-fill","gear-wide","filetype-xlsx"],  # optional
+                # options=["Kế hoạch", "Thực hiện","Quản lý dịch vụ","Biểu mẫu"],  
+                # icons=["eyedropper", "bar-chart-line-fill","gear-wide","filetype-xlsx"],  
+                options=["Kế hoạch","Quản lý dịch vụ","Biểu mẫu"],  
+                icons=["eyedropper","gear-wide","filetype-xlsx"],
                 menu_icon= None,  # optional
                 default_index=0,  # optional
                 orientation="vertical",
@@ -218,7 +218,6 @@ class FRONTEND_DESIGN_INSERT():
             with col_plan_insert_header[2]:
                 button_insert_plan = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_plan",type="primary", 
                                                help="🔍Thêm dữ liệu vào csdl", use_container_width=True,
-                                               on_click=self.spinner_load,
                                                disabled=(radio_option_action_in_plan == "Xem"))
             
         if radio_option_action_in_plan == "Thêm":
@@ -252,23 +251,22 @@ class FRONTEND_DESIGN_INSERT():
             if "confirmation" in st.session_state:
                 if st.session_state.confirmation == "Yes":
                     with st.spinner("✨Đang thực hiện thao tác..."):
-                        time.sleep(2)
-                    module_config.create_db_pool()
-                    conn = module_config.connect_to_mysql()
-                    st.session_state.confirmation = None
-                    result_services = module_insert.query_dichvu_from_database(conn)
-                    data_insert_df = module_insert.select_rows_kehoach_for_insert(file_upload_insert_value, result_services)
-                    result_insert_to_database = module_insert.insertData_kehoach_to_database(st.session_state.line_access,selected_year_plan,selected_revenue_plan,data_insert_df,conn)
-                    if result_insert_to_database:
-                        st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
-                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu kế hoạch năm {selected_year_plan} loại - {selected_revenue_plan}")
-                        module_users.load_action_check_user.clear()
-                        time.sleep(2)
-                        module_view.load_data.clear()
-                        st.rerun()
-                    else:
-                        st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
-                        time.sleep(2)
+                        module_config.create_db_pool()
+                        conn = module_config.connect_to_mysql()
+                        st.session_state.confirmation = None
+                        result_services = module_insert.query_dichvu_from_database(conn)
+                        data_insert_df = module_insert.select_rows_kehoach_for_insert(file_upload_insert_value, result_services)
+                        result_insert_to_database = module_insert.insertData_kehoach_to_database(st.session_state.line_access,selected_year_plan,selected_revenue_plan,data_insert_df,conn)
+                        if result_insert_to_database:
+                            st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
+                            module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu kế hoạch năm {selected_year_plan} loại - {selected_revenue_plan}")
+                            module_users.load_action_check_user.clear()
+                            time.sleep(2)
+                            module_view.load_data.clear()
+                            st.rerun()
+                        else:
+                            st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
+                            time.sleep(2)
         elif radio_option_action_in_plan == "Sửa":
             st.success("📌Chọn thông tin cần để sửa")
             cols_update_plan = st.columns(3)
@@ -295,38 +293,39 @@ class FRONTEND_DESIGN_INSERT():
                                                     ,key="data_plan_editor_key", use_container_width=True,
                                                     disabled=(("id_dv_606","ten_dv")),hide_index=True)
                 if button_insert_plan:
-                    # Replace None or empty values with 0
-                    edited_data_editor = edited_data_editor.fillna(0)
-                    edited_data_editor = edited_data_editor.replace("", 0)
-                    edited_data_editor = edited_data_editor.drop(columns=["ten_dv"])
-                    data_show_updated = data_source_update_plan.copy()
-                    data_show_updated.update(edited_data_editor)
-                    
-                    return_value_update = module_insert.update_table_kehoach(data_show_updated)
-                    if return_value_update is True:
-                        st.toast("##### Dữ liệu đã được cập nhật thành công!", icon="✅")
-                        time.sleep(1.5)
-                        module_view.load_data.clear()
-                        st.rerun()
-                    else:
-                        st.toast("##### Cập nhật dữ liệu thất bại!", icon="❌")
-                        st.warning(return_value_update)
-                        time.sleep(1.5)
+                    with st.spinner("✨Đang thực hiện thao tác..."):
+                        edited_data_editor = edited_data_editor.fillna(0)
+                        edited_data_editor = edited_data_editor.replace("", 0)
+                        edited_data_editor = edited_data_editor.drop(columns=["ten_dv"])
+                        data_show_updated = data_source_update_plan.copy()
+                        data_show_updated.update(edited_data_editor)
+                        
+                        return_value_update = module_insert.update_table_kehoach(data_show_updated)
+                        if return_value_update is True:
+                            st.toast("##### Dữ liệu đã được cập nhật thành công!", icon="✅")
+                            time.sleep(1.5)
+                            module_view.load_data.clear()
+                            st.rerun()
+                        else:
+                            st.toast("##### Cập nhật dữ liệu thất bại!", icon="❌")
+                            st.warning(return_value_update)
+                            time.sleep(1.5)
             
             # part view data
         else:
             cols_plan_view_before = st.columns(2)
             radio_preview_plan = cols_plan_view_before[0].radio(label="Chọn loại doanh thu", options=["Hiện hữu","Phát triển mới"], key="radio_preview_plan",horizontal=True)
             input_year_preview_plan = cols_plan_view_before[1].number_input("Nhập năm", min_value=2023, max_value=2030, key="input_year_preview_plan")
-            button_view_plan = st.button("Xem data",icon=":material/frame_inspect:", key="button_view_plan", type="primary",on_click=self.spinner_load)
+            button_view_plan = st.button("Xem data",icon=":material/frame_inspect:", key="button_view_plan", type="primary")
             if button_view_plan:
-                module_config.create_db_pool()
-                conn = module_config.connect_to_mysql()
-                data_kehoach_preview = module_insert.query_kehoach_by_line_year(st.session_state.line_access, input_year_preview_plan,radio_preview_plan,conn)
-                if data_kehoach_preview.empty:
-                    st.warning("Không có dữ liệu!")
-                else:
-                    st.dataframe(data_kehoach_preview, use_container_width=True)
+                with st.spinner("✨Đang load..."):
+                    module_config.create_db_pool()
+                    conn = module_config.connect_to_mysql()
+                    data_kehoach_preview = module_insert.query_kehoach_by_line_year(st.session_state.line_access, input_year_preview_plan,radio_preview_plan,conn)
+                    if data_kehoach_preview.empty:
+                        st.warning("Không có dữ liệu!")
+                    else:
+                        st.dataframe(data_kehoach_preview, use_container_width=True)
         
     def ui_make_project_insert(self):
         container_make_header = st.container(key="container_make_project_header")
@@ -351,24 +350,23 @@ class FRONTEND_DESIGN_INSERT():
         file_upload_insert_make_value = ORTHER_FUNCTION_INSERT().upload_excel(key="file_upload_make_project_insert")
         if button_insert_project:
             with st.spinner("✨Đang thực hiện thao tác..."):
-                time.sleep(2)
-            if file_upload_insert_make_value is not None:
-                check_data_frame_upload = module_insert.validate_thuchien_columns(file_upload_insert_make_value)
-                if check_data_frame_upload is False:
-                    module_config.create_db_pool()
-                    conn = module_config.connect_to_mysql()
-                    data_make_project_preview = module_insert.get_data_thuchien(selected_month_make_value,selected_year_project,st.session_state.line_access,selected_revenue_project,conn)
-                    if data_make_project_preview.empty:
-                        st.session_state.dialog_open = True
+                if file_upload_insert_make_value is not None:
+                    check_data_frame_upload = module_insert.validate_thuchien_columns(file_upload_insert_make_value)
+                    if check_data_frame_upload is False:
+                        module_config.create_db_pool()
+                        conn = module_config.connect_to_mysql()
+                        data_make_project_preview = module_insert.get_data_thuchien(selected_month_make_value,selected_year_project,st.session_state.line_access,selected_revenue_project,conn)
+                        if data_make_project_preview.empty:
+                            st.session_state.dialog_open = True
+                        else:
+                            st.toast("##### Dữ liệu đã tồn tại trong cơ sở dữ liệu!", icon="❌")
+                            time.sleep(2)
                     else:
-                        st.toast("##### Dữ liệu đã tồn tại trong cơ sở dữ liệu!", icon="❌")
+                        st.toast(f"##### Dữ liệu không đủ! Cần thêm các cột sau: {', '.join(check_data_frame_upload)}",icon="⚠️")
                         time.sleep(2)
                 else:
-                    st.toast(f"##### Dữ liệu không đủ! Cần thêm các cột sau: {', '.join(check_data_frame_upload)}",icon="⚠️")
+                    st.toast("##### Vui lòng tải lên file excel trước khi thực hiện thao tác!",icon="⚠️")
                     time.sleep(2)
-            else:
-                st.toast("##### Vui lòng tải lên file excel trước khi thực hiện thao tác!",icon="⚠️")
-                time.sleep(2)
 
         if st.session_state.get("dialog_open", False):
             module_config.show_confirmation_dialog("thêm dữ liệu")
@@ -376,31 +374,29 @@ class FRONTEND_DESIGN_INSERT():
             if st.session_state.confirmation == "Yes":
                 st.session_state.confirmation = None
                 with st.spinner("✨Đang thực hiện thao tác..."):
-                    time.sleep(2)
-                module_config.create_db_pool()
-                conn = module_config.connect_to_mysql()
-                data_group_for_make_insert = module_insert.group_data_for_insert_thuchien(file_upload_insert_make_value)
-                results_make_insert_status = module_insert.insert_data_to_thuchien(selected_month_make_value,selected_year_project,selected_revenue_project,st.session_state.line_access,data_group_for_make_insert,conn)
-                if results_make_insert_status:
-                    st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
-                    time.sleep(2)
-                    module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu thực hiện năm {selected_year_project} tháng {selected_month_make_value} loại - {selected_revenue_project}")
-                    module_users.load_action_check_user.clear()
-                    module_view.load_data.clear()
-                    st.rerun()
-                else:
-                    st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
-                    time.sleep(2)
+                    module_config.create_db_pool()
+                    conn = module_config.connect_to_mysql()
+                    data_group_for_make_insert = module_insert.group_data_for_insert_thuchien(file_upload_insert_make_value)
+                    results_make_insert_status = module_insert.insert_data_to_thuchien(selected_month_make_value,selected_year_project,selected_revenue_project,st.session_state.line_access,data_group_for_make_insert,conn)
+                    if results_make_insert_status:
+                        st.toast("##### Dữ liệu đã được thêm vào cơ sở dữ liệu!", icon="✅")
+                        time.sleep(2)
+                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm dữ liệu thực hiện năm {selected_year_project} tháng {selected_month_make_value} loại - {selected_revenue_project}")
+                        module_users.load_action_check_user.clear()
+                        module_view.load_data.clear()
+                        st.rerun()
+                    else:
+                        st.toast("##### Thêm dữ liệu thất bại!", icon="❌")
+                        time.sleep(2)
         if button_view_make_project:
             with st.spinner("✨Đang thực hiện thao tác..."):
-                time.sleep(2)
-            module_config.create_db_pool()
-            conn = module_config.connect_to_mysql()
-            data_make_project_preview = module_insert.get_data_preview_for_insert_database(st.session_state.line_access,input_year_preview_make_project,radio_preview_make_project,conn)
-            if data_make_project_preview.empty:
-                st.warning("Không có dữ liệu!")
-            else:
-                st.dataframe(data_make_project_preview, use_container_width=True)
+                module_config.create_db_pool()
+                conn = module_config.connect_to_mysql()
+                data_make_project_preview = module_insert.get_data_preview_for_insert_database(st.session_state.line_access,input_year_preview_make_project,radio_preview_make_project,conn)
+                if data_make_project_preview.empty:
+                    st.warning("Không có dữ liệu!")
+                else:
+                    st.dataframe(data_make_project_preview, use_container_width=True)
     def ui_management_service_insert(self, search_term_manage_service=None):
         module_config.create_db_pool()
         conn = module_config.connect_to_mysql()
@@ -457,37 +453,38 @@ class FRONTEND_DESIGN_INSERT():
             if st.session_state.confirmation_service_insert_dialog == "Yes":
                 st.session_state.confirmation_service_insert_dialog = None  
         if action_button_update_service:
-            orther_class_service = ORTHER_FUNCTION_INSERT()
-            if view_mode_manage_service == "Chỉnh sửa":
-                updated_rows = edited_data.to_dict('records')
-                updated_data = [(row['ten_dv'], row['danh_muc_tt'], row['ma_dv_id66']) for row in updated_rows]
-                if orther_class_service.check_null_value(edited_data) is True:
-                    if module_insert.update_service_manage(updated_data, conn):
-                        st.toast("##### Dữ liệu đã được cập nhật thành công!", icon="✅")
+            with st.spinner("✨Đang thực hiện thao tác..."):
+                orther_class_service = ORTHER_FUNCTION_INSERT()
+                if view_mode_manage_service == "Chỉnh sửa":
+                    updated_rows = edited_data.to_dict('records')
+                    updated_data = [(row['ten_dv'], row['danh_muc_tt'], row['ma_dv_id66']) for row in updated_rows]
+                    if orther_class_service.check_null_value(edited_data) is True:
+                        if module_insert.update_service_manage(updated_data, conn):
+                            st.toast("##### Dữ liệu đã được cập nhật thành công!", icon="✅")
+                            time.sleep(1.5)
+                            module_insert.load_data_service.clear()
+                            module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,"Cập nhật dữ liệu dịch vụ")
+                            module_users.load_action_check_user.clear()
+                            st.rerun()
+                        else:
+                            st.toast("##### Cập nhật dữ liệu thất bại. Tên hoặc mã dịch vụ có thể trùng lặp", icon="❌")
+                            time.sleep(1.5)
+                elif view_mode_manage_service == "Xóa":
+                    deleted_rows = edited_data[edited_data['delete']].to_dict('records')
+                    deleted_data = [(row['ma_dv_id66'],) for row in deleted_rows]
+                    if module_insert.delete_service_manage(deleted_data, conn):
+                        st.toast("##### Dữ liệu đã được xóa thành công!", icon="✅")
                         time.sleep(1.5)
-                        module_insert.load_data_service.clear()
-                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,"Cập nhật dữ liệu dịch vụ")
+                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu dịch vụ{deleted_data}")
                         module_users.load_action_check_user.clear()
+                        module_insert.load_data_service.clear()
                         st.rerun()
                     else:
-                        st.toast("##### Cập nhật dữ liệu thất bại. Tên hoặc mã dịch vụ có thể trùng lặp", icon="❌")
+                        st.toast("##### Xóa dữ liệu thất bại.", icon="❌")
                         time.sleep(1.5)
-            elif view_mode_manage_service == "Xóa":
-                deleted_rows = edited_data[edited_data['delete']].to_dict('records')
-                deleted_data = [(row['ma_dv_id66'],) for row in deleted_rows]
-                if module_insert.delete_service_manage(deleted_data, conn):
-                    st.toast("##### Dữ liệu đã được xóa thành công!", icon="✅")
-                    time.sleep(1.5)
-                    module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu dịch vụ{deleted_data}")
-                    module_users.load_action_check_user.clear()
-                    module_insert.load_data_service.clear()
-                    st.rerun()
                 else:
-                    st.toast("##### Xóa dữ liệu thất bại.", icon="❌")
+                    st.toast("##### Vui lòng chọn chế độ xem!",icon="⚠️")
                     time.sleep(1.5)
-            else:
-                st.toast("##### Vui lòng chọn chế độ xem!",icon="⚠️")
-                time.sleep(1.5)
 
     def ui_document_design(self, search_term=None):
         # Dữ liệu danh sách tài liệu
@@ -564,8 +561,8 @@ class MAIN_APP_INSERT():
         ui = FRONTEND_DESIGN_INSERT()
         if selected == "Kế hoạch":
             ui.ui_plan_insert()
-        elif selected == "Thực hiện":
-            ui.ui_make_project_insert()
+        # elif selected == "Thực hiện":
+        #     ui.ui_make_project_insert()
         elif selected == "Quản lý dịch vụ":
             search_term_manage_service = ui.ui_info_add_search(text="⚙️QUẢN LÝ DỊCH VỤ",loai_data="dịch vụ")
             ui.ui_management_service_insert(search_term_manage_service)

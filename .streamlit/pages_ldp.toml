@@ -1,7 +1,12 @@
 [[pages]]
-path = "pages_view/home.py"
+path = "pages_ldp/board.py"
 name = "Trang chủ"
 icon = ":material/home:"
+
+[[pages]]
+path = "pages_view/home.py"
+name = "Giới thiệu"
+icon = ":material/contacts:"
 
 [[pages]]
 name = "Reports"

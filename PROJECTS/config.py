@@ -112,6 +112,8 @@ def social_media_show():
 
 def add_sidebar_footer():
     container_sidebar_button_setting = st.sidebar.container(key="container_sidebar_button_setting")
+    display_name_home = st.session_state.display_name_vnpt if ('display_name_vnpt' in st.session_state and st.session_state.display_name_vnpt != None) else st.session_state.usernamevnpt
+    container_sidebar_button_setting.info(f":wave: Xin chào {display_name_home}!")
     with container_sidebar_button_setting:
         cols_button_setting_sidebar = st.columns([1,8,8,1])
         with cols_button_setting_sidebar[1]:
@@ -120,6 +122,7 @@ def add_sidebar_footer():
                 st.session_state.role_access_admin = False
                 st.session_state.line_access = None
                 st.session_state.usernamevnpt = None
+                st.cache_data.clear()
                 st.rerun()
         with cols_button_setting_sidebar[2]:
             if st.button("Connect", icon=":material/settings_backup_restore:", key="reconnect_db", type="secondary",):

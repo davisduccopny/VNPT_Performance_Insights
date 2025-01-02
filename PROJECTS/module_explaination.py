@@ -59,7 +59,10 @@ def query_explain_by_user_from_database():
     try:
         conn = module_config.connect_to_mysql()
         cursor = conn.cursor()
-        cursor.execute(f"SELECT id,line,employee,content,month,year,created_at FROM explaination WHERE line = '{line}' AND employee = '{employee}'")
+        if st.session_state.type_process != 'LDPVNPT':
+            cursor.execute(f"SELECT id,line,employee,content,month,year,created_at FROM explaination WHERE line = '{line}' AND employee = '{employee}'")
+        else:
+            cursor.execute(f"SELECT id,line,employee,content,month,year,created_at FROM explaination ORDER BY line ASC")
         data = cursor.fetchall()
         if len(data) > 0:
             data = pd.DataFrame(data,columns=["id","line","employee","content","month","year","created_at"])

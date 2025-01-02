@@ -10,6 +10,7 @@ from PROJECTS.module_insert import load_data_service
 from PROJECTS.module_todo import load_tasks as load_data_todo
 from PROJECTS.module_view import load_data as load_data_from_all
 from PROJECTS.module_view import format_number as format_number
+from LDP_MODULE.ldp_view import load_data_ldp
 import PROJECTS.module_explaination as module_explaination
 import calendar as calendar_for_lv
 import uuid
@@ -134,6 +135,8 @@ class Explaination:
                 data_show_list_explain = module_explaination.query_explain_by_user_from_database()
                 if data_show_list_explain is not None:
                     data_show_list_explain = data_show_list_explain[["id","content","line","month","year","created_at"]]
+                    data_show_list_explain["line"] = data_show_list_explain["line"].map(line_after_load.set_index("ma_line")["ten_line"])
+                    
                     st.dataframe(data_show_list_explain, column_config={
                         "id": "ID",
                         "content": "Nội dung",
@@ -143,7 +146,24 @@ class Explaination:
                         "created_at": "Ngày tạo"
                     },hide_index=True,use_container_width=True)
                 else:
-                    st.write("Không có dữ liệu")          
+                    st.write("Không có dữ liệu")   
+    def management_explain_linelv(self):
+        with st.expander("Quản lý",expanded=True):
+            st.subheader("Danh sách giải trình")
+            data_show_list_explain = module_explaination.query_explain_by_user_from_database()
+            if data_show_list_explain is not None:
+                data_show_list_explain = data_show_list_explain[["id","content","line","month","year","created_at"]]
+                data_show_list_explain["line"] = data_show_list_explain["line"].map(line_after_load.set_index("ma_line")["ten_line"])
+                st.dataframe(data_show_list_explain, column_config={
+                    "id": "ID",
+                    "content": "Nội dung",
+                    "line": "Line",
+                    "month": "Tháng",
+                    "year": "Năm",
+                    "created_at": "Ngày tạo"
+                },hide_index=True,use_container_width=True)
+            else:
+                st.write("Không có dữ liệu")                     
 class MAIN_EXPLAINATION():
     def __init__(self):
         self.explaination = Explaination()
@@ -151,8 +171,8 @@ class MAIN_EXPLAINATION():
         with st.sidebar:
             selected = option_menu(
                     menu_title= None,  # required
-                    options=["Compare Dashboard", "Quản lý"],  # required
-                    icons=["clipboard-data", "calendar2-check"],  
+                    options=["Compare Dashboard", "Quản lý"] if st.session_state.type_process != "LDPVNPT" else ["Quản lý"],  # required
+                    icons=["clipboard-data", "calendar2-check"] if st.session_state.type_process != "LDPVNPT" else ["calendar2-check"],  # optional
                     menu_icon= None,  
                     default_index=0,  
                     orientation="vertical",  
@@ -198,10 +218,16 @@ class MAIN_EXPLAINATION():
         selected = self.explaination_sidebar_ui()
         if selected == "Compare Dashboard":
             self.explaination.explaination_dashboard()
-        elif selected == "Quản lý":
+        else:
             self.ui_info("Giải trình", "giải trình")
-            self.explaination.management_explaination()
-thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = load_data_from_all() 
+            if st.session_state.type_process != "LDPVNPT":
+                self.explaination.management_explaination()
+            else:
+                self.explaination.management_explain_linelv()
+if st.session_state.type_process == "LDPVNPT":
+    thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = load_data_ldp()
+else:
+    thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = load_data_from_all() 
 data_task_all = pd.DataFrame(load_data_todo())
 data_service_all =load_data_service()  
 MAIN_EXPLAINATION().run()

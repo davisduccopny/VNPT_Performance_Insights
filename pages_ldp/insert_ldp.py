@@ -19,6 +19,11 @@ if not st.session_state.get("is_logged_in", False):
     st.session_state.line_access = None
     st.switch_page("main.py")
     st.stop()
+if st.session_state.line_access != "LDPVNPT":
+    st.warning("Chế độ xem tham khảo, không cho phép chỉnh sửa!")
+    disabled_widget_experimental = True
+else:
+    disabled_widget_experimental = False
 # PATH CONFIG
 with open('src/style.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
@@ -231,7 +236,7 @@ class FRONTEND_DESIGN_INSERT():
                 button_insert_plan = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_plan",type="primary", 
                                                help="🔍Thêm dữ liệu vào csdl", use_container_width=True,
                                             #    on_click=self.spinner_load,
-                                               disabled=(radio_option_action_in_plan == "Xem"))
+                                               disabled=(radio_option_action_in_plan == "Xem" or disabled_widget_experimental))
             
         if radio_option_action_in_plan == "Thêm":
             col_plan_insert_1,col_plan_insert_2 = st.columns(2)
@@ -371,7 +376,9 @@ class FRONTEND_DESIGN_INSERT():
             with col_make_project_header[0]:
                 self.ui_info(text="THÊM DỮ LIỆU - 📇THỰC HIỆN")
             with col_make_project_header[2]:
-                button_insert_project = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_project", type="primary", help="🔍Thêm dữ liệu vào csdl", use_container_width=True)
+                button_insert_project = st.button("Up database", icon=":material/cloud_upload:", key="button_insert_project",
+                                                  type="primary", help="🔍Thêm dữ liệu vào csdl", use_container_width=True,
+                                                  disabled=disabled_widget_experimental)
             with col_make_project_header[1]:
                 with st.popover("Xem data", icon="👁️‍🗨️", help="🔍Xem data đang tồn tại trong csdl.", use_container_width=True):
                     radio_type_data_for_preview = st.radio(label="Chọn loại dữ liệu", options=["Theo tháng","Theo năm"], key="radio_type_data_for_preview",horizontal=True)

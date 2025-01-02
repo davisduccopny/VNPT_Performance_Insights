@@ -770,7 +770,7 @@ class GENERATE_VIEW():
                             .format(self.add_arrow, subset=["+/- VỚI KỲ TRƯỚC","+ /- VỚI T01"]) \
                             .map(self.highlight_numbers_percentage, subset=["% THỰC HIỆN","% THỰC HIỆN T01","% VỚI KỲ TRƯỚC"]) \
                             .format(self.add_arrow_percentage, subset=["% THỰC HIỆN","% THỰC HIỆN T01","% VỚI KỲ TRƯỚC"]) \
-                            .format("{:.2f}", subset=[f"KẾ HOẠCH T0{selected_month}",f"THỰC HIỆN T0{selected_month}","THỰC HIỆN T01"] if selected_month != 1 else [f"KẾ HOẠCH T0{selected_month}",f"THỰC HIỆN T{selected_month}","THỰC HIỆN T01"])
+                            .format("{:.2f}", subset=[f"KẾ HOẠCH T0{selected_month}",f"THỰC HIỆN T0{selected_month}","THỰC HIỆN T01","KỲ TRƯỚC"] if selected_month != 1 else [f"KẾ HOẠCH T0{selected_month}",f"THỰC HIỆN T{selected_month}","THỰC HIỆN T01","KỲ TRƯỚC"])
                             
                         df_2 = df_2.style.map(self.highlight_nonzero) \
                             .format("{:.2f}",subset= df_2.columns[2:])
@@ -890,3 +890,4 @@ class MAIN_VIEW():
                 
 thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = ldp_view.load_data_ldp()
 MAIN_VIEW().run_view()
+module_config.add_sidebar_footer()

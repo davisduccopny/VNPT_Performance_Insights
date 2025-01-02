@@ -45,6 +45,47 @@ class DESIGN_FRONTEND_MANAGE():
                         else:
                             st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
                             return None
+    @st.dialog(f"Chỉnh sửa thông tin người dùng 👨‍🎓")
+    def show_confirmation_dialog_edit(self,index_for_edit,index_for_edit_role):
+        if "dialog_open_edit_user" not in st.session_state:
+            st.session_state.dialog_open_edit_user = False
+        if st.session_state.dialog_open_edit_user:
+            cols_main_dialog_update = st.columns([1,1])
+            new_ten = cols_main_dialog_update[0].text_input("Username mới", str(st.session_state.edit_username), key="edit_username_input_page_manage_users")
+            new_line = cols_main_dialog_update[1].selectbox("Line mới", options=self.array_line, index=index_for_edit, key="edit_line_input_page_manage_users")
+            new_role = cols_main_dialog_update[0].selectbox("Role mới",options=self.array_user, index=index_for_edit_role, key="edit_role_input_page_manage_users")
+            new_display_name = cols_main_dialog_update[1].text_input("Display name mới", str(st.session_state.edit_display_name), key="edit_display_name_input_page_manage_users")
+            new_ma_nv = st.text_input("Mã nhân viên", str(st.session_state.edit_ma_nv), key="edit_ma_nv_input_page_manage_users")
+            cols_user_edit = st.columns([1,1])
+            button_update_user = cols_user_edit[0].button("Lưu", key="save_editpagemanagermentusers", type="primary", icon=":material/save:",use_container_width=True)
+            button_cancel_user = cols_user_edit[1].button("Hủy", key="cancel_editpagemanagermentusers", icon=":material/cancel:",use_container_width=True)
+            if button_update_user:
+                with st.spinner("Đang cập nhật..."):
+                    new_line = line_after_load[line_after_load["ten_line"] == new_line]["ma_line"].values[0]
+                    if module_expand.update_user_by_id(int(st.session_state.edit_id), new_line, new_ten, new_display_name, new_role,new_ma_nv):
+                        st.success("Đã cập nhật thông tin người dùng",icon="✅")
+                        st.session_state.pop("edit_id")
+                        st.session_state.pop("edit_username")
+                        st.session_state.pop("edit_line")
+                        st.session_state.pop("edit_role")
+                        st.session_state.pop("edit_display_name")
+                        st.session_state.pop("edit_ma_nv")
+                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Chỉnh sửa thông tin người dùng {new_ten}")
+                        module_users.load_action_check_user.clear()
+                        st.cache_data.clear()
+                        st.session_state.dialog_open_edit_user = False
+                        st.rerun()
+                    else:
+                        st.warning("Username hoặc mã nhân viên trùng lặp", icon="⚠️")
+            if button_cancel_user:
+                st.session_state.pop("edit_id")
+                st.session_state.pop("edit_username")
+                st.session_state.pop("edit_line")
+                st.session_state.pop("edit_role")
+                st.session_state.pop("edit_display_name")
+                st.session_state.pop("edit_ma_nv")
+                st.session_state.dialog_open_edit_user = False
+                st.rerun()
     @st.dialog("Thêm người dùng 👨‍🎓")
     def show_confirmation_dialog_insert(self):
         if "dialog_open_insert_user" not in st.session_state:
@@ -56,8 +97,6 @@ class DESIGN_FRONTEND_MANAGE():
             cols_add_user = st.columns(2)
             with cols_add_user[0]:
                 new_username = st.text_input("Username mới", key="new_username_input_page_manage_users")
-                
-                
                 new_role = st.selectbox("Role mới",self.array_user, key="new_role_input_page_manage_users")
             with cols_add_user[1]:
                 new_password = st.text_input("Password mới", type="password", key="new_password_input_page_manage_users")
@@ -65,31 +104,32 @@ class DESIGN_FRONTEND_MANAGE():
             new_line = st.selectbox("Line", self.array_line, key="new_line_input_page_manage_users")
             new_display_name = st.text_input("Display name mới", key="new_display_name_input_page_manage_users")
             col1, col2 = st.columns(2)
-            with col1:
-                if st.button("Đồng ý", key="add_new_user_page_manage_users", use_container_width=True, icon=":material/person_add:"):
+            button_insert_user = col1.button("Đồng ý", key="add_new_user_page_manage_users", use_container_width=True, icon=":material/person_add:")
+            button_cancel_user = col2.button("Bỏ qua", key="cancel_new_user_page_manage_users", use_container_width=True, icon=":material/cancel:")
+            if button_insert_user:
+                with st.spinner("Đang thêm..."):
                     st.session_state.confirmation_insert = "Yes"
                     if not new_username or not new_line or not new_role or not new_password or not new_display_name or not new_manv:
                         st.error("Vui lòng nhập đầy đủ thông tin", icon="⚠️")
-                        time.sleep(2)
                     else:
-                        new_line = line_after_load[line_after_load["ten_line"] == new_line]["ma_line"].values[0]
-                        st.session_state.dialog_open_insert_user = False
-                        if module_expand.add_user(new_username,new_display_name,new_role, new_line , new_password, new_manv):
-                            st.toast("##### Đã thêm người dùng mới", icon="✅")
-                            time.sleep(1)
-                            module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm người dùng {new_username}")
-                            module_users.load_action_check_user.clear()
-                            st.cache_data.clear()
-                            st.rerun()
+                        if not new_username.endswith("@vnpt.vn"):
+                            st.warning("Username phải có dạng email với đuôi @vnpt.vn", icon="⚠️")
                         else:
-                            st.error(f"Username hoặc mã nhân viên trùng lặp!", icon="⚠️")
-                            time.sleep(2)
-                            st.rerun()
-            with col2:
-                if st.button("Bỏ qua", key="cancel_new_user_page_manage_users", use_container_width=True, icon=":material/cancel:"):
-                    st.session_state.confirmation_insert = "No"
-                    st.session_state.dialog_open_insert_user = False
-                    st.rerun()
+                            new_line = line_after_load[line_after_load["ten_line"] == new_line]["ma_line"].values[0]
+                            st.session_state.dialog_open_insert_user = False
+                            if module_expand.add_user(new_username,new_display_name,new_role, new_line , new_password, new_manv):
+                                st.success("Đã thêm người dùng mới", icon="✅")
+                                module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Thêm người dùng {new_username}")
+                                module_users.load_action_check_user.clear()
+                                st.cache_data.clear()
+                                st.rerun()
+                            else:
+                                st.warning(f"Username hoặc mã nhân viên trùng lặp!", icon="⚠️")
+                                st.rerun()
+            if button_cancel_user:
+                st.session_state.confirmation_insert = "No"
+                st.session_state.dialog_open_insert_user = False
+                st.rerun()
     def streamlit_menu_sidebar_delete(self):
         with st.sidebar:
             if st.session_state.role_access_admin == "admin" or st.session_state.role_access_admin == "manage":
@@ -250,52 +290,69 @@ class DESIGN_FRONTEND_MANAGE():
                 for item in data:
                     item["line"] = line_after_load[line_after_load["ma_line"] == item["line"]]["ten_line"].values[0] \
                         if not line_after_load[line_after_load["ma_line"] == item["line"]].empty else "Unknown"
+                if "dialog_open_edit_user" not in st.session_state:
+                        st.session_state.dialog_open_edit_user = False
+                # Hien thi phan trang
+                users_per_page = 4
+                total_pages = (len(data) + users_per_page - 1) // users_per_page
+                current_page = st.session_state.get("current_page", 1)
 
-                for idx,row  in enumerate(data):
-                    col1, col2, col3 = st.columns([5, 0.7, 0.7],gap="small")
+                start_idx = (current_page - 1) * users_per_page
+                end_idx = start_idx + users_per_page
+
+                for idx, row in enumerate(data[start_idx:end_idx]):
+                    col1, col2, col3 = st.columns([5, 0.7, 0.7], gap="small")
                     with col1:
-                        col_1_user_manage = st.columns([0.8,1,1,1,1])
+                        col_1_user_manage = st.columns([0.8, 1, 1, 1, 1])
                         with col_1_user_manage[0]:
-
                             st.write(f"{row['username']}")
                         with col_1_user_manage[1]:
-
                             st.write(f"{row['line']}")
                         with col_1_user_manage[2]:
-
                             st.write(f"{row['role']}")
                         with col_1_user_manage[3]:
-
                             st.write(f"{row['display_name']}")
                         with col_1_user_manage[4]:
                             st.write(f"{row['ma_nv']}")
                     with col2:
-                        if st.button("🗑️Xóa", key=f"delete_{row['id']}",use_container_width=True):
-                            # self.managerment_database.delete_ten_to(row['id'], conn, cursor)
+                        if st.button("🗑️Xóa", key=f"delete_{row['id']}", use_container_width=True):
                             if module_expand.delete_user_by_id(int(row['id'])):
-                                st.toast("##### Đã xóa user",icon="✅")
+                                st.toast("##### Đã xóa user", icon="✅")
                                 time.sleep(1)
-                                module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa người dùng {row['username']}")
+                                module_users.insert_action_check_user(st.session_state.usernamevnpt, st.session_state.line_access, f"Xóa người dùng {row['username']}")
                                 module_users.load_action_check_user.clear()
                                 st.cache_data.clear()
                                 st.session_state['rerun'] = True
                             else:
                                 st.error("Có lỗi xảy ra khi xóa user")
-                                    
-                                
-                                
-                        with col3:
-                            if st.button("✏️Sửa", key=f"edit_{row['id']}",use_container_width=True):
-                                st.session_state.edit_id = row['id']
-                                st.session_state.edit_username = row['username']
-                                st.session_state.edit_line = row['line']
-                                st.session_state.edit_role = row['role']
-                                st.session_state.edit_display_name = row['display_name']
-                                st.session_state.edit_ma_nv = row['ma_nv']
-                                
-                                st.session_state['rerun'] = True
-                        if idx < len(data) - 1:
-                                        st.markdown("<hr style='margin: 0 auto;'>", unsafe_allow_html=True)
+                    with col3:
+                        if st.button("✏️Sửa", key=f"edit_{row['id']}", use_container_width=True):
+                            st.session_state.edit_id = row['id']
+                            st.session_state.edit_username = row['username']
+                            st.session_state.edit_line = row['line']
+                            st.session_state.edit_role = row['role']
+                            st.session_state.edit_display_name = row['display_name']
+                            st.session_state.edit_ma_nv = row['ma_nv']
+                            st.session_state.dialog_open_edit_user = True
+                            st.session_state['rerun'] = True
+                    if idx < len(data[start_idx:end_idx]) - 1:
+                        st.markdown("<hr style='margin: 0 auto;'>", unsafe_allow_html=True)
+
+                if total_pages > 1:
+                    col1, col2, col3 = st.columns([1, 2, 1])
+                    with col1:
+                        if current_page > 1:
+                            if st.button("Previous", use_container_width=True):
+                                st.session_state.current_page = current_page - 1
+                                st.rerun()
+                    with col2:
+                        st.write(f"Page {current_page} of {total_pages}")
+                    with col3:
+                        if current_page < total_pages:
+                            if st.button("Next", use_container_width=True):
+                                st.session_state.current_page = current_page + 1
+                                st.rerun()
+                # End phan trang
 
                 if 'rerun' in st.session_state and st.session_state['rerun']:
                     st.session_state['rerun'] = False
@@ -310,30 +367,8 @@ class DESIGN_FRONTEND_MANAGE():
                         index_for_edit_role = self.array_user.index(st.session_state.edit_role)
                     else:
                         index_for_edit_role = 0
-                    st.subheader("Chỉnh sửa thông tin nhân sự")
-                    new_ten = st.text_input("Username mới", str(st.session_state.edit_username), key="edit_username_input_page_manage_users")
-                    new_line = st.selectbox("Line mới", options=self.array_line, index=index_for_edit, key="edit_line_input_page_manage_users")
-                    new_role = st.selectbox("Role mới",options=self.array_user, index=index_for_edit_role, key="edit_role_input_page_manage_users")
-                    new_display_name = st.text_input("Display name mới", str(st.session_state.edit_display_name), key="edit_display_name_input_page_manage_users")
-                    new_ma_nv = st.text_input("Mã nhân viên", str(st.session_state.edit_ma_nv), key="edit_ma_nv_input_page_manage_users")
-                    if st.button("Lưu", key="save_editpagemanagermentusers", type="primary", icon=":material/save:"):
-                        new_line = line_after_load[line_after_load["ten_line"] == new_line]["ma_line"].values[0]
-                        if module_expand.update_user_by_id(int(st.session_state.edit_id), new_line, new_ten, new_display_name, new_role,new_ma_nv):
-                            st.toast(f"##### Đã cập nhật thông tin người dùng", icon="✅")
-                            time.sleep(1)
-                            st.session_state.pop("edit_id")
-                            st.session_state.pop("edit_username")
-                            st.session_state.pop("edit_line")
-                            st.session_state.pop("edit_role")
-                            st.session_state.pop("edit_display_name")
-                            st.session_state.pop("edit_ma_nv")
-                            module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Chỉnh sửa thông tin người dùng {new_ten}")
-                            module_users.load_action_check_user.clear()
-                            st.cache_data.clear()
-                            st.rerun()
-                        else:
-                            st.toast(f"##### Username hoặc mã nhân viên trùng lặp", icon="⚠️")
-                            time.sleep(2)
+                    if  st.session_state.get("dialog_open_edit_user", False):
+                        self.show_confirmation_dialog_edit(index_for_edit,index_for_edit_role)
     def documentaion_ui_design(self, search_term=None):
         docs = [
             {"id": 1, "title": "Hướng dẫn xem dạng dashboard", "author": "KHDN3", "source": "documentation/view_app/dashboard.html", "image": "../src/dashboard_doc.png"},

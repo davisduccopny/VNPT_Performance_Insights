@@ -12,7 +12,7 @@ import time
 def check_user_access(username, input_password, conn, cursor):
     '''Ham kiem tra xem nguoi dung co quyen truy cap hay khong'''
     
-    cursor.execute("SELECT password, role, line,ma_nv FROM users WHERE username = %s", (username,))
+    cursor.execute("SELECT password, role, line,ma_nv,display_name FROM users WHERE username = %s", (username,))
     user = cursor.fetchone()
 
     # Nếu tìm thấy user trong cơ sở dữ liệu
@@ -21,14 +21,15 @@ def check_user_access(username, input_password, conn, cursor):
         stored_role = user[1]
         line = user[2]# Lấy vai trò từ CSDL
         ma_nv = user[3]
+        display_name = user[4]
 
         # Kiểm tra mật khẩu nhập vào có khớp với mật khẩu đã mã hóa không
         if bcrypt.checkpw(input_password.encode('utf-8'), stored_password.encode('utf-8')):
-            return stored_role,line,ma_nv  # Trả về vai trò của người dùng
+            return stored_role,line,ma_nv,display_name  # Mật khẩu đúng
         else:
-            return None,None,None  # Mật khẩu không đúng
+            return None,None,None,None  # Mật khẩu không đúng
     else:
-        return None,None,None  # Tài khoản không tồn tại
+        return None,None,None,None  # Không tìm thấy user trong CSDL
 def select_info_user(username,cursor):
     cursor.execute("SELECT username,password FROM users WHERE username = %s", (username,))
     user = cursor.fetchone()
@@ -127,52 +128,53 @@ def login():
             toggle_login_type_process = cols_login_type_process[1].toggle("Login cấp phòng", value=False, key="toggle_login_type_process")
             with cols_login_type_process[0]:
                 if cols_login_type_process[0].form_submit_button("🔓Đăng nhập",type="primary", help="Nhấn vào để đăng nhập!"):
-                    with st.spinner('🔒 Đang kiểm tra thông tin đăng nhập...'):
-                            time.sleep(2)  
-                    if (username is not None and password is not None) and (username != '' and password != ''):
-                        conn = config_project.connect_to_mysql()
-                        cursor = conn.cursor()
-                        user_role_mvnpt,line_access,ma_nv_access = check_user_access(username,password,conn,cursor)
-                        if user_role_mvnpt and (user_role_mvnpt is not None):
-                            if  toggle_login_type_process is True:
-                                if user_role_mvnpt == 'admin':
-                                    st.session_state.is_logged_in = True
-                                    st.session_state.line_access = line_access
-                                    st.session_state.role_access_admin = user_role_mvnpt
-                                    st.session_state.usernamevnpt = username
-                                    st.session_state.employee_id = ma_nv_access
-                                    st.session_state.type_process = 'LDPVNPT'
-                                    success_placeholder.success("✅ Đăng nhập thành công!")
-                                    time.sleep(2)  
-                                    title_placeholder.empty()
-                                    username_placeholder.empty()
-                                    password_placeholder.empty()
-                                    success_placeholder.empty()
-                                    st.rerun()
+                    with st.spinner('🔒 Đang kiểm tra thông tin đăng nhập...'): 
+                        if (username is not None and password is not None) and (username != '' and password != ''):
+                            conn = config_project.connect_to_mysql()
+                            cursor = conn.cursor()
+                            user_role_mvnpt,line_access,ma_nv_access,display_name_vnpt = check_user_access(username,password,conn,cursor)
+                            if user_role_mvnpt and (user_role_mvnpt is not None):
+                                if  toggle_login_type_process is True:
+                                    if user_role_mvnpt == 'admin':
+                                        st.session_state.is_logged_in = True
+                                        st.session_state.line_access = line_access
+                                        st.session_state.role_access_admin = user_role_mvnpt
+                                        st.session_state.usernamevnpt = username
+                                        st.session_state.employee_id = ma_nv_access
+                                        st.session_state.type_process = 'LDPVNPT'
+                                        st.session_state.display_name_vnpt = display_name_vnpt
+                                        success_placeholder.success("✅ Đăng nhập thành công!")
+                                        time.sleep(2)  
+                                        title_placeholder.empty()
+                                        username_placeholder.empty()
+                                        password_placeholder.empty()
+                                        success_placeholder.empty()
+                                        st.rerun()
+                                    else:
+                                        st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
                                 else:
-                                    st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
+                                    if line_access != 'LDPVNPT':
+                                        st.session_state.is_logged_in = True
+                                        st.session_state.line_access = line_access
+                                        st.session_state.role_access_admin = user_role_mvnpt
+                                        st.session_state.usernamevnpt = username
+                                        st.session_state.employee_id = ma_nv_access
+                                        st.session_state.type_process = 'LINE'
+                                        st.session_state.display_name_vnpt = display_name_vnpt
+                                        success_placeholder.success("✅ Đăng nhập thành công!")
+                                        time.sleep(2)  
+                                        title_placeholder.empty()
+                                        username_placeholder.empty()
+                                        password_placeholder.empty()
+                                        success_placeholder.empty()
+                                        st.rerun()
+                                    else:
+                                        st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
+                                    
                             else:
-                                if line_access != 'LDPVNPT':
-                                    st.session_state.is_logged_in = True
-                                    st.session_state.line_access = line_access
-                                    st.session_state.role_access_admin = user_role_mvnpt
-                                    st.session_state.usernamevnpt = username
-                                    st.session_state.employee_id = ma_nv_access
-                                    st.session_state.type_process = 'LINE'
-                                    success_placeholder.success("✅ Đăng nhập thành công!")
-                                    time.sleep(2)  
-                                    title_placeholder.empty()
-                                    username_placeholder.empty()
-                                    password_placeholder.empty()
-                                    success_placeholder.empty()
-                                    st.rerun()
-                                else:
-                                    st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
-                                
+                                st.error("❌ Tên đăng nhập hoặc mật khẩu không đúng!")
                         else:
-                            st.error("❌ Tên đăng nhập hoặc mật khẩu không đúng!")
-                    else:
-                        st.warning("❌ Vui lòng nhập tên đăng nhập và mật khẩu!")
+                            st.warning("❌ Vui lòng nhập tên đăng nhập và mật khẩu!")
         # with container_login:
         #     with st.spinner("🔍Đang khởi động..."):
         #         time.sleep(2)

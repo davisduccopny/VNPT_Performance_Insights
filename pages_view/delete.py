@@ -86,8 +86,10 @@ class FRONTEND_DESIGN_DELETE():
             module_config.show_expander_sidebar()
             selected = option_menu(
                 menu_title= None,  # required
-                options=["Kế hoạch", "Thực hiện"],  # required
-                icons=["eyedropper", "bar-chart-line-fill"],  
+                # options=["Kế hoạch", "Thực hiện"],
+                # icons=["eyedropper", "bar-chart-line-fill"], 
+                options=["Kế hoạch"],
+                icons=["eyedropper"],  
                 menu_icon= None,  
                 default_index=0,  
                 orientation="horizontal",  
@@ -177,17 +179,15 @@ class FRONTEND_DESIGN_DELETE():
                         if st.session_state.confirmation == "Yes":
                             st.session_state.confirmation = None
                             with st.spinner("⛔ Đang xóa dữ liệu..."):
-                                time.sleep(2)
-                            
-                            if module_delete.delete_plan(deleted_data_delete):
-                                st.success("Xóa dữ liệu thành công!")
-                                time.sleep(2)
-                                module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu kế hoạch {deleted_data_delete}")
-                                module_users.load_action_check_user.clear()
-                                st.cache_data.clear()
-                                st.rerun()
-                            else:
-                                st.error("Xóa dữ liệu thất bại!")
+                                if module_delete.delete_plan(deleted_data_delete):
+                                    st.toast("##### Xóa dữ liệu thành công!", icon="🎉")
+                                    time.sleep(2)
+                                    module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu kế hoạch {deleted_data_delete}")
+                                    module_users.load_action_check_user.clear()
+                                    st.cache_data.clear()
+                                    st.rerun()
+                                else:
+                                    st.toast("##### Xóa dữ liệu thất bại!", icon="⚠️")
                 with tabs_plan_delete[1]:
                     st.dataframe(kehoach_after_filter,use_container_width=True, hide_index=True)
     def delete_thuchien(self, thuchien_after_load_dl,line_delete, selected_year_delete, selected_loaidoanhthu_delete, selected_month_delete, search_term):
@@ -234,16 +234,15 @@ class FRONTEND_DESIGN_DELETE():
                             if st.session_state.confirmation == "Yes":
                                 st.session_state.confirmation = None
                                 with st.spinner("⛔ Đang xóa dữ liệu..."):
-                                    time.sleep(2)
-                                if module_delete.delete_thuchien_from_data(deleted_data_delete):
-                                    st.success("Xóa dữ liệu thành công!")
-                                    time.sleep(2)
-                                    module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu thực hiện tháng {deleted_data_delete}")
-                                    module_users.load_action_check_user.clear()
-                                    st.cache_data.clear()
-                                    st.rerun()
-                                else:
-                                    st.error("Xóa dữ liệu thất bại!")
+                                    if module_delete.delete_thuchien_from_data(deleted_data_delete):
+                                        st.success("Xóa dữ liệu thành công!")
+                                        time.sleep(2)
+                                        module_users.insert_action_check_user(st.session_state.usernamevnpt,st.session_state.line_access,f"Xóa dữ liệu thực hiện tháng {deleted_data_delete}")
+                                        module_users.load_action_check_user.clear()
+                                        st.cache_data.clear()
+                                        st.rerun()
+                                    else:
+                                        st.error("Xóa dữ liệu thất bại!")
                                 
                         
                     with tabs_do_delete[1]:

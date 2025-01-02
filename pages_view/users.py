@@ -206,28 +206,27 @@ class FRONTEND_UI_DESIGN():
                     confirm_pass = cols_change_pass[0].text_input(label="🔑Xác nhận mật khẩu mới",placeholder="Nhập lại mật khẩu mới", key="confirm_pass",type="password", disabled=disable)
                     if st.form_submit_button("Save", icon=":material/save:", type="primary", help="Nhấn vào để lưu thay đổi!", disabled=disable):
                         with st.spinner("🔐 Đang thực hiện thao tác..."):
-                            time.sleep(2)
-                        if old_pass and new_pass and confirm_pass:
-                            if not OTHER_USER().check_password(new_pass):
-                                st.toast(f"##### Mật khẩu phải có ít nhất 6 ký tự, bao gồm cả chữ và số!", icon="⚠️")
-                                time.sleep(2)
-                                return None
-                            else:
-                                if new_pass != confirm_pass:
-                                    st.toast(f"##### Mật khẩu mới không khớp!", icon="⚠️")
-                                    time.sleep(1)
-    
+                            if old_pass and new_pass and confirm_pass:
+                                if not OTHER_USER().check_password(new_pass):
+                                    st.toast(f"##### Mật khẩu phải có ít nhất 6 ký tự, bao gồm cả chữ và số!", icon="⚠️")
+                                    time.sleep(2)
+                                    return None
                                 else:
-                                    if module_users.change_password(st.session_state.usernamevnpt, old_pass, new_pass):
-                                        st.toast("##### Đổi mật khẩu thành công!", icon="✅")
+                                    if new_pass != confirm_pass:
+                                        st.toast(f"##### Mật khẩu mới không khớp!", icon="⚠️")
                                         time.sleep(1)
-                                        st.rerun()
+        
                                     else:
-                                        st.toast("##### Mật khẩu cũ không đúng!", icon="❌")
-                                        time.sleep(1)
-                        else:
-                            st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
-                            time.sleep(1)
+                                        if module_users.change_password(st.session_state.usernamevnpt, old_pass, new_pass):
+                                            st.toast("##### Đổi mật khẩu thành công!", icon="✅")
+                                            time.sleep(1)
+                                            st.rerun()
+                                        else:
+                                            st.toast("##### Mật khẩu cũ không đúng!", icon="❌")
+                                            time.sleep(1)
+                            else:
+                                st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
+                                time.sleep(1)
 
     def display_user_change(self):
         container_change_display = st.container(key="container_change_display")
@@ -255,19 +254,19 @@ class FRONTEND_UI_DESIGN():
                     ma_line_new = line_after_load[line_after_load["ten_line"]==line]["ma_line"].values[0] 
                     if st.form_submit_button("Save", icon=":material/save:", type="primary", help="Nhấn vào để lưu thay đổi!", disabled=disable):
                         with st.spinner("🔐 Đang thực hiện thao tác..."):
-                            time.sleep(2)
-                        if display_name and line and ma_nv:
-                            if module_users.change_profile(st.session_state.usernamevnpt, display_name, ma_line_new, ma_nv):
-                                st.toast("##### Đổi thông tin thành công!", icon="✅")
-                                time.sleep(1)
-                                module_users.load_data_for_user.clear()
-                                st.rerun()
+                            if display_name and line and ma_nv:
+                                if module_users.change_profile(st.session_state.usernamevnpt, display_name, ma_line_new, ma_nv):
+                                    st.toast("##### Đổi thông tin thành công!", icon="✅")
+                                    st.session_state.display_name_vnpt = display_name
+                                    time.sleep(1)
+                                    module_users.load_data_for_user.clear()
+                                    st.rerun()
+                                else:
+                                    st.toast("##### Mã nhân viên đã tồn tại!", icon="❌")
+                                    time.sleep(1)
                             else:
-                                st.toast("##### Mã nhân viên đã tồn tại!", icon="❌")
+                                st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
                                 time.sleep(1)
-                        else:
-                            st.toast(f"##### Vui lòng nhập thông tin!", icon="⚠️")
-                            time.sleep(1)
     def account_delete(self, search_term=None):
         st.info("##### ⚠️ Lưu ý: Hành động này không thể hoàn tác!")
         container_delete_account = st.container(key="container_delete_account")

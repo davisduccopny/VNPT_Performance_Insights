@@ -1,0 +1,34 @@
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+}
+[data-testid=stMainBlockContainer ] {
+    padding: 0.5rem 4.5rem 10rem;
+}
+.st-key-ctn_board_ldp_header .stSelectbox{
+    display: inline-flex;
+    vertical-align: middle;
+}
+.st-key-ctn_board_ldp_header .stSelectbox .st-b7{
+    background-color: white;
+}
+.st-key-ctn_board_ldp_header [data-testid="stAlertContainer"] {
+    padding: 8px;
+}
+.st-key-ctn_main_board_ldp .st-key-pills_loaidoanhthu_ldp_board .stButtonGroup{
+    display: inline-flex;
+}
+.st-key-ctn_line_chart_ldp,.st-key-ctn_pie_chart_ldp,.st-key-ctn_key_table_show_ldp,.st-key-ctn_metric_ldp_board_01, .st-key-ctn_metric_ldp_board_02,.st-key-ctn_metric_ldp_board_03,.st-key-ctn_metric_ldp_board_04{
+    background-color:white;
+    padding: 10px 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;        
+}
+.st-key-ctn_metric_ldp_board_01, .st-key-ctn_metric_ldp_board_02,.st-key-ctn_metric_ldp_board_03,.st-key-ctn_metric_ldp_board_04{
+    border-left: 5px solid #00a6a6;
+}
+.st-key-ctn_pie_chart_ldp:hover,.st-key-ctn_key_table_show_ldp:hover,.st-key-ctn_metric_ldp_board_01:hover, .st-key-ctn_metric_ldp_board_02:hover,.st-key-ctn_metric_ldp_board_03:hover,.st-key-ctn_metric_ldp_board_04:hover{
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}

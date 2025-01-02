@@ -17,6 +17,7 @@ import uuid
 from zoneinfo import ZoneInfo
 from streamlit_elements import elements, dashboard, mui
 
+
 with open('src/style.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True) 
 with open('src/style_general.css', encoding="utf-8")as f:
@@ -250,6 +251,7 @@ class TODOCHECK_UI_DESIGN():
                     st.session_state.dialog_open_insert_tasks_2 = False
                     st.rerun()
                 if button_insert_tasks:
+                    with st.spinner("Đang thêm công việc..."):
                         if title_task_insert and service_task_insert and start_date_task_insert and status_task_insert and revenue_task_insert and end_date_task_insert:
                             if module_todo.insert_data_todocheck(title_task_insert,id_service_task_selected,st.session_state.employee_id,status_task_insert,start_date_task_insert,end_date_task_insert,revenue_task_insert,notes_task_insert,color_picker_insert_task,datetime.datetime.now(),loai_doanh_thu):
                                 st.success("##### Thêm công việc thành công!")
@@ -611,7 +613,7 @@ class TODOCHECK_UI_DESIGN():
             with cols_calendar_four_body[1]:
                 TOOL_FOR_UI().render_task_view("line_lv")
                 
-                    
+
 class MAIN_TODO():
     def __init__(self):
         self.fronend_class = TODOCHECK_UI_DESIGN()
@@ -691,5 +693,6 @@ data_task_all = pd.DataFrame(module_todo.load_tasks())
 data_service_all =module_insert.load_data_service()               
 MAIN_TODO().main()
 module_config.add_sidebar_footer()
+
 
 
