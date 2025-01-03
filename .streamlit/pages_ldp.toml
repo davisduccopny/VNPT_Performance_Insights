@@ -39,7 +39,7 @@ icon = ""
 is_section = true
 
 [[pages]]
-path = "pages_ldp/expand_ldp.py"
+path = "pages_view/expand.py"
 name = "Mở rộng"
 icon = ":material/top_panel_open:"
 

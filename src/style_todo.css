@@ -30,6 +30,10 @@
     font-weight: bolder;
     box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
 }
+.st-key-container_first_main_line_level .stColumn:hover{
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+}
 .st-key-form_placeholder_right_add .stColumn{
     padding: 0;
     box-shadow: none;

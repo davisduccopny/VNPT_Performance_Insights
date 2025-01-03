@@ -82,7 +82,17 @@ class TODOCHECK_UI_DESIGN():
         self.service_load_not_parent = dichvu_after_load[dichvu_after_load["danh_muc_tt"].notna()]
         self.service_load_not_parent = self.service_load_not_parent[~self.service_load_not_parent["danh_muc_tt"].isin(["1", "1.1.01", "1.1.02", "1.1.03", "1.1.05", "1.1.06", "1.1.07"])]
         self.employee_array = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
-        self.time_now_init = datetime.datetime.now().strftime("%Y-%m-%d")
+        self.time_now_init = data_task_all["end_date"].max()
+        self.time_now_init  = self.time_now_init.strftime("%Y-%m-%d")
+        self.year_select = thuchien_after_load["year_insert"].unique()
+        self.month_select = {"Tháng 1" : 1,"Tháng 2" : 2,"Tháng 3" : 3,"Tháng 4" : 4,"Tháng 5" : 5,"Tháng 6" : 6,"Tháng 7" : 7,"Tháng 8" : 8,"Tháng 9" : 9,"Tháng 10" : 10,"Tháng 11" : 11,"Tháng 12" : 12}
+        self.month_key_show = self.month_select.keys()
+        
+        self.unique_months = thuchien_after_load[(thuchien_after_load["year_insert"] == thuchien_after_load["year_insert"].unique().max()) &
+                                                 (thuchien_after_load["type_process"] == "LINE")]["thang"].unique()
+        self.unique_months = [int(month) for month in self.unique_months]
+        self.max_month = max(self.unique_months)
+        self.month_now_index = list(self.month_select.values()).index(self.max_month)
     
     def calendar_show_line_lv_dash(self,data_task_all,options_show_radio,selected_em,selected_ser):
          # event
@@ -461,13 +471,9 @@ class TODOCHECK_UI_DESIGN():
             cols_first_main = st.columns([4,1.5,1.5,1.5,2])
             human_presentation_relative = module_config.get_relative_file_path("../src/for_style/human_3_present.png")
             with cols_first_main[4]:
-                    current_year = datetime.date.today().year
-                    years = list(range(current_year - 10, current_year + 1)) 
-                    selected_year = st.selectbox("❄️", years, index=years.index(current_year),key="selected_year_line_level")
-
-                    months = list(range(1, 13))
-                    index_month_current = datetime.date.today().month
-                    selected_month = st.selectbox("❄️", months,index=index_month_current-1, key="selected_month_line_level")
+                    selected_year = st.selectbox("❄️", self.year_select, index=list(self.year_select).index(self.year_select.max()),key="selected_year_line_level")
+                    selected_month = st.selectbox("❄️", self.month_key_show,index=self.month_now_index, key="selected_month_line_level")
+                    selected_month = self.month_select[selected_month]
                     
                     selected_loaidoanhthu = st.selectbox("❄️", ["Phát triển mới","Hiện hữu"],placeholder="Loại doanh thu",key="loaidoanhthu_slb_linlevel")
             with cols_first_main[0]:
@@ -622,8 +628,8 @@ class MAIN_TODO():
             module_config.show_expander_sidebar()
             selected = option_menu(
                     menu_title= None,  # required
-                    options=["Dashboard", "Công việc của tôi", "Thông báo"],  # required
-                    icons=["clipboard-data", "calendar2-check","bell-fill"],  
+                    options=["Dashboard", "Công việc của tôi"],  # required
+                    icons=["clipboard-data", "calendar2-check"],  
                     menu_icon= None,  
                     default_index=0,  
                     orientation="vertical",  
@@ -684,9 +690,6 @@ class MAIN_TODO():
         elif selected == "Công việc của tôi":
             option_show_radio_dashboard = self.hearder_todocheck("Công việc của tôi")
             self.fronend_class.dashboard_todocheck(option_show_radio_dashboard)
-            
-        elif selected == "Thông báo":
-            st.switch_page("pages_view/delete.py")
             
 thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = module_view.load_data() 
 data_task_all = pd.DataFrame(module_todo.load_tasks())

@@ -18,7 +18,7 @@ def load_data():
     conn = module_config.connect_to_mysql()
     try:
         thuchien = query_to_dataframe(f"SELECT * FROM thuchien WHERE type_process = 'LINE' AND IDnhanvien != 'LDPVNPT';", conn)
-        kehoach = query_to_dataframe(f"SELECT * FROM kehoach WHERE type_process = '{st.session_state.type_process}';", conn)
+        kehoach = query_to_dataframe(f"SELECT * FROM kehoach WHERE type_process = 'LINE';", conn)
         nhanvien = query_to_dataframe("SELECT * FROM nhanvien", conn)
         dichvu = query_to_dataframe("SELECT * FROM dichvu", conn)
         line = query_to_dataframe("SELECT * FROM line_manage WHERE ma_line != 'LDPVNPT';", conn)

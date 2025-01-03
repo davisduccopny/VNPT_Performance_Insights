@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
-import io
-import time
 import datetime
-import streamlit.components.v1 as components
 import PROJECTS.config as module_config
 from PROJECTS.module_insert import load_data_service
 from PROJECTS.module_todo import load_tasks as load_data_todo
@@ -12,10 +9,6 @@ from PROJECTS.module_view import load_data as load_data_from_all
 from PROJECTS.module_view import format_number as format_number
 from LDP_MODULE.ldp_view import load_data_ldp
 import PROJECTS.module_explaination as module_explaination
-import calendar as calendar_for_lv
-import uuid
-from zoneinfo import ZoneInfo
-from streamlit_elements import elements, dashboard, mui
 
 with open('src/style_general.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True) 
@@ -25,16 +18,24 @@ with open('src/style_explaination.css', encoding="utf-8")as f:
 class Explaination:
     def __init__(self):
         self.employee_array = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
+        self.year_select = thuchien_after_load["year_insert"].unique()
+        self.month_select = {"Tháng 1" : 1,"Tháng 2" : 2,"Tháng 3" : 3,"Tháng 4" : 4,"Tháng 5" : 5,"Tháng 6" : 6,"Tháng 7" : 7,"Tháng 8" : 8,"Tháng 9" : 9,"Tháng 10" : 10,"Tháng 11" : 11,"Tháng 12" : 12}
+        self.month_key_show = self.month_select.keys()
+        
+        self.unique_months = thuchien_after_load[(thuchien_after_load["year_insert"] == thuchien_after_load["year_insert"].unique().max()) &
+                                                 (thuchien_after_load["type_process"] == "LINE")]["thang"].unique()
+        self.unique_months = [int(month) for month in self.unique_months]
+        self.max_month = max(self.unique_months)
+        self.month_now_index = list(self.month_select.values()).index(self.max_month)
     def explaination_dashboard(self):
         ctn_header_explain = st.container(key="ctn_header_explain")
         with ctn_header_explain:
             cols_header = st.columns([1.2, 1, 1, 1, 1])
             with cols_header[1]:
-                current_year = datetime.datetime.now().year
-                year_selected = st.selectbox("Năm", range(2021, 2030), index=current_year - 2021, key="year_selected_explain")
+                year_selected = st.selectbox("Năm", self.year_select, index=list(self.year_select).index(self.year_select.max()), key="year_selected_explain")
             with cols_header[2]:
-                current_month = datetime.datetime.now().month
-                month_selected = st.selectbox("Tháng",range(1, 13), index=current_month - 1, key="month_selected_explain")
+                month_selected = st.selectbox("Tháng",self.month_key_show, index=self.month_now_index , key="month_selected_explain")
+                month_selected = self.month_select[month_selected]
             with cols_header[3]:
                 loaidoanhthu_selected = st.selectbox("Loại doanh thu",[ "Phát triển mới","Hiện hữu"], key="loaidoanhthu_selected_explain")
             with cols_header[4]:
@@ -168,11 +169,17 @@ class MAIN_EXPLAINATION():
     def __init__(self):
         self.explaination = Explaination()
     def explaination_sidebar_ui(self):
+        if (st.session_state.type_process != "LDPVNPT" or st.session_state.role_access_admin != "admin"):
+            option_show_menu = ["Compare Dashboard", "Quản lý"]
+            icons_show_menu = ["clipboard-data", "calendar2-check"]
+        else:
+            option_show_menu = ["Quản lý"]
+            icons_show_menu = ["calendar2-check"]
         with st.sidebar:
             selected = option_menu(
                     menu_title= None,  # required
-                    options=["Compare Dashboard", "Quản lý"] if st.session_state.type_process != "LDPVNPT" else ["Quản lý"],  # required
-                    icons=["clipboard-data", "calendar2-check"] if st.session_state.type_process != "LDPVNPT" else ["calendar2-check"],  # optional
+                    options=option_show_menu,  # required
+                    icons=icons_show_menu,
                     menu_icon= None,  
                     default_index=0,  
                     orientation="vertical",  

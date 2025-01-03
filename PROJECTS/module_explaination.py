@@ -73,13 +73,44 @@ def query_explain_by_user_from_database():
         return None
     finally:
         cursor.close()
-        conn.close()        
+        conn.close()
+def check_duplicate_explanation():
+    line = st.session_state.line_access
+    employee = st.session_state.employee_id
+    month_now = datetime.datetime.now().month
+    year_now = datetime.datetime.now().year
+    try:
+
+        conn = module_config.connect_to_mysql()
+        cursor = conn.cursor()
+
+        query = """
+            SELECT id 
+            FROM explaination
+            WHERE line = %s AND employee = %s AND month = %s AND year = %s
+        """
+        cursor.execute(query, (line, employee, month_now, year_now))
+        data = cursor.fetchall()
+
+        if len(data) > 0:
+            return True
+
+    except Exception as e:
+        st.error(f"Lỗi kiểm tra trùng lặp: {e}")
+        return False
+
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+               
 def insert_explain_to_database(content):
     if content == "":
         st.toast("##### Vui lòng nhập nội dung giải trình",icon=":material/error:")
     else:
-        check_duplicate = query_explain_by_user_from_database()
-        if check_duplicate is not None:
+        check_duplicate = check_duplicate_explanation()
+        if check_duplicate:
             st.toast("##### Bạn đã thêm giải trình cho tháng này",icon=":material/error:")
         else:
             line = st.session_state.line_access
@@ -89,9 +120,8 @@ def insert_explain_to_database(content):
             created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             # Kiểm tra điều kiện thêm giải trình
             current_day = datetime.datetime.now().day
-            last_day_of_month = (datetime.datetime.now().replace(day=28) + datetime.timedelta(days=4)).day
-            if current_day < last_day_of_month - 4:
-                st.toast("##### Bạn không thể thêm giải trình sau ngày 4 của tháng",icon=":material/error:")
+            if not (1 <= current_day <= 5):
+                st.toast("##### Bạn có thể thêm giải trình từ ngày 1 - 5 hàng tháng",icon=":material/error:")
             else:
                 try:
                     conn = module_config.connect_to_mysql()
