@@ -33,7 +33,7 @@ if st.session_state.is_logged_in:
         if st.session_state.role_access_admin == 'admin':
             pg = st.navigation(nav)
         else:
-            hide_pages(["Thêm dữ liệu", "Xóa dữ liệu","Giải trình"])
+            hide_pages(["Quản lý dữ liệu", "Xóa dữ liệu","Giải trình"])
             pg = st.navigation(nav)
     else:
         load_data_ldp()

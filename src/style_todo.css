@@ -63,7 +63,7 @@
 }
 .st-key-container_second_main_line_level{
     background-color:white;
-    padding: 10px 0;
+    padding: 10px 15px;
     border-radius:15px;
     font-weight: bolder;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
@@ -107,4 +107,40 @@
 
 [data-testid="stPlotlyChart"] div {
     box-shadow: none !important; 
+}
+
+.st-key-radio_nhanvien_select [data-testid="stRadio"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p{
+    font-weight: bolder;
+    font-size: 1rem;
+}
+.st-key-radio_nhanvien_select [data-testid="stRadio"] [data-baseweb="radio"]{
+    background-color: #f5f5f5; /* Màu nền */
+    border: 1px solid #ddd; /* Viền nhạt */
+    border-radius: 8px; /* Bo góc */
+    padding: 3px;
+    cursor: pointer; 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+    width: max-content;
+    width: 100px;
+}
+.st-key-radio_nhanvien_select [data-testid="stRadio"] label:hover {
+    background-color: #78c5f2; 
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); 
+    
+}
+.st-key-radio_nhanvien_select [data-testid="stRadio"] p:hover,.st-key-radio_nhanvien_select [data-testid="stRadio"] label[data-selected="true"]{
+    font-weight: bolder;
+}
+.st-key-ctn_metric_second_main_line_level .stColumn,.st-key-container_thirst_main_sub_line_level .stColumn{
+    background-color:white;
+    padding: 10px 0;
+    padding-left: 10px;
+    border-radius:15px;
+    font-weight: bolder;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid #00a6a6;
+}
+.st-key-container_thirst_main_sub_line_level{
+    padding: 0 20px;
 }

@@ -205,19 +205,20 @@ def data_layer_set(data_task_all,thuchien_after_load,kehoach_after_load,nhanvien
     data_task_show["name_employee"] = data_task_show["employee_id"].map(nhanvien_show.set_index("ma_nv")["ten_nv"])
     return data_task_show,thuchien_show,kehoach_show,nhanvien_show
 
-def Column_chart_fisrt_ctn(data_task_show,thuchien_show):
+def Column_chart_fisrt_ctn(data_task_show,thuchien_show,nhanvien_show):
     if not data_task_show.empty and not thuchien_show.empty:
         thuchien_load = thuchien_show[["IDnhanvien", "doanhthu", "nhom_dv"]].rename(
             columns={"IDnhanvien": "employee", "doanhthu": "revenue", "nhom_dv": "service"}
         )
+        
         thuchien_load_sum = thuchien_load.groupby(["employee"]).sum().reset_index()
-
+        thuchien_load_sum["name_employee"] = thuchien_load_sum["employee"].map(nhanvien_show.set_index("ma_nv")["ten_nv"])
         data_task_show = data_task_show[["employee_id", "service_id", "revenue","name_employee"]].rename(
             columns={"employee_id": "employee", "service_id": "service"}
         )
         data_task_show_sum = data_task_show.groupby(["employee","name_employee"]).sum().reset_index()
-
-        merge_data = pd.merge(thuchien_load_sum, data_task_show_sum, how="outer", on=["employee"])
+        
+        merge_data = pd.merge(thuchien_load_sum, data_task_show_sum, how="outer", on=["employee", "name_employee"])
         merge_data = merge_data.fillna(0)
         merge_data['revenue_x'] = merge_data['revenue_x'].astype(float)
         merge_data['revenue_y'] = merge_data['revenue_y'].astype(float)

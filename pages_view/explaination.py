@@ -53,7 +53,7 @@ class Explaination:
         with ctn_first_main_explain:
             cols_first_main_ex = st.columns(2)
             with cols_first_main_ex[0]:
-                column_chart,data_result = module_explaination.Column_chart_fisrt_ctn(data_task_show,thuchien_show)
+                column_chart,data_result = module_explaination.Column_chart_fisrt_ctn(data_task_show,thuchien_show,nhanvien_show)
                 if column_chart is not None:
                     select_param = st.altair_chart(column_chart, on_select="rerun", key="column_chart_explain", use_container_width=True)
                 else:

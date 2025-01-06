@@ -82,6 +82,9 @@ class TODOCHECK_UI_DESIGN():
         self.service_load_not_parent = dichvu_after_load[dichvu_after_load["danh_muc_tt"].notna()]
         self.service_load_not_parent = self.service_load_not_parent[~self.service_load_not_parent["danh_muc_tt"].isin(["1", "1.1.01", "1.1.02", "1.1.03", "1.1.05", "1.1.06", "1.1.07"])]
         self.employee_array = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
+        
+        self.em_select = {row["ma_nv"]: row["ten_nv"] for _, row in self.employee_array.iterrows()}
+        self.selected_em_key =list(self.em_select.keys())
         self.time_now_init = data_task_all["end_date"].max()
         self.time_now_init  = self.time_now_init.strftime("%Y-%m-%d")
         self.year_select = thuchien_after_load["year_insert"].unique()
@@ -97,7 +100,7 @@ class TODOCHECK_UI_DESIGN():
     def calendar_show_line_lv_dash(self,data_task_all,options_show_radio,selected_em,selected_ser):
          # event
         data_task_all_show = data_task_all
-        if selected_em != "":
+        if selected_em != None:
             data_task_all_show = data_task_all_show[data_task_all_show["employee_id"] == selected_em]
         if selected_ser != "":
             data_task_all_show = data_task_all_show[data_task_all_show["service_id"] == selected_ser]
@@ -154,7 +157,7 @@ class TODOCHECK_UI_DESIGN():
                 "right": "dayGridDay,dayGridWeek,dayGridMonth",
                 },
                 "initialDate": self.time_now_init,
-                "initialView": "dayGridWeek",
+                "initialView": "dayGridMonth",
             }
         elif options_show_radio == "Dạng danh sách":
             calendar_options = {
@@ -194,10 +197,11 @@ class TODOCHECK_UI_DESIGN():
             "resourceGroupField": "title",
         }
         if not st.session_state.get("events_show_linelv", False):
-            st.session_state["events_show_linelv"] = str(uuid.uuid4())  
+            st.session_state["events_show_linelv"] = str(uuid.uuid4()) 
         state = calendar(
             events=events,
             options=calendar_options,
+            callbacks="eventClick",
             custom_css="""
             .fc-event-past {
                 opacity: 0.8;
@@ -207,6 +211,7 @@ class TODOCHECK_UI_DESIGN():
             }
             .fc-event-title {
                 font-weight: 600;
+                color: rgb(0, 50, 73);
             }
             .fc-toolbar-title {
                 font-size: 2rem;
@@ -214,6 +219,10 @@ class TODOCHECK_UI_DESIGN():
             """,
             key=str(st.session_state["events_show_linelv"]),
         )
+        if state.get("eventClick"):
+            task_id_viewed = state.get("eventClick")["event"]["id"]
+            st.session_state.view_task_detail_linelv_dialog = True
+            module_todo.view_task_linelv(data_service_all,data_task_all,task_id_viewed)
     @st.dialog("Thêm công việc mới")
     def add_new_task(self,data_service,date_click):
         if date_click:
@@ -240,7 +249,7 @@ class TODOCHECK_UI_DESIGN():
                     status_task_insert = st.selectbox("Trạng thái",["Chưa hoàn thành","Đã hoàn thành","Chờ"], key="click_status_task_insert")
                     revenue_task_insert = st.number_input("Doanh thu", key="click_revenue_task_insert")
                     end_date_task_insert = st.date_input("Ngày kết thúc",convert_dateclick, key="click_end_date_task_insert")
-                    loai_doanh_thu = st.selectbox("Loại doanh thu",["Hiện hữu","Phát triển mới"], key="click_loai_doanh_thu")
+                loai_doanh_thu = st.selectbox("Loại doanh thu",["Hiện hữu","Phát triển mới"], key="click_loai_doanh_thu")
                 notes_task_insert = st.text_area("Ghi chú", key="click_notes_task_insert")
                 if status_task_insert == "Chưa hoàn thành":
                     color_picker_insert_task = "#FF6C6C"
@@ -386,6 +395,7 @@ class TODOCHECK_UI_DESIGN():
             }
             .fc-event-title {
                 font-weight: 600;
+                 color: rgb(0, 50, 73);
             }
             .fc-toolbar-title {
                 font-size: 2rem;
@@ -509,38 +519,37 @@ class TODOCHECK_UI_DESIGN():
         container_second_main_line_level = st.container(key="container_second_main_line_level")
         with container_second_main_line_level: 
             container_title_chart_second = st.container(key="container_title_chart_second")
-            cols_second_main_line_level = container_title_chart_second.columns([1,1])
+            cols_second_main_line_level = container_title_chart_second.columns([0.35,1,1.25])
             with cols_second_main_line_level[0]:
+                
+                radio_nhanvien_select = st.radio("Chọn nhân viên",[None] +  self.selected_em_key,
+                                                 format_func=lambda x: self.em_select[x].split(" ")[-1] if x and x != None else "Tất cả", key="radio_nhanvien_select",on_change=TOOL_FOR_UI().update_ui_calendar)
+            with cols_second_main_line_level[1]:
                 st.markdown("""
-                        <h5 style="text-align:center;">Tỉ lệ hoàn thành doanh thu (%)</h5>
+                        <h5 style="text-align:center;font-size:1rem;font-weight: bolder;">Tỉ lệ hoàn thành doanh thu (%)</h5>
                                                     
                                                     """,unsafe_allow_html=True)
-                bar_chart,df_detail= module_todo.list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after_load,data_task_all,selected_year,selected_month,selected_loaidoanhthu)
-                employrr = st.altair_chart(bar_chart,key="barchart_line_level",on_select="rerun")
-            with cols_second_main_line_level[1]:
-                if employrr["selection"]["param_1"] != {}:
-                    st.markdown("""
-                            <h5 style="text-align:center;">Tỉ lệ hoàn thành theo dịch vụ (%)</h5>
-                                                        """,unsafe_allow_html=True)
-                
-                    selected_employee_id = employrr["selection"]["param_1"][0]["employee"]
-                else:
-                    st.markdown("""
-                            <h5 style="text-align:center;">Doanh thu đã thực hiện</h5>
-                                                        """,unsafe_allow_html=True)
-                    selected_employee_id = None
-                df_service_show = module_todo.table_service_process_bar_task(df_detail,selected_employee_id)
+                pie_chart,df_detail,sum_plan_revenue, sum_make_revenue= module_todo.list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after_load,data_task_all,selected_year,selected_month,selected_loaidoanhthu,radio_nhanvien_select)
+                employrr = st.altair_chart(pie_chart,key="Pie_chart_linlevel")
+                ctn_metric_second_main_line_level = st.container(key="ctn_metric_second_main_line_level")
+                cols_ctn_second_main_line_level = ctn_metric_second_main_line_level.columns([1,1])
+                cols_ctn_second_main_line_level[0].metric("Tổng doanh thu kế hoạch",module_view.format_number(sum_plan_revenue))
+                cols_ctn_second_main_line_level[1].metric("Tổng doanh thu thực hiện",module_view.format_number(sum_make_revenue))
+            with cols_second_main_line_level[2]:
+                st.markdown("""
+                        <h5 style="text-align:center;font-size:1rem;font-weight: bolder;">Tỉ lệ hoàn thành theo dịch vụ (%)</h5>
+                                                    """,unsafe_allow_html=True)
+                df_service_show = module_todo.table_service_process_bar_task(df_detail,radio_nhanvien_select)
         container_thirst_main_line_level = st.container(key="container_thirst_main_line_level")
         with container_thirst_main_line_level:
             data_filter_for_thirst_table = data_task_all.copy()
-            if employrr["selection"]["param_1"] == {}:
+            if radio_nhanvien_select is None:
                 data_filter_for_thirst_table = data_filter_for_thirst_table[(data_filter_for_thirst_table["start_date"].dt.year == selected_year) 
                                                                         & (data_filter_for_thirst_table["start_date"].dt.month == selected_month)]
-            else:
-                selected_employee_id = employrr["selection"]["param_1"][0]["employee"] 
+            else: 
                 data_filter_for_thirst_table = data_filter_for_thirst_table[(data_filter_for_thirst_table["start_date"].dt.year == selected_year) &
                                                                         (data_filter_for_thirst_table["start_date"].dt.month == selected_month) &
-                                                                        (data_filter_for_thirst_table["employee_id"] == selected_employee_id)]
+                                                                        (data_filter_for_thirst_table["employee_id"] == radio_nhanvien_select)]
             data_filter_for_thirst_table.reset_index(drop=True)
             data_filter_for_thirst_table["id"] = data_filter_for_thirst_table.index + 1
             data_filter_for_thirst_table["id"] = data_filter_for_thirst_table["id"].astype(int)
@@ -548,15 +557,15 @@ class TODOCHECK_UI_DESIGN():
             data_filter_for_thirst_table["name_employee"] = data_filter_for_thirst_table["employee_id"].map(nhanvien_after_load.set_index("ma_nv")["ten_nv"])
             data_filter_for_thirst_table["start_date"] = data_filter_for_thirst_table["start_date"].astype(str)
             data_filter_for_thirst_table["end_date"] = data_filter_for_thirst_table["end_date"].astype(str)
-            data_filter_for_thirst_table["revenue"] = data_filter_for_thirst_table["revenue"].astype(str)
+            data_filter_for_thirst_table["revenue"] = data_filter_for_thirst_table["revenue"].astype(float).apply(lambda x: module_view.format_number(x))
             data_filter_for_thirst_table=data_filter_for_thirst_table[["id","title","name_service","name_employee","status","start_date","end_date","revenue","notes"]]
-            
+            data_filter_for_thirst_table["status"] = data_filter_for_thirst_table["status"].map({"Chưa hoàn thành": "❌ Chưa hoàn thành", "Đã hoàn thành": "✔️ Đã hoàn thành", "Chờ": "⏳ Chờ"})
             with elements("data_ctn_thirst_main_linelv"):
                 selected = mui.DataGrid(
                 rows=data_filter_for_thirst_table.to_dict(orient="records"),
                 disableRowSelectionOnClick=True,
                 columns=[
-                    {"field": "title", "headerName": "Tiêu đề", "width": 100},
+                    {"field": "title", "headerName": "Tiêu đề", "width": 100,"color":"red"},
                     {"field": "name_service", "headerName": "Dịch vụ", "width": 200},
                     {"field": "name_employee", "headerName": "Nhân viên", "width": 200},
                     {"field": "status", "headerName": "Trạng thái", "width": 150},
@@ -575,12 +584,16 @@ class TODOCHECK_UI_DESIGN():
                     "fontWeight": "bold",          # Chữ in đậm
                 },
             },
-                onRowClick=lambda params: TOOL_FOR_UI().handle_row_click(params),
             )
+            container_thirst_main_sub_line_level = container_thirst_main_line_level.container(key="container_thirst_main_sub_line_level")
+            cols_thirst_main_line_level = container_thirst_main_sub_line_level.columns([1,1,1])
+            cols_thirst_main_line_level[0].metric("Tổng số hoàn thành",data_filter_for_thirst_table["status"].value_counts()["✔️ Đã hoàn thành"] if "✔️ Đã hoàn thành" in data_filter_for_thirst_table["status"].value_counts() else 0)
+            cols_thirst_main_line_level[1].metric("Tổng số chưa hoàn thành",data_filter_for_thirst_table["status"].value_counts()["❌ Chưa hoàn thành"] if "❌ Chưa hoàn thành" in data_filter_for_thirst_table["status"].value_counts() else 0)
+            cols_thirst_main_line_level[2].metric("Tổng số chờ",data_filter_for_thirst_table["status"].value_counts()["⏳ Chờ"] if "⏳ Chờ" in data_filter_for_thirst_table["status"].value_counts() else 0)
         container_four_main_line_level = st.container(key="container_four_main_line_level")
         with container_four_main_line_level:
-            cols_show_radio_four_main = st.columns([2,1,1,1])
-            option_show_radio_four_main = cols_show_radio_four_main[1].selectbox("Chọn chế độ xem",["Dạng danh sách","Dạng ngày","Theo dịch vụ","Theo nhân viên"], key="option_show_radio_four_main",
+            cols_show_radio_four_main = st.columns([2,1,1])
+            option_show_radio_four_main = cols_show_radio_four_main[1].selectbox("Chọn chế độ xem",["Dạng ngày","Dạng danh sách","Theo dịch vụ","Theo nhân viên"], key="option_show_radio_four_main",
                                                        on_change=TOOL_FOR_UI().update_ui_calendar)
             array_em_four = self.employee_array[["ma_nv", "ten_nv"]].drop_duplicates()
             array_ser_four = self.service_load_not_parent[["ma_dv_id66", "ten_dv"]].drop_duplicates()
@@ -593,17 +606,7 @@ class TODOCHECK_UI_DESIGN():
             employee_keys = [""] + list(employee_dict_fourfour.keys())
             service_keys = [""] + list(service_dict_four.keys())
 
-            # Hiển thị selectbox với hàm format để chỉ hiển thị tên
-            selected_show_employee_calendar_four_main = cols_show_radio_four_main[2].selectbox(
-                "Chọn nhân viên",
-                options=employee_keys,
-                placeholder="Chọn nhân viên",
-                format_func=lambda x: employee_dict_fourfour[x] if x else "",  # Hiển thị tên hoặc để trống
-                key="selected_show_employee_calendar_four_main",
-                on_change=TOOL_FOR_UI().update_ui_calendar
-            )
-
-            selected_show_service_calendar_four_main = cols_show_radio_four_main[3].selectbox(
+            selected_show_service_calendar_four_main = cols_show_radio_four_main[2].selectbox(
                 "Chọn dịch vụ",
                 options=service_keys,
                 placeholder="Chọn dịch vụ",
@@ -615,7 +618,7 @@ class TODOCHECK_UI_DESIGN():
             cols_calendar_four_body = st.columns([4,1])
                         
             with cols_calendar_four_body[0]:
-                self.calendar_show_line_lv_dash(data_task_all,option_show_radio_four_main,selected_show_employee_calendar_four_main,selected_show_service_calendar_four_main)
+                self.calendar_show_line_lv_dash(data_task_all,option_show_radio_four_main,radio_nhanvien_select,selected_show_service_calendar_four_main)
             with cols_calendar_four_body[1]:
                 TOOL_FOR_UI().render_task_view("line_lv")
                 

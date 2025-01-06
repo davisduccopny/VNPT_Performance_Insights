@@ -29,7 +29,7 @@ def load_data():
         conn.close()
 
 def format_number(num):
-    for unit in ['', 'K', 'M', 'B', 'T']:
+    for unit in ['', 'K', 'Tr', 'Tỉ', 'K Tỉ']:
         if abs(num) < 1000:  
             return f"{num:.3f} {unit}"
         num /= 1000  

@@ -6,11 +6,11 @@ from mysql.connector import pooling, Error
 from mysql.connector import OperationalError, InternalError
 import PROJECTS.config as module_config
 import plotly.express as px
-import bcrypt
 import datetime
 import time
 import uuid
 import altair as alt
+from PROJECTS.module_view import format_number
 
 @st.cache_data
 def load_tasks():
@@ -190,7 +190,7 @@ def update_task(data_service,data_tasks,task_id_update,action_on_board_calendar)
                     status_task_update = st.selectbox("Trạng thái",array_status_update,status_index, key="status_task_update")
                     revenue_task_update = st.number_input("Doanh thu",float(selected_task["revenue"].values[0]), key="revenue_task_update")
                     end_date_task_update = st.date_input("Ngày kết thúc",pd.to_datetime(selected_task["end_date"].values[0]).date(), key="end_date_task_update")
-                    loaidoanhthu_update_task = st.selectbox("Loại doanh thu",array_loaidoanhthu_update,loaidoanhthu_index, key="loaidoanhthu_update_task")
+                loaidoanhthu_update_task = st.selectbox("Loại doanh thu",array_loaidoanhthu_update,loaidoanhthu_index, key="loaidoanhthu_update_task")
                 notes_task_update = st.text_area("Ghi chú",selected_task["notes"].values[0], key="notes_task_update")
                 if status_task_update == "Chưa hoàn thành":
                     color_picker_update_task = "#FF6C6C"
@@ -208,6 +208,7 @@ def update_task(data_service,data_tasks,task_id_update,action_on_board_calendar)
                 button_cancel_tasks = cols_second_task_confirm[1].button("Hủy", key="button_cancel_task",icon=":material/close:",type="secondary",use_container_width=True)
                 if button_cancel_tasks:
                     st.session_state.dialog_open_update_tasks = False
+                    st.session_state["events"] = str(uuid.uuid4())
                     st.rerun()
                 if button_update_tasks:
                         if title_task_update and service_task_update and start_date_task_update and status_task_update and revenue_task_update and end_date_task_update:
@@ -248,8 +249,82 @@ def update_task(data_service,data_tasks,task_id_update,action_on_board_calendar)
                 st.session_state["events"] = str(uuid.uuid4())
                 st.rerun()
                 
+@st.dialog("Chi tiết công việc!")
+def view_task_linelv(data_service,data_tasks,task_id_update):
+    array_status_viewlinelv = ["Chưa hoàn thành","Đã hoàn thành","Chờ"]
+    array_loaidoanhthu_viewlinelv = ["Hiện hữu","Phát triển mới"]
+    array_service_update = data_service["ten_dv"].unique()
+    selected_task = data_tasks[data_tasks["id"] == int(task_id_update)]
+    service_id = selected_task["service_id"].values[0]
+    service_id_index = array_service_update.index(service_id) if service_id in array_service_update else 0
+    status_update = selected_task["status"].values[0]
+    status_index = array_status_viewlinelv.index(status_update) if status_update in array_status_viewlinelv else 0
+    loaidoanhthu_update = selected_task["loaidoanhthu"].values[0]
+    loaidoanhthu_index = array_loaidoanhthu_viewlinelv.index(loaidoanhthu_update) if loaidoanhthu_update in array_loaidoanhthu_viewlinelv else 0
+
+    data_service = data_service[data_service["danh_muc_tt"].notna()]
+    data_service = data_service[~data_service["danh_muc_tt"].isin(["1", "1.1.01", "1.1.02", "1.1.03", "1.1.05", "1.1.06", "1.1.07"])]
+    if "view_task_detail_linelv_dialog" not in st.session_state:
+        st.session_state.view_task_detail_linelv_dialog = False
+    if st.session_state.view_task_detail_linelv_dialog:
+        container_view_task_linelv = st.container(key="container_view_task_linelv")
+        with container_view_task_linelv:                
+            cols_dialog_update_task = st.columns([1,1])
+            with cols_dialog_update_task[0]:
+                title_task_view_detail_linelv = st.text_input("Tiêu đề",selected_task["title"].values[0], key="title_task_view_detail_linelv")
+                service_task_view_linelv = st.selectbox("Dịch vụ",data_service["ten_dv"].unique(),index=service_id_index,key="service_task_view_linelv")
+                start_date_task_viewlinelv = st.date_input("Ngày bắt đầu",pd.to_datetime(selected_task["start_date"].values[0]).date(),key="start_date_task_viewlinelv")
+        
+            with cols_dialog_update_task[1]:
+                status_task_viewlinelv = st.selectbox("Trạng thái",array_status_viewlinelv,status_index, key="status_task_viewlinelv")
+                revenue_task_viewlinelv = st.number_input("Doanh thu",float(selected_task["revenue"].values[0]), key="revenue_task_viewlinelv")
+                end_date_task_viewlinelv = st.date_input("Ngày kết thúc",pd.to_datetime(selected_task["end_date"].values[0]).date(), key="end_date_task_viewlinelv")
+            loaidoanhthu_viewlinelv_task = st.selectbox("Loại doanh thu",array_loaidoanhthu_viewlinelv,loaidoanhthu_index, key="loaidoanhthu_viewlinelv_task")
+            notes_task_viewlinelv = st.text_area("Ghi chú",selected_task["notes"].values[0], key="notes_task_viewlinelv")
+            button_cancel_tasks = st.button("Hủy", key="button_cancel_task",icon=":material/close:",type="secondary",use_container_width=True)
+            if button_cancel_tasks:
+                st.session_state.view_task_detail_linelv_dialog = False
+                st.session_state["events_show_linelv"] = str(uuid.uuid4())
+                st.rerun()
 # PART FOR LINE LEVEL DASHBOARD 
-def list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after_load,data_task_all, year_selected, month_selected,loaidoanhthu_selected):
+def make_donut_todo(input_response, input_text):
+    if input_response < 100:
+        chart_color = ['#FF6F61', '#2EC4B6']
+
+  # Đỏ cho chưa đạt
+    else:
+        chart_color = ['#2a9d8f', '#155F7A']
+        
+    source = pd.DataFrame({
+        "Topic": ['', input_text],
+        "% value": [100-input_response, input_response]
+    })
+    source_bg = pd.DataFrame({
+        "Topic": ['', input_text],
+        "% value": [100, 0]
+    })
+        
+    plot = alt.Chart(source).mark_arc(innerRadius=45, cornerRadius=25).encode(
+        theta="% value",
+        color= alt.Color("Topic:N",
+                        scale=alt.Scale(
+                            domain=[input_text, ''],
+                            range=chart_color),
+                        legend=None),
+    ).properties(height=180)
+        
+    text = plot.mark_text(align='center', color="#29b5e8", font="Lato", fontSize=18, fontWeight=700, fontStyle="italic").encode(text=alt.value(f'{input_response} %'))
+    plot_bg = alt.Chart(source_bg).mark_arc(innerRadius=45, cornerRadius=20).encode(
+        theta="% value",
+        color= alt.Color("Topic:N",
+                        scale=alt.Scale(
+                            # domain=['A', 'B'],
+                            domain=[input_text, ''],
+                            range=chart_color),  # 31333F
+                        legend=None),
+    ).properties(height=180)
+    return plot_bg + plot + text
+def list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after_load,data_task_all, year_selected, month_selected,loaidoanhthu_selected,select_em_id):
     kehoach_after_load = kehoach_after_load[(kehoach_after_load["line"]== st.session_state.line_access) &
                                             (kehoach_after_load["year_insert"]== year_selected) &
                                             (kehoach_after_load["loaidoanhthu"]== loaidoanhthu_selected)]
@@ -273,45 +348,66 @@ def list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after
     ).astype(float)
     df_detail['color'] = df_detail['completion_percentage'].apply(lambda x: '#9CEC5B' if x >= 100 else ('#F0F465' if x >= 60 else '#fc4c4c'))
     df_detail["name_service"] = df_detail["service"].map(dichvu_after_load.set_index("ma_dv_id66")["ten_dv"])
-
-    df_employee = df.groupby('employee').agg({
+    if select_em_id != None:
+        df_employee = df.groupby('employee').agg({
         'actual_revenue': 'sum',
         'planned_revenue': 'sum'
-    }).reset_index()
-    
-    df_employee['completion_percentage'] = (df_employee['actual_revenue'].astype(float) / df_employee['planned_revenue'].astype(float)) * 100
-    df_employee['completion_percentage'] = df_employee['completion_percentage'].astype(float)
-    df_employee['color_sum'] = df_employee['completion_percentage'].apply(lambda x: '#9CEC5B' if x >= 100 else ('#F0F465' if x >= 60 else '#fc4c4c'))
-    df_employee["name_employee"] = df_employee["employee"].map(nhanvien_after_load.set_index("ma_nv")["ten_nv"])
-    selection = alt.selection_point(fields=['employee'], empty="none")
+        }).reset_index()
+        df_employee = df_employee[df_employee["employee"] == select_em_id]
+        if df_employee.empty:
+            completion_rate_no_employee_selection = 0
+            sum_plan_revenue = 0
+            sum_make_revenue = 0
+        else:
+            df_employee['completion_percentage'] = (df_employee['actual_revenue'].astype(float) / df_employee['planned_revenue'].astype(float)) * 100
+            df_employee['completion_percentage'] = df_employee['completion_percentage'].astype(float).round(2)
+            completion_rate_no_employee_selection = df_employee['completion_percentage'].values[0]
+            sum_plan_revenue = df_employee['planned_revenue'].astype(float).round(2).values[0]
+            sum_make_revenue = df_employee['actual_revenue'].astype(float).round(2).values[0]
+    else:
+        completion_rate_no_employee_selection = (df["actual_revenue"].astype(float).sum() / df["planned_revenue"].astype(float).sum()) * 100
+        completion_rate_no_employee_selection = completion_rate_no_employee_selection.astype(float).round(2)
+        sum_plan_revenue = df["planned_revenue"].astype(float).sum().round(2)
+        sum_make_revenue = df["actual_revenue"].astype(float).sum().round(2)
 
-    bar_chart = alt.Chart(df_employee).mark_bar().encode(
-        x=alt.X('completion_percentage:Q', title='Tỉ lệ (%)',
-                    axis=alt.Axis(
-                    titleFontSize=14, 
-                    titleColor='rgb(0, 50, 73)', 
-                    labelFontSize=12, 
-                    labelColor='rgb(0, 50, 73)' 
-                )),
-        y=alt.Y('name_employee:N', title='Nhân viên', axis=alt.Axis(
-            titleFontSize=14,  
-            titleColor='rgb(0, 50, 73)',
-            labelFontSize=12,  
-            labelColor='rgb(0, 50, 73)'
-        )),
-        color=alt.Color('color_sum:N', legend=None, scale=None),
-        tooltip=['name_employee:N', 'completion_percentage:Q']
-    ).add_params(selection).properties(
-        height=250,
-        
-    )
-    
-    return bar_chart,df_detail
+    Donut_chart = make_donut_todo(completion_rate_no_employee_selection, "Hoàn thành so với kế hoạch (%)")
+    return Donut_chart,df_detail, sum_plan_revenue, sum_make_revenue
 
 def table_service_process_bar_task(df_service, selection_id):
     if selection_id != "" and selection_id is not None:
         df_service = df_service[df_service["employee"] == selection_id]
-        df_service = df_service[["name_service","actual_revenue","planned_revenue","completion_percentage"]].rename(columns={"name_service":"Dịch vụ","actual_revenue":"Thực tế","planned_revenue":"Kế hoạch","completion_percentage":"Tỉ lệ(%)"})
+        if df_service.empty:
+            st.write("##### Không có dữ liệu!")
+        else:
+            df_service["actual_revenue"] = df_service["actual_revenue"].apply(format_number)
+            df_service["planned_revenue"] = df_service["planned_revenue"].apply(format_number)
+            df_service = df_service[["name_service","actual_revenue","planned_revenue","completion_percentage"]].rename(columns={"name_service":"Dịch vụ","actual_revenue":"Thực tế","planned_revenue":"Kế hoạch","completion_percentage":"Tỉ lệ(%)"})
+            df_service["Tỉ lệ(%)"] = df_service["Tỉ lệ(%)"].apply(lambda x: f"{x:.2f}")
+            df_service = df_service.reset_index(drop=True)
+            st.dataframe(df_service, column_config={
+                "Thực tế": {"format": "{:,.0f}"},
+                "Kế hoạch": {"format": "{:,.0f}"},
+                "Tỉ lệ(%)": st.column_config.ProgressColumn(
+                "Tỉ lệ(%)",
+                min_value=0,
+                max_value=100,
+                format="%d%%",
+                width="medium"
+                )
+            },hide_index=True, height=300)
+    else:
+        df_service = df_service[["name_service","actual_revenue","planned_revenue"]]
+        df_service = df_service.groupby('name_service').agg({
+            'actual_revenue': 'sum',
+            'planned_revenue': 'sum'
+        }).reset_index()
+        df_service['completion_percentage'] = df_service.apply(
+            lambda row: row['actual_revenue'] if row['planned_revenue'] == 0 else (float(row['actual_revenue']) / float(row['planned_revenue'])) * 100,
+            axis=1
+        ).astype(float)
+        df_service["actual_revenue"] = df_service["actual_revenue"].apply(format_number)
+        df_service["planned_revenue"] = df_service["planned_revenue"].apply(format_number)
+        df_service = df_service.rename(columns={"name_service":"Dịch vụ","actual_revenue":"Thực tế","planned_revenue":"Kế hoạch","completion_percentage":"Tỉ lệ(%)"})
         df_service["Tỉ lệ(%)"] = df_service["Tỉ lệ(%)"].apply(lambda x: f"{x:.2f}")
         df_service = df_service.reset_index(drop=True)
         st.dataframe(df_service, column_config={
@@ -324,42 +420,6 @@ def table_service_process_bar_task(df_service, selection_id):
             format="%d%%",
              width="medium"
             )
-        },hide_index=True, height=250)
-    else:
-        df_service_group = df_service[['service', 'name_service', 'actual_revenue', 'planned_revenue']].groupby(['service', 'name_service']).agg({
-            'actual_revenue': 'sum',
-            'planned_revenue': 'sum'
-        }).reset_index()
-        df_service_group = df_service_group.reset_index(drop=True)
-        df_service_group['completion_percentage'] = df_service_group.apply(
-            lambda row: row['actual_revenue'] if row['planned_revenue'] == 0 else (float(row['actual_revenue']) / float(row['planned_revenue'])) * 100,
-            axis=1
-        ).astype(float)
-        df_service_group= df_service_group.rename(columns={"actual_revenue":"Thực tế","planned_revenue":"Kế hoạch","completion_percentage":"Tỉ lệ(%)",
-                                                           "name_service":"Dịch vụ"})
-        barchart_service = px.bar(
-            df_service_group,
-            x="Dịch vụ",
-            y="Thực tế",
-            color="Thực tế",
-            height=250
-        )
-        barchart_service.update_yaxes(range=[0, float(df_service_group["Thực tế"].max()) * 1])
-        barchart_service.update_layout(showlegend=False,
-                                        margin=dict(l=10, r=10, t=20, b=20),
-                                        xaxis=dict(
-                                        title="Tỉ lệ (%)",
-                                        tickangle=45,
-                                        tickmode="array", 
-                                        tickfont=dict(size=10) 
-                                    ),)
-        barchart_service.update_traces(
-                    hoverlabel=dict(
-                    bgcolor="lightblue",  
-                    font_size=14,      
-                    font_color="rgb(0, 50, 73)"  
-                )
-    )
-        st.plotly_chart(barchart_service,key="barchart_service_line_level")
+        },hide_index=True, height=300)
         
         
