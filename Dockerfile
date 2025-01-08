@@ -10,7 +10,6 @@ COPY . .
 # Cài đặt các yêu cầu
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Đặt cổng cho ứng dụng (Streamlit mặc định là 8501)
 EXPOSE 8080
 
 # Chạy Streamlit
