@@ -606,7 +606,7 @@ class BACKEND_TABLE_VIEW():
                                             top=Side(border_style='thin'), bottom=Side(border_style='thin'))
                         for r_idx, row in enumerate(data, start=1):
                             for c_idx, value in enumerate(row, start=1):
-                                cell = ws.cell(row=r_idx + 3 + 31, column=c_idx, value=value)
+                                cell = ws.cell(row=r_idx + 3 + len(df_3) + 2, column=c_idx, value=value)
                                 cell.font = Font(name='Times New Roman', size=12)
                                 cell.border = thin_border
                                 try:
@@ -647,7 +647,7 @@ class BACKEND_TABLE_VIEW():
                             cell.border = Border(left=Side(border_style='thin'), right=Side(border_style='thin'), 
                                                 top=Side(border_style='thin'), bottom=Side(border_style='thin'))
                             # In đậm các dòng cần thiết
-                        bold_rows_need_thuchien = [4,5,6,7,18,21, 22,26,27,28,29,30,31,32]
+                        bold_rows_need_thuchien = [4, 4 + len(df_3) + 2]
                         for row_idx in bold_rows_need_thuchien:
                             for col in ws.iter_cols(min_col=1, max_col=ws.max_column, min_row=row_idx, max_row=row_idx):
                                 for cell in col:
@@ -703,7 +703,7 @@ class BACKEND_TABLE_VIEW():
                                 top=Side(border_style='thin'), bottom=Side(border_style='thin'))
             for r_idx, row in enumerate(data, start=1):
                 for c_idx, value in enumerate(row, start=1):
-                    cell = ws.cell(row=r_idx + 3 + 31, column=c_idx, value=value)
+                    cell = ws.cell(row=r_idx + 3 + len(df_form3) + 2, column=c_idx, value=value)
                     cell.font = Font(name='Times New Roman', size=12)
                     cell.border = thin_border
                     try:
@@ -744,7 +744,7 @@ class BACKEND_TABLE_VIEW():
                 cell.border = Border(left=Side(border_style='thin'), right=Side(border_style='thin'), 
                                     top=Side(border_style='thin'), bottom=Side(border_style='thin'))
                 # In đậm các dòng cần thiết
-            bold_rows_need_thuchien = [4,5,6,7,18,21, 22,26,27,28,29,30,31,32] 
+            bold_rows_need_thuchien = [4,4+ len(df_form3) + 2] 
             for row_idx in bold_rows_need_thuchien:
                 for col in ws.iter_cols(min_col=1, max_col=ws.max_column, min_row=row_idx, max_row=row_idx):
                     for cell in col:

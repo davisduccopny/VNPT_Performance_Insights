@@ -490,10 +490,10 @@ class FRONTEND_DESIGN_INSERT():
         # Dữ liệu danh sách tài liệu
             
         docs = [
-            {"id": 1, "title": "Mẫu thực hiện - phát triển mới", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1slmL07m06EjaxTdjrmH3ScwhtqxykLQqD2CdmqDvc4A/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu thực hiện - phát triển mới.","file_path":"data/input_thuchien.xlsx"},
-            {"id": 2, "title": "Mẫu thực hiện - hiện hữu", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1nvOHWM_JN4DFfkQfx6hZyMf3rCrH0y5sVWBRTCn5cs4/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu thực hiện - hiện hữu.", "file_path":"data/input_thuchien.xlsx"},
-            {"id": 3, "title": "Mẫu kế hoạch - phát triển mới", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1Pdz9mjsi91D2BlQeaKJkf2211Z8q5zQi5hk3A-5Vezo/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu kế hoạch - phát triển mới.","file_path":"data/input_kehoach.xlsx"},
-            {"id": 4, "title": "Mẫu kế hoạch - hiện hữu", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1zkOQ6ibEuaGb-_bxatvMqMerG5rG2npisLW3JtNDWiM/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu kế hoạch - hiện hữu.","file_path":"data/input_kehoach.xlsx"},
+            {"id": 1, "title": "Mẫu thực hiện - Theo tháng", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1slmL07m06EjaxTdjrmH3ScwhtqxykLQqD2CdmqDvc4A/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu thực hiện - Theo tháng.","file_path":"data/form_data/form_thuchien_theothang.xlsx"},
+            {"id": 2, "title": "Mẫu thực hiện - Theo năm", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1nvOHWM_JN4DFfkQfx6hZyMf3rCrH0y5sVWBRTCn5cs4/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu thực hiện - Theo năm.", "file_path":"data/form_data/form_thuchien_theonam.xlsx"},
+            {"id": 3, "title": "Mẫu kế hoạch - Theo tháng", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1Pdz9mjsi91D2BlQeaKJkf2211Z8q5zQi5hk3A-5Vezo/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu kế hoạch - Theo tháng.","file_path":"data/form_data/form_kehoach_theothang.xlsx"},
+            {"id": 4, "title": "Mẫu kế hoạch - Theo năm", "author": "KHDN3", "source": "https://docs.google.com/spreadsheets/d/1zkOQ6ibEuaGb-_bxatvMqMerG5rG2npisLW3JtNDWiM/edit?usp=sharing", "image": "../src/image_ex/logo_excel.png", "content": "Nội dung mẫu kế hoạch - Theo năm.","file_path":"data/form_data/form_kehoach_theonam.xlsx"},
         ]
 
         # Kiểm tra trạng thái tài liệu đang được chọn

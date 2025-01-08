@@ -302,13 +302,13 @@ class GENERATE_VIEW():
                 ten_line = line_after_load["ten_line"].unique()
             arr_hierachy_1, arr_hierachy_2 = ldp_view.build_hierarchy(dichvu_after_load)
             if form_view_service == "Thu gọn":
-                count_row_form_3 = 30
+                count_row_form_3 = len(arr_hierachy_2) + 2
                 array_bold_raw = ldp_view.flag_row_form_bold(arr_hierachy_2)
                 array_bold_raw_form_1 = [x + 4 for x in array_bold_raw]
                 array_bold_raw_form_2 = [x + 4 + count_row_form_3 for x in array_bold_raw]
                 array_bold = [array_bold_raw_form_1[0] - 1] + [array_bold_raw_form_2[0] - 1] + array_bold_raw_form_1 + array_bold_raw_form_2
             else:
-                count_row_form_3 = 53
+                count_row_form_3 = len(arr_hierachy_1) + 2
                 array_bold_raw = ldp_view.flag_row_form_bold(arr_hierachy_1)
                 array_bold_raw_form_1 = [x + 4 for x in array_bold_raw]
                 array_bold_raw_form_2 = [x + 4 + count_row_form_3 for x in array_bold_raw]
@@ -432,7 +432,7 @@ class GENERATE_VIEW():
                 ten_line = line_after_load["ten_line"].unique()
             arr_hierachy_1, arr_hierachy_2 = ldp_view.build_hierarchy(dichvu_after_load)
             if form_view_service == "Thu gọn":
-                count_row_form_3 = 34
+                count_row_form_3 = len(arr_hierachy_2) + 6
                 array_bold_raw = ldp_view.flag_row_form_bold(arr_hierachy_2)
                 
                 array_bold_raw_form_1 = [x + 5 for x in array_bold_raw]
@@ -445,7 +445,7 @@ class GENERATE_VIEW():
                 array_bold_raw_form_8 = [x + 4 + count_row_form_3 * 7 for x in array_bold_raw]
                 array_bold = [array_bold_raw_form_1[0] - 1] + [array_bold_raw_form_2[0] - 1] + array_bold_raw_form_1 + array_bold_raw_form_2 + [array_bold_raw_form_3[0] - 1] + [array_bold_raw_form_4[0] - 1] + [array_bold_raw_form_5[0] - 1] + [array_bold_raw_form_6[0] - 1] + [array_bold_raw_form_7[0] - 1] + [array_bold_raw_form_8[0] - 1] + array_bold_raw_form_3 + array_bold_raw_form_4 + array_bold_raw_form_5 + array_bold_raw_form_6 + array_bold_raw_form_7 + array_bold_raw_form_8
             else:
-                count_row_form_3 = 57
+                count_row_form_3 = len(arr_hierachy_1) + 6
                 array_bold_raw = ldp_view.flag_row_form_bold(arr_hierachy_1)
                 array_bold_raw_form_1 = [x + 5 for x in array_bold_raw]
                 array_bold_raw_form_2 = [x + 4 + count_row_form_3 for x in array_bold_raw]

@@ -109,7 +109,3 @@ font-size: 1.2rem;
 }
 .st-key-container_header_services .stColumn{border-left: 5px solid #00a6a6;
 }
-.st-key-container_main_vertical_block .stColumn:hover, .st-key-container_main_service_design .stColumn:hover, .st-key-container_info_table_view .stColumn:hover{
-    transform: scale(1.05);
-    transition: transform 0.3s ease-in-out;
-}

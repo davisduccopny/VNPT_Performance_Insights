@@ -328,13 +328,13 @@ def list_task_complete_chart(kehoach_after_load,nhanvien_after_load,dichvu_after
     kehoach_after_load = kehoach_after_load[(kehoach_after_load["line"]== st.session_state.line_access) &
                                             (kehoach_after_load["year_insert"]== year_selected) &
                                             (kehoach_after_load["loaidoanhthu"]== loaidoanhthu_selected)]
+    
     data_task_all = data_task_all[data_task_all["revenue"] > 0]
     data_task_all = data_task_all[(data_task_all["start_date"].dt.year == year_selected) &
                                   (data_task_all["start_date"].dt.month == month_selected) &
                                   (data_task_all["loaidoanhthu"] == loaidoanhthu_selected)]
     kehoach_after_load = kehoach_after_load[["id_dv_606",f"t{month_selected}","ma_nv"]].rename(columns={f"t{month_selected}":"planned_revenue", "id_dv_606":"service","ma_nv":"employee"})
-    data_task_all = data_task_all[["service_id","revenue","employee_id"]].rename(columns={"service_id":"service","revenue":"actual_revenue","employee_id":"employee"})
-                        
+    data_task_all = data_task_all[["service_id","revenue","employee_id"]].rename(columns={"service_id":"service","revenue":"actual_revenue","employee_id":"employee"})            
     df = pd.merge(kehoach_after_load, data_task_all, on=['employee', 'service'], how='left')
     df['actual_revenue'] = df['actual_revenue'].fillna(0)
     df_detail = df.copy()
@@ -383,6 +383,8 @@ def table_service_process_bar_task(df_service, selection_id):
             df_service["planned_revenue"] = df_service["planned_revenue"].apply(format_number)
             df_service = df_service[["name_service","actual_revenue","planned_revenue","completion_percentage"]].rename(columns={"name_service":"Dịch vụ","actual_revenue":"Thực tế","planned_revenue":"Kế hoạch","completion_percentage":"Tỉ lệ(%)"})
             df_service["Tỉ lệ(%)"] = df_service["Tỉ lệ(%)"].apply(lambda x: f"{x:.2f}")
+            
+            df_service["Tỉ lệ(%)"] = df_service["Tỉ lệ(%)"].astype(float)
             df_service = df_service.reset_index(drop=True)
             st.dataframe(df_service, column_config={
                 "Thực tế": {"format": "{:,.0f}"},
