@@ -2,9 +2,6 @@
     padding: 1rem 1.5rem 6rem;
 
 }
-[data-testid=stMainBlockContainer ] {
-    padding: 1rem 4.5rem 10rem;
-}
 
 .st-key-container_title_table_view_ldp{
     border-bottom: rgb(61, 157, 243) 3px solid;

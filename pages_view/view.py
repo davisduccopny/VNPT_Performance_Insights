@@ -98,7 +98,7 @@ class DESIGN_FRONTEND():
         )
         return selected
     def sidebar_option(self,cols_head_select_option_revenue):
-        selected = cols_head_select_option_revenue[0].pills("🌀",["👩‍💻 Nhân viên", "🌁 Dịch vụ"],default="👩‍💻 Nhân viên",key="pills_em_select_dashboard")
+        selected = cols_head_select_option_revenue[0].pills(" ",["👩‍💻 Nhân viên", "🌁 Dịch vụ"],default="👩‍💻 Nhân viên",key="pills_em_select_dashboard")
         st_toggle_check = st.sidebar.empty()
         if selected == "👩‍💻 Nhân viên":
             if st_toggle_check.toggle("Chọn nhiều tháng", False, key="select_multiple_month"):

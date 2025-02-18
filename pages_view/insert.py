@@ -140,7 +140,7 @@ class FRONTEND_DESIGN_INSERT():
         self.employee_keys = list(self.em_select_array.keys())
     
     def ui_info(self, text):
-        st.markdown(f"<h3 style='text-align: left; padding:0'>{text}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: left;' id='h3_insert_plan_make'>{text}</h3>", unsafe_allow_html=True)
     def ui_info_add_search(self, text,loai_data):
         container_title_manage_expand = st.container(key="container_title_manage_expand")
         with container_title_manage_expand:
@@ -151,7 +151,7 @@ class FRONTEND_DESIGN_INSERT():
                 with st.form(key="search_form", enter_to_submit=True,border=False):
                     cols_search = st.columns([6,1])
                     search_term = cols_search[0].text_input(label=" ",placeholder="Tìm kiếm thông tin", key="search_term",type="default")
-                    if cols_search[1].form_submit_button("🔍"):
+                    if cols_search[1].form_submit_button("🔍",use_container_width=True):
                         if search_term:
                             return search_term
                         else:
@@ -513,11 +513,11 @@ class FRONTEND_DESIGN_INSERT():
             doc = st.session_state.selected_doc
             st.markdown(f"""<h4 style="text-align:center; margin-top:0;">{doc["title"]}</h4>""",unsafe_allow_html=True)
             cols_show_doc = st.columns([0.6,0.8,0.7,1,1,1])
-            cols_show_doc[0].button("Quay lại",icon=":material/arrow_back:", on_click=back_to_list)
+            cols_show_doc[0].button("Quay lại",icon=":material/arrow_back:",use_container_width=True, on_click=back_to_list)
             cols_show_doc[1].button(
                 "Google Sheet",
                 icon=":material/open_in_new:",
-                on_click=lambda: module_insert.open_link(doc["source"])
+                on_click=lambda: module_insert.open_link(doc["source"]),use_container_width=True
             )
 
             file_content = module_insert.load_local_file(doc["file_path"])
@@ -527,7 +527,7 @@ class FRONTEND_DESIGN_INSERT():
                     data=file_content,
                     file_name=f"{doc['title']}.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    icon=":material/download:",
+                    icon=":material/download:",use_container_width=True
                 )
             # container_iframe = st.container(key="container_iframe")
             # with container_iframe:

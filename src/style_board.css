@@ -1,9 +1,4 @@
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
-}
-[data-testid=stMainBlockContainer ] {
-    padding: 0.5rem 4.5rem 10rem;
-}
+
 .st-key-ctn_board_ldp_header .stSelectbox{
     display: inline-flex;
     vertical-align: middle;
@@ -28,7 +23,7 @@
 .st-key-ctn_metric_ldp_board_01, .st-key-ctn_metric_ldp_board_02,.st-key-ctn_metric_ldp_board_03,.st-key-ctn_metric_ldp_board_04{
     border-left: 5px solid #00a6a6;
 }
-.st-key-ctn_pie_chart_ldp:hover,.st-key-ctn_key_table_show_ldp:hover,.st-key-ctn_metric_ldp_board_01:hover, .st-key-ctn_metric_ldp_board_02:hover,.st-key-ctn_metric_ldp_board_03:hover,.st-key-ctn_metric_ldp_board_04:hover{
+.st-key-ctn_metric_ldp_board_01:hover, .st-key-ctn_metric_ldp_board_02:hover,.st-key-ctn_metric_ldp_board_03:hover,.st-key-ctn_metric_ldp_board_04:hover{
     transform: scale(1.05);
     transition: transform 0.3s ease-in-out;
 }

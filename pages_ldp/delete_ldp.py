@@ -81,7 +81,7 @@ class FRONTEND_DESIGN_DELETE():
                 with st.form(key="search_form", enter_to_submit=True,border=False):
                     cols_search = st.columns([6,1])
                     search_term = cols_search[0].text_input(label=" ",placeholder="Tìm kiếm thông tin", key="search_term",type="default")
-                    if cols_search[1].form_submit_button("🔍"):
+                    if cols_search[1].form_submit_button("🔍",use_container_width=True):
                         if search_term:
                             return search_term
                         else:
@@ -156,7 +156,7 @@ class FRONTEND_DESIGN_DELETE():
             
         container_header_plan_delete = st.container(key="container_header_plan_delete")
         cols_plan_delete = container_header_plan_delete.columns([3,3,9.5,6,0.5])
-        button_delete_kehoach = cols_plan_delete[3].button("Xóa khỏi csdl", key="delete_plan", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental)
+        button_delete_kehoach = cols_plan_delete[3].button("Xóa khỏi csdl", key="delete_plan", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental,use_container_width=True)
         button_refress_pade = cols_plan_delete[0].button("Load", key="refress_page_delete_plan", type="secondary",use_container_width=True,icon=":material/published_with_changes:")
         button_export_excel =cols_plan_delete[1].download_button("Excel", key="export_excel_page_plan",use_container_width=True, help="Xuất excel",
                                                                         data=output_xlsx_download.getvalue(),
@@ -213,7 +213,7 @@ class FRONTEND_DESIGN_DELETE():
         container_header_do_delete = st.container(key="container_header_do_delete")
         with container_header_do_delete:
             cols_do_delete = container_header_do_delete.columns([3,3,9.5,6,0.5])
-            button_delete_do = cols_do_delete[3].button("Xóa khỏi csdl", key="delete_do_out_db", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental)
+            button_delete_do = cols_do_delete[3].button("Xóa khỏi csdl", key="delete_do_out_db", type="primary",icon=":material/delete:",disabled=disabled_widget_experimental,use_container_width=True)
             button_refress_pade = cols_do_delete[0].button("Load", key="refress_page_delete", type="secondary",use_container_width=True,icon=":material/published_with_changes:")
             button_export_excel =cols_do_delete[1].download_button("Excel", key="export_excel_page_do",use_container_width=True, help="Xuất excel",
                                                                         data=output_xlsx_download.getvalue(),

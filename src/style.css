@@ -84,3 +84,28 @@ div[data-testid="stExpander"] div[role="button"] p
 [data-testid="stSidebarUserContent"] {
     padding: 0rem 1.5rem 6rem;
 }
+
+/* PROCESS RESPONSIVE */
+@media (max-width: 1200px) {
+    [data-testid=stMainBlockContainer] {
+        padding: 0rem 3rem 8rem;
+    }
+}
+
+@media (max-width: 992px) {
+    [data-testid=stMainBlockContainer] {
+        padding: 0rem 2rem 6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    [data-testid=stMainBlockContainer] {
+        padding: 1rem 1rem 4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-testid=stMainBlockContainer] {
+        padding: 1rem 1rem 2rem;
+    }
+}

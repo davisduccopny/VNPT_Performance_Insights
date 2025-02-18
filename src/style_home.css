@@ -50,3 +50,23 @@ div[data-testid="stExpander"] div[role="button"] p
     margin: 0;
     padding: 0;
 }
+
+@media (max-width: 768px) {
+    #target-section-0 h1{
+        font-size: 50px !important;
+    }
+    #bono-arrow-slide{
+        height: 35px !important;
+        margin-right: 5px !important ;
+    }
+}
+
+@media (max-width: 480px) {
+    #target-section-0 h1{
+        font-size: 45px !important;
+    }
+    #bono-arrow-slide{
+        height: 35px !important;
+        margin-right: 5px !important;
+    }
+}

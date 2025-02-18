@@ -2,9 +2,7 @@
     margin-top: 4%;
 } */
 
-[data-testid=stMainBlockContainer ] {
-    padding: 3rem 5rem 10rem;
-}
+
 .st-key-container_header_manage_user [data-testid="stHorizontalBlock"]{
     gap: 0.3rem;
     }
@@ -21,7 +19,7 @@
     padding:10px 5px;
     border-radius:15px;
     font-weight: bolder;
-    box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
+
     }
 .st-key-container_title_manage_user{
     background-color: #c4d8e5;
@@ -44,4 +42,13 @@
 }
 .st-key-container_pagination [data-testid="stColumn"]{
     box-shadow: none !important;
+}
+.st-key-ctn_header_table_manage{
+    margin-bottom: 15px;
+    background-color: rgb(120, 189, 243);
+    padding: 5px;
+    border-radius: 10px;
+}
+.st-key-ctn_header_table_manage p{
+    font-weight: bold;
 }

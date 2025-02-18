@@ -24,6 +24,8 @@ if not st.session_state.get("is_logged_in", False):
     st.switch_page("main.py")
     st.stop() 
 # PART SET CONFIG
+with open('src/style.css', encoding="utf-8")as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_general.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_ldp/style_view.css', encoding="utf-8")as f:
@@ -43,7 +45,7 @@ class VIEW_LDP_DATA_PROCESS():
         
         with container_title_table_view:
             col_title_dmanage_expand = st.columns([2,2.2])
-            col_title_dmanage_expand[0].markdown(f"""<h3 style='text-align: left; padding:0'>{header_page}</h3>""", unsafe_allow_html=True)
+            col_title_dmanage_expand[0].markdown(f"""<h3 style='text-align: left;'>{header_page}</h3>""", unsafe_allow_html=True)
             with col_title_dmanage_expand[1]:
                 cols_button_view_table = st.columns([1,1,1])
                 with cols_button_view_table[0]:

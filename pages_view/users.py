@@ -47,7 +47,7 @@ class FRONTEND_UI_DESIGN():
                 with st.form(key="search_form", enter_to_submit=True,border=False):
                     cols_search = st.columns([6,1])
                     search_term = cols_search[0].text_input(label=" ",placeholder="Tìm kiếm thông tin", key="search_term",type="default")
-                    if cols_search[1].form_submit_button("🔍"):
+                    if cols_search[1].form_submit_button("🔍",use_container_width=True):
                         if search_term:
                             return search_term
                         else:
@@ -200,10 +200,9 @@ class FRONTEND_UI_DESIGN():
             container_form_change_pass = st.container(key="container_form_change_pass")
             with container_form_change_pass:
                 with st.form(key="change_pass_form", enter_to_submit=True, border=False, clear_on_submit=True):
-                    cols_change_pass = st.columns([6,1])
-                    old_pass = cols_change_pass[0].text_input(label="🔑Mật khẩu cũ",placeholder="Nhập mật khẩu cũ", key="old_pass",type="password", disabled=disable)
-                    new_pass = cols_change_pass[0].text_input(label="🔑Mật khẩu mới",placeholder="Nhập mật khẩu mới", key="new_pass",type="password", disabled=disable)
-                    confirm_pass = cols_change_pass[0].text_input(label="🔑Xác nhận mật khẩu mới",placeholder="Nhập lại mật khẩu mới", key="confirm_pass",type="password", disabled=disable)
+                    old_pass = st.text_input(label="🔑Mật khẩu cũ",placeholder="Nhập mật khẩu cũ", key="old_pass",type="password", disabled=disable)
+                    new_pass = st.text_input(label="🔑Mật khẩu mới",placeholder="Nhập mật khẩu mới", key="new_pass",type="password", disabled=disable)
+                    confirm_pass = st.text_input(label="🔑Xác nhận mật khẩu mới",placeholder="Nhập lại mật khẩu mới", key="confirm_pass",type="password", disabled=disable)
                     if st.form_submit_button("Save", icon=":material/save:", type="primary", help="Nhấn vào để lưu thay đổi!", disabled=disable):
                         with st.spinner("🔐 Đang thực hiện thao tác..."):
                             if old_pass and new_pass and confirm_pass:
@@ -243,14 +242,13 @@ class FRONTEND_UI_DESIGN():
             container_form_change_display = st.container(key="container_form_change_display")
             with container_form_change_display:
                 with st.form(key="change_display_form", enter_to_submit=True, border=False, clear_on_submit=False):
-                    cols_change_display = st.columns([6,1])
-                    display_name = cols_change_display[0].text_input(label="Tên hiển thị", value=MAIN_USER().load_data_for_user()[1],placeholder="Nhập tên hiển thị", key="display_name_user", disabled=disable)
+                    display_name = st.text_input(label="Tên hiển thị", value=MAIN_USER().load_data_for_user()[1],placeholder="Nhập tên hiển thị", key="display_name_user", disabled=disable)
                     main_user_instance = MAIN_USER()
                     current_line = main_user_instance.load_data_for_user()[3]
                     current_line = line_after_load[line_after_load["ma_line"]==current_line]["ten_line"].values[0]
                     line_index = self.array_line.index(current_line) if current_line in self.array_line else 0
-                    line = cols_change_display[0].selectbox("Line", self.array_line, index=line_index, key="line_user_change_private", disabled=disable)
-                    ma_nv = cols_change_display[0].text_input(label="Mã nhân viên", value=MAIN_USER().load_data_for_user()[0],placeholder="Nhập mã nhân viên", key="code_employee_new_change", disabled=disable)
+                    line = st.selectbox("Line", self.array_line, index=line_index, key="line_user_change_private", disabled=disable)
+                    ma_nv = st.text_input(label="Mã nhân viên", value=MAIN_USER().load_data_for_user()[0],placeholder="Nhập mã nhân viên", key="code_employee_new_change", disabled=disable)
                     ma_line_new = line_after_load[line_after_load["ten_line"]==line]["ma_line"].values[0] 
                     if st.form_submit_button("Save", icon=":material/save:", type="primary", help="Nhấn vào để lưu thay đổi!", disabled=disable):
                         with st.spinner("🔐 Đang thực hiện thao tác..."):

@@ -1,7 +1,4 @@
 
-[data-testid="stHeader"] {
-    background: rgba(0,0,0,0);
-}
 [data-testid="stSidebarUserContent"]{
     padding: 1rem 1.5rem 6rem;
 
@@ -108,4 +105,44 @@ font-size: 1.2rem;
 .st-key-container_header_service .stColumn{border-left: 5px solid #00a6a6;
 }
 .st-key-container_header_services .stColumn{border-left: 5px solid #00a6a6;
+}
+/* PROCESS RESPONSIVE */
+@media (max-width: 1200px) {
+    [data-testid="stMainBlockContainer"] {
+        padding: 0rem 3rem 8rem;
+    }
+    [data-testid="stSidebarUserContent"]{
+        padding: 1rem 1.5rem 4rem;
+    
+    }
+}
+
+@media (max-width: 992px) {
+    [data-testid="stMainBlockContainer"] {
+        padding: 0rem 2rem 6rem;
+    }
+    [data-testid="stSidebarUserContent"]{
+        padding: 1rem 1.5rem 4rem;
+    
+    }
+}
+
+@media (max-width: 768px) {
+    [data-testid="stMainBlockContainer"] {
+        padding: 1rem 1rem 4rem;
+    }
+    [data-testid="stSidebarUserContent"]{
+        padding: 1rem 1.5rem 4rem;
+    
+    }
+}
+
+@media (max-width: 576px) {
+    [data-testid="stMainBlockContainer"] {
+        padding: 1rem 0.5rem 2rem;
+    }
+    [data-testid="stSidebarUserContent"]{
+        padding: 1rem 1.5rem 4rem;
+    
+    }
 }

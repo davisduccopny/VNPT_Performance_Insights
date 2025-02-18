@@ -63,118 +63,137 @@ def update_user_by_admin(username_state, username,display_name, password, line,r
 def login():
     container_login = st.container(key="container_login")
     with container_login:
-        st.markdown("<h2 style='text-align: center;'> <i class='vnpt-icon'></i> VINAPHONE PERFORMANCE INSIGHTS</h2>", unsafe_allow_html=True)
+        container_login.markdown("""<h2 style='text-align: center;'> <i class='vnpt-icon'></i> VINAPHONE PERFORMANCE INSIGHTS</h2>""", unsafe_allow_html=True)
         config_project.social_media_show()
-    if 'is_logged_in' not in st.session_state:
-        st.session_state.is_logged_in = False
-        st.session_state.role_access_admin = False
-        st.session_state.line_access = None
-        st.session_state.type_process = None
-    background_image_login = config_project.get_relative_file_path("../src/for_style/302938672_434661178647430_3619299105774288951_n.jpg")
-    icon_login_path = config_project.get_relative_file_path("../src/vnpt.png")
-    st.markdown(f"""
-            <style>
-                [data-testid="stMainBlockContainer"]{{
-                width: 100%;
-                padding: 6rem 1rem 10rem;
-                max-width: 46rem;
-
-                }}
-                [data-testid="stSidebar"] {{
-                    display: none;
-                }}
-                .st-key-container_login {{
+        if 'is_logged_in' not in st.session_state:
+            st.session_state.is_logged_in = False
+            st.session_state.role_access_admin = False
+            st.session_state.line_access = None
+            st.session_state.type_process = None
+        background_image_login = config_project.get_relative_file_path("../src/for_style/302938672_434661178647430_3619299105774288951_n.jpg")
+        icon_login_path = config_project.get_relative_file_path("../src/vnpt.png")
+        ctn_child_login_form = container_login.container(key="ctn_child_login_form")
+        st.markdown(f"""
+                <style>
+                    [data-testid="stMainBlockContainer"]{{
                     width: 100%;
-                    box-shadow: -10px 5px 10px rgba(255, 255, 255, 0.1), 
-                    10px 5px 10px rgba(255, 255, 255, 0.1), 
-                    0px 10px 10px rgba(255, 255, 255, 0.1);
-                    padding: 25px;
-                    border-radius: 15px;
-                    background: rgba(255, 255, 255, 0.8);
-                }}
-                .vnpt-icon {{
-                    display: inline-block;
-                    width: 1.65rem;
-                    height: 1.65rem;
-                    background-image: url('data:image/png;base64,{icon_login_path}');
-                    background-size: contain;
-                    background-repeat: no-repeat;
-                }}
-                [data-testid="stHeader"] {{
-                    background: rgba(0,0,0,0);
-                }}
-                [data-testid="stAppViewContainer"] > .stMain {{
-                    background-image: url("data:image/jpg;base64,{background_image_login}");
-                    background-size: cover;
-                    background-position: right;
-                    background-repeat: no-repeat;
-                    background-attachment: fixed;
-                }}
-            </style>
-            """, unsafe_allow_html=True)
+                    padding: 6rem 1rem 10rem;
+                    max-width: 46rem;
 
-    
-    if not st.session_state.is_logged_in:
-        with container_login.form(key="login_form",enter_to_submit=True, border=False):
-            title_placeholder = st.empty()
-            title_placeholder.subheader("Đăng nhập")
-            username_placeholder = st.empty()
-            password_placeholder = st.empty()
-            success_placeholder = st.empty()
-            username = username_placeholder.text_input("Tên người dùng", placeholder="Enter user name", key="username_login")
-            password = password_placeholder.text_input("Mật khẩu", type="password", placeholder="Enter password", key="password_login")
-            cols_login_type_process = st.columns([3,1])
-            config_project.create_db_pool()
-            toggle_login_type_process = cols_login_type_process[1].toggle("Login cấp phòng", value=False, key="toggle_login_type_process")
-            with cols_login_type_process[0]:
-                if cols_login_type_process[0].form_submit_button("🔓Đăng nhập",type="primary", help="Nhấn vào để đăng nhập!"):
-                    with st.spinner('🔒 Đang kiểm tra thông tin đăng nhập...'): 
-                        if (username is not None and password is not None) and (username != '' and password != ''):
-                            conn = config_project.connect_to_mysql()
-                            cursor = conn.cursor()
-                            user_role_mvnpt,line_access,ma_nv_access,display_name_vnpt = check_user_access(username,password,conn,cursor)
-                            if user_role_mvnpt and (user_role_mvnpt is not None):
-                                if  toggle_login_type_process is True:
-                                    if user_role_mvnpt == 'admin':
-                                        st.session_state.is_logged_in = True
-                                        st.session_state.line_access = line_access
-                                        st.session_state.role_access_admin = user_role_mvnpt
-                                        st.session_state.usernamevnpt = username
-                                        st.session_state.employee_id = ma_nv_access
-                                        st.session_state.type_process = 'LDPVNPT'
-                                        st.session_state.display_name_vnpt = display_name_vnpt
-                                        success_placeholder.success("✅ Đăng nhập thành công!")
-                                        time.sleep(2)  
-                                        title_placeholder.empty()
-                                        username_placeholder.empty()
-                                        password_placeholder.empty()
-                                        success_placeholder.empty()
-                                        st.rerun()
+                    }}
+                    [data-testid="stSidebar"] {{
+                        display: none;
+                    }}
+                    .st-key-container_login {{
+                        width: 100%;
+                        box-shadow: -10px 5px 10px rgba(255, 255, 255, 0.1), 
+                        10px 5px 10px rgba(255, 255, 255, 0.1), 
+                        0px 10px 10px rgba(255, 255, 255, 0.1);
+                        border-radius: 15px;
+                        background: rgba(255, 255, 255, 0.8);
+                    }}
+                    .st-key-ctn_child_login_form{{
+                        padding: 25px;
+                    }}
+                    .vnpt-icon {{
+                        display: inline-block;
+                        width: 1.65rem;
+                        height: 1.65rem;
+                        background-image: url('data:image/png;base64,{icon_login_path}');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                    }}
+                    [data-testid="stHeader"] {{
+                        background: rgba(0,0,0,0);
+                    }}
+                    [data-testid="stAppViewContainer"] > .stMain {{
+                        background-image: url("data:image/jpg;base64,{background_image_login}");
+                        background-size: cover;
+                        background-position: right;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                    }}
+                    
+                    @media (max-width: 1200px) {{
+                        [data-testid="stAppViewContainer"] > .stMain {{
+                            background-position: center;
+                        }}
+                    }}
+                    @media (max-width: 768px) {{
+                        #vinaphone-performance-insights {{ 
+                            font-size: 2rem ;
+                            
+                        }}
+                        .vnpt-icon {{ 
+                            width: 1.5rem; 
+                            height: 1.5rem; 
+                        }}
+                    }}
+                    
+                </style>
+                """, unsafe_allow_html=True)
+
+        if not st.session_state.is_logged_in:
+            with ctn_child_login_form.form(key="login_form",enter_to_submit=True, border=False):
+                title_placeholder = st.empty()
+                title_placeholder.subheader("Đăng nhập")
+                username_placeholder = st.empty()
+                password_placeholder = st.empty()
+                success_placeholder = st.empty()
+                username = username_placeholder.text_input("Tên người dùng", placeholder="Enter user name", key="username_login")
+                password = password_placeholder.text_input("Mật khẩu", type="password", placeholder="Enter password", key="password_login")
+                cols_login_type_process = st.columns([3,1])
+                config_project.create_db_pool()
+                toggle_login_type_process = cols_login_type_process[1].toggle("Login cấp phòng", value=False, key="toggle_login_type_process")
+                with cols_login_type_process[0]:
+                    if cols_login_type_process[0].form_submit_button("🔓Đăng nhập",type="primary", help="Nhấn vào để đăng nhập!"):
+                        with st.spinner('🔒 Đang kiểm tra thông tin đăng nhập...'): 
+                            if (username is not None and password is not None) and (username != '' and password != ''):
+                                conn = config_project.connect_to_mysql()
+                                cursor = conn.cursor()
+                                user_role_mvnpt,line_access,ma_nv_access,display_name_vnpt = check_user_access(username,password,conn,cursor)
+                                if user_role_mvnpt and (user_role_mvnpt is not None):
+                                    if  toggle_login_type_process is True:
+                                        if user_role_mvnpt == 'admin':
+                                            st.session_state.is_logged_in = True
+                                            st.session_state.line_access = line_access
+                                            st.session_state.role_access_admin = user_role_mvnpt
+                                            st.session_state.usernamevnpt = username
+                                            st.session_state.employee_id = ma_nv_access
+                                            st.session_state.type_process = 'LDPVNPT'
+                                            st.session_state.display_name_vnpt = display_name_vnpt
+                                            success_placeholder.success("✅ Đăng nhập thành công!")
+                                            time.sleep(2)  
+                                            title_placeholder.empty()
+                                            username_placeholder.empty()
+                                            password_placeholder.empty()
+                                            success_placeholder.empty()
+                                            st.rerun()
+                                        else:
+                                            st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
                                     else:
-                                        st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
+                                        if line_access != 'LDPVNPT':
+                                            st.session_state.is_logged_in = True
+                                            st.session_state.line_access = line_access
+                                            st.session_state.role_access_admin = user_role_mvnpt
+                                            st.session_state.usernamevnpt = username
+                                            st.session_state.employee_id = ma_nv_access
+                                            st.session_state.type_process = 'LINE'
+                                            st.session_state.display_name_vnpt = display_name_vnpt
+                                            success_placeholder.success("✅ Đăng nhập thành công!")
+                                            time.sleep(2)  
+                                            title_placeholder.empty()
+                                            username_placeholder.empty()
+                                            password_placeholder.empty()
+                                            success_placeholder.empty()
+                                            st.rerun()
+                                        else:
+                                            st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
+                                        
                                 else:
-                                    if line_access != 'LDPVNPT':
-                                        st.session_state.is_logged_in = True
-                                        st.session_state.line_access = line_access
-                                        st.session_state.role_access_admin = user_role_mvnpt
-                                        st.session_state.usernamevnpt = username
-                                        st.session_state.employee_id = ma_nv_access
-                                        st.session_state.type_process = 'LINE'
-                                        st.session_state.display_name_vnpt = display_name_vnpt
-                                        success_placeholder.success("✅ Đăng nhập thành công!")
-                                        time.sleep(2)  
-                                        title_placeholder.empty()
-                                        username_placeholder.empty()
-                                        password_placeholder.empty()
-                                        success_placeholder.empty()
-                                        st.rerun()
-                                    else:
-                                        st.warning("❌ Bạn không có quyền truy cập vào hệ thống!")
-                                    
+                                    st.error("❌ Tên đăng nhập hoặc mật khẩu không đúng!")
                             else:
-                                st.error("❌ Tên đăng nhập hoặc mật khẩu không đúng!")
-                        else:
-                            st.warning("❌ Vui lòng nhập tên đăng nhập và mật khẩu!")
+                                st.warning("❌ Vui lòng nhập tên đăng nhập và mật khẩu!")
         # with container_login:
         #     with st.spinner("🔍Đang khởi động..."):
         #         time.sleep(2)

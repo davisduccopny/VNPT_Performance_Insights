@@ -19,6 +19,8 @@ if not st.session_state.get("is_logged_in", False):
     st.switch_page("main.py")
     st.stop()
 # PART CONFIG
+with open('src/style.css', encoding="utf-8")as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_general.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_expand.css', encoding="utf-8")as f:
@@ -39,7 +41,7 @@ class DESIGN_FRONTEND_MANAGE():
                 with st.form(key="search_form", enter_to_submit=True,border=False):
                     cols_search = st.columns([6,1])
                     search_term = cols_search[0].text_input(label=" ",placeholder="Tìm kiếm thông tin", key="search_term",type="default")
-                    if cols_search[1].form_submit_button("🔍"):
+                    if cols_search[1].form_submit_button("🔍",use_container_width=True):
                         if search_term:
                             return search_term
                         else:
@@ -132,7 +134,8 @@ class DESIGN_FRONTEND_MANAGE():
                 st.rerun()
     def streamlit_menu_sidebar_delete(self):
         with st.sidebar:
-            if st.session_state.role_access_admin == "admin" or st.session_state.role_access_admin == "manage":
+            module_config.show_expander_sidebar()
+            if (st.session_state.role_access_admin == "admin" or st.session_state.role_access_admin == "manage") and st.session_state.line_access != "LDPVNPT":
                 selected = option_menu(
                     menu_title= None,  # required
                     options=["Quản lý tài khoản", "Tài liệu hướng dẫn"],  # required
@@ -247,45 +250,6 @@ class DESIGN_FRONTEND_MANAGE():
             container_second_show_table_manage = st.container(key="container_second_show_table_manage")
             with container_second_show_table_manage:
                 # with st.expander("Quản lý các Line", expanded=True):
-                st.markdown(
-                        """
-                        <style>
-                        .header-row {
-                            display: flex;
-                            justify-content: left;
-                            font-weight: bold;
-                            padding: 10px 10px;
-                            border-bottom: 2px solid #ddd;
-                            margin-bottom: 2%;
-                            background-color: #7FC8F8;
-                            gap: 1%; /* Khoảng cách giữa các cột */
-                            border-radius: 10px;
-                        }
-                        .header-col {
-                            flex: 1; /* Tỷ lệ mặc định */
-                            text-align: left;
-                        }
-                        .header-col:nth-child(1) { flex: 1; } 
-                        .header-col:nth-child(2) { flex: 1; } 
-                        .header-col:nth-child(3) { flex: 1; } 
-                        .header-col:nth-child(4) { flex: 1.25; }
-                        .header-col:nth-child(5) { flex: 1.5; }  
-                        .header-col:nth-child(6) { flex: 1; } 
-                        </style>
-                        """, unsafe_allow_html=True
-                    )
-                st.markdown(
-                        """
-                        <div class="header-row">
-                        <div class="header-col">Username</div>
-                        <div class="header-col">Line</div>
-                        <div class="header-col">Role</div>
-                        <div class="header-col">Display Name</div>
-                        <div class="header-col">Mã NV</div>
-                        <div class="header-col">Action</div>
-                        </div>
-                        """, unsafe_allow_html=True
-                    )
                 data = load_data_users
                 for item in data:
                     item["line"] = line_after_load[line_after_load["ma_line"] == item["line"]]["ten_line"].values[0] \
@@ -299,42 +263,56 @@ class DESIGN_FRONTEND_MANAGE():
 
                 start_idx = (current_page - 1) * users_per_page
                 end_idx = start_idx + users_per_page
-
+                ctn_header_table_manage = st.container(key="ctn_header_table_manage")
+                with ctn_header_table_manage:
+                    cols_header_manage_foreach = ctn_header_table_manage.columns([1, 1, 1, 1, 1, 2])
+                    with cols_header_manage_foreach[0]:
+                        st.markdown("<p style='text-align: center;'>Tên đăng nhập</p>", unsafe_allow_html=True)
+                    with cols_header_manage_foreach[1]:
+                        st.markdown("<p style='text-align: center;'>Line</p>", unsafe_allow_html=True)
+                    with cols_header_manage_foreach[2]:
+                        st.markdown("<p style='text-align: center;'>Vai trò</p>", unsafe_allow_html=True)
+                    with cols_header_manage_foreach[3]:
+                        st.markdown("<p style='text-align: center;'>Tên hiển thị</p>", unsafe_allow_html=True)
+                    with cols_header_manage_foreach[4]:
+                        st.markdown("<p style='text-align: center;'>Mã NV</p>", unsafe_allow_html=True)
+                    with cols_header_manage_foreach[5]:
+                        st.markdown("<p style='text-align: center;'>Hành động</p>", unsafe_allow_html=True)
                 for idx, row in enumerate(data[start_idx:end_idx]):
-                    col1, col2, col3 = st.columns([5, 0.7, 0.7], gap="small")
-                    with col1:
-                        col_1_user_manage = st.columns([0.8, 1, 1, 1, 1])
-                        with col_1_user_manage[0]:
-                            st.write(f"{row['username']}")
-                        with col_1_user_manage[1]:
-                            st.write(f"{row['line']}")
-                        with col_1_user_manage[2]:
-                            st.write(f"{row['role']}")
-                        with col_1_user_manage[3]:
-                            st.write(f"{row['display_name']}")
-                        with col_1_user_manage[4]:
-                            st.write(f"{row['ma_nv']}")
-                    with col2:
-                        if st.button("🗑️Xóa", key=f"delete_{row['id']}", use_container_width=True):
-                            if module_expand.delete_user_by_id(int(row['id'])):
-                                st.toast("##### Đã xóa user", icon="✅")
-                                time.sleep(1)
-                                module_users.insert_action_check_user(st.session_state.usernamevnpt, st.session_state.line_access, f"Xóa người dùng {row['username']}")
-                                module_users.load_action_check_user.clear()
-                                st.cache_data.clear()
+                    cols_user_manager_foreach = st.columns([1,1, 1, 1, 1,2])
+                    with cols_user_manager_foreach[0]:
+                        st.markdown(f"<p style='text-align: center;'>{row['username']}</p>", unsafe_allow_html=True)
+                    with cols_user_manager_foreach[1]:
+                        st.markdown(f"<p style='text-align: center;'>{row['line']}</p>", unsafe_allow_html=True)
+                    with cols_user_manager_foreach[2]:
+                        st.markdown(f"<p style='text-align: center;'>{row['role']}</p>", unsafe_allow_html=True)
+                    with cols_user_manager_foreach[3]:
+                        st.markdown(f"<p style='text-align: center;'>{row['display_name']}</p>", unsafe_allow_html=True)
+                    with cols_user_manager_foreach[4]:
+                        st.markdown(f"<p style='text-align: center;'>{row['ma_nv']}</p>", unsafe_allow_html=True)
+                    with cols_user_manager_foreach[5]:
+                        cols_child_foreach_manage = st.columns([1, 1])
+                        with cols_child_foreach_manage[0]:
+                            if st.button("🗑️Xóa", key=f"delete_{row['id']}", use_container_width=True):
+                                if module_expand.delete_user_by_id(int(row['id'])):
+                                    st.toast("##### Đã xóa user", icon="✅")
+                                    time.sleep(1)
+                                    module_users.insert_action_check_user(st.session_state.usernamevnpt, st.session_state.line_access, f"Xóa người dùng {row['username']}")
+                                    module_users.load_action_check_user.clear()
+                                    st.cache_data.clear()
+                                    st.session_state['rerun'] = True
+                                else:
+                                    st.error("Có lỗi xảy ra khi xóa user")
+                        with cols_child_foreach_manage[1]:
+                            if st.button("✏️Sửa", key=f"edit_{row['id']}", use_container_width=True):
+                                st.session_state.edit_id = row['id']
+                                st.session_state.edit_username = row['username']
+                                st.session_state.edit_line = row['line']
+                                st.session_state.edit_role = row['role']
+                                st.session_state.edit_display_name = row['display_name']
+                                st.session_state.edit_ma_nv = row['ma_nv']
+                                st.session_state.dialog_open_edit_user = True
                                 st.session_state['rerun'] = True
-                            else:
-                                st.error("Có lỗi xảy ra khi xóa user")
-                    with col3:
-                        if st.button("✏️Sửa", key=f"edit_{row['id']}", use_container_width=True):
-                            st.session_state.edit_id = row['id']
-                            st.session_state.edit_username = row['username']
-                            st.session_state.edit_line = row['line']
-                            st.session_state.edit_role = row['role']
-                            st.session_state.edit_display_name = row['display_name']
-                            st.session_state.edit_ma_nv = row['ma_nv']
-                            st.session_state.dialog_open_edit_user = True
-                            st.session_state['rerun'] = True
                     if idx < len(data[start_idx:end_idx]) - 1:
                         st.markdown("<hr style='margin: 0 auto;'>", unsafe_allow_html=True)
 

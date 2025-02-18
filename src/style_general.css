@@ -23,3 +23,15 @@
 [data-testid="stHeader"] {
     background: rgba(0,0,0,0);
 }
+/* PROCESS RESPONSIVE */
+@media (max-width: 768px) {
+    [data-testid="stHeader"] {
+        background: white;
+    }
+}
+
+@media (max-width: 576px) {
+    [data-testid="stHeader"] {
+        background: white;
+    }
+}

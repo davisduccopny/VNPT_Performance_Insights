@@ -144,3 +144,23 @@
 .st-key-container_thirst_main_sub_line_level{
     padding: 0 20px;
 }
+
+@media (max-width: 768px) {
+    .st-key-radio_nhanvien_select [data-testid="stRadio"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p {
+        font-size: 0.875rem;
+    }
+    .st-key-radio_nhanvien_select [data-testid="stRadio"] [data-baseweb="radio"] {
+        width: 80px;
+        padding: 2px;
+    }
+
+}
+@media (max-width: 576px) {
+    .st-key-radio_nhanvien_select [data-testid="stRadio"] [data-testid="stWidgetLabel"] [data-testid="stMarkdownContainer"] p {
+        font-size: 0.75rem;
+    }
+    .st-key-radio_nhanvien_select [data-testid="stRadio"] [data-baseweb="radio"] {
+        width: 100%;
+        padding: 1px;
+    }
+}

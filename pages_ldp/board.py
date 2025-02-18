@@ -1,18 +1,18 @@
 import streamlit as st
-import pandas as pd
-import base64
-from streamlit_option_menu import option_menu
-import numpy as np
-import io
-from openpyxl.styles import Font, Border, Side, PatternFill, Alignment
-from openpyxl import Workbook
-import openpyxl
+# import pandas as pd
+# import base64
+# from streamlit_option_menu import option_menu
+# import numpy as np
+# import io
+# from openpyxl.styles import Font, Border, Side, PatternFill, Alignment
+# from openpyxl import Workbook
+# import openpyxl
 import time
-import datetime
-import PROJECTS.module_view as module_view
+# import datetime
+# import PROJECTS.module_view as module_view
 import LDP_MODULE.ldp_board as ldp_board
 import PROJECTS.config as module_config
-import streamlit.components.v1 as components
+# import streamlit.components.v1 as components
 import LDP_MODULE.ldp_view as ldp_view
 
 # PART LOGIN 
@@ -25,6 +25,8 @@ if not st.session_state.get("is_logged_in", False):
     st.switch_page("main.py")
     st.stop() 
 # PART SET CONFIG
+with open('src/style.css', encoding="utf-8")as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_general.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 with open('src/style_board.css', encoding="utf-8")as f:
@@ -126,6 +128,8 @@ class MAIN_BOARD():
     def __init__(self):
         self.board_ldp = BOARD_LDP()
     def main_run(self):
+        with st.sidebar:
+            module_config.show_expander_sidebar()
         self.board_ldp.show_board_ldp()
 thuchien_after_load, kehoach_after_load, nhanvien_after_load, dichvu_after_load,line_after_load = ldp_view.load_data_ldp()
 main_board = MAIN_BOARD()

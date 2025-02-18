@@ -1,6 +1,4 @@
-[data-testid=stMainBlockContainer ] {
-    padding: 1rem 5rem 10rem;
-}
+
 .st-key-search_term > [data-testid="stTextInput"]{
     display: flex;
 }
@@ -55,7 +53,7 @@
     border-radius:15px;
     font-weight: bolder;
     box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
-    padding: 15px 0px  15px 15%;
+    padding: 15px 15%  15px 15%;
 
 }
 .st-key-container_change_pass p{
@@ -75,7 +73,7 @@
     border-radius:15px;
     font-weight: bolder;
     box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
-    padding: 15px 0px  15px 15%;
+    padding: 15px 15%  15px 15%;
 
 }
 .st-key-container_change_display p{
@@ -106,4 +104,43 @@
 }
 .st-key-delete_button_delete{
     margin-top:6%;
+}
+
+/* PROCESS RESPONSIVE */
+@media (max-width: 768px) {
+    .st-key-container_change_pass{
+       padding: 1rem 1rem;
+    }
+    .st-key-container_form_change_pass{
+        padding: 15px;
+    }
+    .st-key-container_change_display{
+       padding: 1rem 1rem;
+    }
+    .st-key-container_form_change_display{
+        padding: 15px;
+    }
+    .st-key-container_delete_account{
+        padding: 0 1rem;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .st-key-container_change_pass{
+       padding: 1rem 0.5rem;
+    }
+    .st-key-container_form_change_pass{
+        padding: 15px;
+    }
+    .st-key-container_change_display{
+       padding: 1rem 0.5rem;
+    }
+    .st-key-container_form_change_display{
+        padding: 15px;
+    }
+    .st-key-container_delete_account{
+        padding: 0 0.5rem;
+    }
+    
 }

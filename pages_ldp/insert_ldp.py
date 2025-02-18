@@ -158,7 +158,7 @@ class FRONTEND_DESIGN_INSERT():
             time.sleep(2)
     
     def ui_info(self, text):
-        st.markdown(f"<h3 style='text-align: left; padding:0'>{text}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: left;'>{text}</h3>", unsafe_allow_html=True)
     def ui_info_add_search(self, text,loai_data):
         container_title_manage_expand = st.container(key="container_title_manage_expand")
         with container_title_manage_expand:
@@ -169,7 +169,7 @@ class FRONTEND_DESIGN_INSERT():
                 with st.form(key="search_form", enter_to_submit=True,border=False):
                     cols_search = st.columns([6,1])
                     search_term = cols_search[0].text_input(label=" ",placeholder="Tìm kiếm thông tin", key="search_term",type="default")
-                    if cols_search[1].form_submit_button("🔍"):
+                    if cols_search[1].form_submit_button("🔍",use_container_width=True):
                         if search_term:
                             return search_term
                         else:

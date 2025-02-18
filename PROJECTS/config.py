@@ -117,7 +117,7 @@ def add_sidebar_footer():
     with container_sidebar_button_setting:
         cols_button_setting_sidebar = st.columns([1,8,8,1])
         with cols_button_setting_sidebar[1]:
-            if st.button("Log out", icon=":material/logout:", key="logout_from_app",type="secondary",):
+            if st.button("Log out", icon=":material/logout:", key="logout_from_app",type="secondary",use_container_width=True):
                 st.session_state.is_logged_in = False
                 st.session_state.role_access_admin = False
                 st.session_state.line_access = None
@@ -125,7 +125,7 @@ def add_sidebar_footer():
                 st.cache_data.clear()
                 st.rerun()
         with cols_button_setting_sidebar[2]:
-            if st.button("Connect", icon=":material/settings_backup_restore:", key="reconnect_db", type="secondary",):
+            if st.button("Connect", icon=":material/settings_backup_restore:", key="reconnect_db", type="secondary",use_container_width=True):
                 st.session_state.db_pool = None
                 reconnect_if_needed()
                 st.rerun()
@@ -163,7 +163,7 @@ def add_sidebar_footer():
                     """, unsafe_allow_html=True)
 def show_expander_sidebar():
     container_sidebar_expander_show = st.sidebar.container(key="container_sidebar_expander_show")
-    click_epander = container_sidebar_expander_show.checkbox("Mở rộng", False,key="click_expander_show")
+    click_epander = container_sidebar_expander_show.toggle("Mở rộng", False,key="click_expander_show")
     if click_epander:
         st.sidebar.markdown("""
                     <style>

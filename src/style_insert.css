@@ -78,3 +78,15 @@ gap: 0.3rem;
     font-weight: bolder;
     box-shadow: 10px 5px 10px rgba(81, 85, 195,0.2);
 }
+/* PROCESS RESPONSIVE */
+/* @media (max-width: 768px) {
+    #h3_insert_plan_make{
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    #h3_insert_plan_make{
+        margin-bottom: 10px;
+    }
+} */

@@ -98,7 +98,7 @@ class FRONTEND_UI_HOME():
                 <img src='data:image/png;base64,{file_path_image_logo_main}' width='30%' >
                 <h1 style="color: black; font-size: 90px; font-weight: 700; padding-top:0;padding-bottom:10px" >
                     <span style="color: black;">Performance Insights </span>
-                    <img src="data:image/svg+xml;base64,{svg_icon_image_page_home}" height="70" align="center" style="margin-right: -5%; margin-top: -20px;">
+                    <img src="data:image/svg+xml;base64,{svg_icon_image_page_home}" id="bono-arrow-slide" height="70" align="center" style="margin-right: -5%; margin-top: -20px;">
                     <span style="color: black; background-color: rgb(41, 181, 232); padding:0px 10px;">
                     VNPT</span> 
                     <span style="color: #00BFFF;">in 2024</span>
