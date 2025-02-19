@@ -17,10 +17,10 @@ def create_db_pool():
             pool_name="my_pool_vnpt",
             pool_size=10,
             pool_reset_session=True,
-            host='103.200.23.68',
-            user='samryvnc_anhemtamke',
-            password='Tamke@123',
-            database='samryvnc_vnpt_performance_insights'
+            host= os.environ.get('DB_HOST'),
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD'),
+            database=os.environ.get('DB_NAME')
         )
 
 # Hàm lấy kết nối từ pool
