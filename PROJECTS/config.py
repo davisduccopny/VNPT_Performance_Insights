@@ -15,7 +15,7 @@ def create_db_pool():
     if "db_pool" not in st.session_state or st.session_state.db_pool:
         st.session_state.db_pool = mysql.connector.pooling.MySQLConnectionPool(
             pool_name="my_pool_vnpt",
-            pool_size=7,
+            pool_size=5,
             pool_reset_session=True,
             host= os.environ.get('DB_HOST'),
             user=os.environ.get('DB_USER'),
