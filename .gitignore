@@ -164,6 +164,7 @@ dmypy.json
 cython_debug/
 # orther
 import_data.py
+requirement_note.txt
 reports/
 data/ID606/
 data/input_ldp/

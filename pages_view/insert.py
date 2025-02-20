@@ -5,7 +5,6 @@ from streamlit_option_menu import option_menu
 import io
 import time
 import datetime
-import streamlit.components.v1 as components
 import PROJECTS.config as module_config
 import PROJECTS.module_insert as module_insert
 import PROJECTS.module_view as module_view
