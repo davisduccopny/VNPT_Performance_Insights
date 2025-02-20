@@ -20,7 +20,8 @@ def create_db_pool():
             host= os.environ.get('DB_HOST'),
             user=os.environ.get('DB_USER'),
             password=os.environ.get('DB_PASSWORD'),
-            database=os.environ.get('DB_NAME')
+            database=os.environ.get('DB_NAME'),
+            port=os.environ.get('DB_PORT')
         )
 
 # Hàm lấy kết nối từ pool
