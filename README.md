@@ -22,7 +22,7 @@ This project provided application support for decision making and management dat
         + Giao diện thêm dữ liệu
         + Giao diện xóa báo cáo
         + Giao diện quản lý users (cho admin)
-        + Giao diện quản lý báo cáo (cho admin)
+        + Giao diện mở rộng (admin)
         + Giao diện chỉnh sửa thông tin (logo, title, contact, ...)
     2. Chi tiết giao diện
     - Giao diện đăng nhập
@@ -51,9 +51,6 @@ This project provided application support for decision making and management dat
     - Giao diện quản lý users
         + Form quản lý users
         + Button quản lý users
-    - Giao diện quản lý báo cáo
-        + Form quản lý báo cáo
-        + Button quản lý báo cáo
     - Giao diện chỉnh sửa thông tin
         + Form chỉnh sửa thông tin
         + Button chỉnh sửa thông tin
