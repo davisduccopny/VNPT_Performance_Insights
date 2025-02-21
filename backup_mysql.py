@@ -66,8 +66,8 @@ def get_table_columns(table_name):
         return []
 
 
-def insert_data_to_cpanel(table_name, data):
-    """Chèn dữ liệu vào MySQL trên cPanel"""
+def insert_data_to_cpanel(table_name, data, batch_size=500):
+    """Chèn dữ liệu vào MySQL trên cPanel nhanh hơn bằng batch insert"""
     if not data:
         print(f"Không có dữ liệu để đồng bộ cho bảng {table_name}.")
         return
@@ -80,30 +80,37 @@ def insert_data_to_cpanel(table_name, data):
     try:
         conn = mysql.connector.connect(**CPANEL_CONFIG)
         cursor = conn.cursor()
-        
-         # Tắt trigger trước khi chèn dữ liệu
+
+        # Tắt trigger trước khi chèn dữ liệu (nếu cần)
         if table_name == 'users':
             cursor.execute("SET SESSION sql_mode='NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER'")
-        
+
         # Tạo câu lệnh INSERT/REPLACE động
         placeholders = ", ".join(["%s"] * len(columns))
         insert_query = f"REPLACE INTO {table_name} ({', '.join(columns)}) VALUES ({placeholders})"
 
-        # Chèn từng hàng vào database
-        for row in data:
-            cursor.execute(insert_query, tuple(row[col] for col in columns))
+        # Chuyển dữ liệu thành danh sách tuple
+        values = [tuple(row[col] for col in columns) for row in data]
 
-        conn.commit()
-        
-         # Bật lại trigger sau khi chèn xong
+        # Chia nhỏ dữ liệu thành từng batch để tránh quá tải
+        total_records = len(values)
+        for i in range(0, total_records, batch_size):
+            batch = values[i:i + batch_size]
+            cursor.executemany(insert_query, batch)
+            conn.commit()  # Commit từng batch
+            print(f"Đã chèn {len(batch)} bản ghi vào bảng {table_name} ({i + len(batch)}/{total_records})")
+
+        # Bật lại trigger sau khi chèn xong
         if table_name == 'users':
             cursor.execute("SET SESSION sql_mode=DEFAULT")
-        
+
         cursor.close()
         conn.close()
-        print(f"Đã đồng bộ {len(data)} bản ghi vào bảng {table_name}.")
+        print(f"✅ Hoàn tất đồng bộ {total_records} bản ghi vào bảng {table_name}.")
     except Error as e:
-        print(f"Lỗi khi chèn dữ liệu vào bảng {table_name}: {e}")
+        print(f"❌ Lỗi khi chèn dữ liệu vào bảng {table_name}: {e}")
+
+
 
 
 def main():
