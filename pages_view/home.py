@@ -1,9 +1,9 @@
 import streamlit as st
-import PROJECTS.module_login as module_login
-import PROJECTS.config as module_config
-import PROJECTS.module_view as module_view
-import PROJECTS.module_insert as module_insert
-import PROJECTS.module_users as module_users
+import EM_MODULE.module_login as module_login
+import EM_MODULE.config as module_config
+import EM_MODULE.module_view as module_view
+import EM_MODULE.module_insert as module_insert
+import EM_MODULE.module_users as module_users
 
 
 if 'is_logged_in' not in st.session_state:

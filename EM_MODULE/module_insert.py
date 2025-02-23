@@ -4,7 +4,7 @@ import pandas as pd
 import mysql.connector
 from mysql.connector import pooling, Error
 import webbrowser
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 
 
 @st.cache_data

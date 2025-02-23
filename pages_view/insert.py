@@ -5,10 +5,10 @@ from streamlit_option_menu import option_menu
 import io
 import time
 import datetime
-import PROJECTS.config as module_config
-import PROJECTS.module_insert as module_insert
-import PROJECTS.module_view as module_view
-import PROJECTS.module_users as module_users
+import EM_MODULE.config as module_config
+import EM_MODULE.module_insert as module_insert
+import EM_MODULE.module_view as module_view
+import EM_MODULE.module_users as module_users
 #  PART CHECK LOGIN
 if not st.session_state.get("is_logged_in", False):
     with st.spinner("🔐 Đang chuyển hướng đến trang đăng nhập..."):

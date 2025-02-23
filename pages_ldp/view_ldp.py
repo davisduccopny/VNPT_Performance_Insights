@@ -9,8 +9,8 @@ from openpyxl import Workbook
 import openpyxl
 import time
 import datetime
-import PROJECTS.module_view as module_view
-import PROJECTS.config as module_config
+import EM_MODULE.module_view as module_view
+import EM_MODULE.config as module_config
 import streamlit.components.v1 as components
 import LDP_MODULE.ldp_view as ldp_view
 

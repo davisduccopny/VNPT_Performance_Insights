@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import os
 import numpy as np
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import altair as alt
 import plotly.express as px
-import PROJECTS.module_view as module_view
+import EM_MODULE.module_view as module_view
 
 
 def filter_data_show(df,month,year,loaidoanhthu,type_process):

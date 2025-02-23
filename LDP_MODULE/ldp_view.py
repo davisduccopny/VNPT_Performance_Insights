@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import os
 import numpy as np
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import altair as alt
 import plotly.express as px
-from PROJECTS.module_view import query_to_dataframe
+from EM_MODULE.module_view import query_to_dataframe
 
 @st.cache_data
 def load_data_ldp():

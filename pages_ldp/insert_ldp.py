@@ -6,10 +6,10 @@ import io
 import time
 import datetime
 import streamlit.components.v1 as components
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import LDP_MODULE.ldp_insert as module_insert
 import LDP_MODULE.ldp_view as module_view
-import PROJECTS.module_users as module_users
+import EM_MODULE.module_users as module_users
 #  PART CHECK LOGIN
 if not st.session_state.get("is_logged_in", False):
     with st.spinner("🔐 Đang chuyển hướng đến trang đăng nhập..."):

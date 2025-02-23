@@ -1,18 +1,7 @@
 import streamlit as st
-# import pandas as pd
-# import base64
-# from streamlit_option_menu import option_menu
-# import numpy as np
-# import io
-# from openpyxl.styles import Font, Border, Side, PatternFill, Alignment
-# from openpyxl import Workbook
-# import openpyxl
 import time
-# import datetime
-# import PROJECTS.module_view as module_view
 import LDP_MODULE.ldp_board as ldp_board
-import PROJECTS.config as module_config
-# import streamlit.components.v1 as components
+import EM_MODULE.config as module_config
 import LDP_MODULE.ldp_view as ldp_view
 
 # PART LOGIN 

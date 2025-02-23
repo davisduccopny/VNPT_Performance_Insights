@@ -2,11 +2,11 @@ import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
 import time
-import PROJECTS.config as module_config
-import PROJECTS.module_view as module_view
+import EM_MODULE.config as module_config
+import EM_MODULE.module_view as module_view
 from LDP_MODULE.ldp_view import load_data_ldp,load_line_manage
-import PROJECTS.module_expand as module_expand
-import PROJECTS.module_users as module_users
+import EM_MODULE.module_expand as module_expand
+import EM_MODULE.module_users as module_users
 
 if not st.session_state.get("is_logged_in", False):
     with st.spinner("🔐 Đang chuyển hướng đến trang đăng nhập..."):

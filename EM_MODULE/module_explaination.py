@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import plotly.express as px
 import altair as alt
 import speech_recognition as sr

@@ -3,10 +3,10 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 import io
 import time
-import PROJECTS.config as module_config
-import PROJECTS.module_view as module_view
-import PROJECTS.module_delete as module_delete
-import PROJECTS.module_users as module_users
+import EM_MODULE.config as module_config
+import EM_MODULE.module_view as module_view
+import EM_MODULE.module_delete as module_delete
+import EM_MODULE.module_users as module_users
 
 # PATH CONFIG
 with open('src/style.css', encoding="utf-8")as f:

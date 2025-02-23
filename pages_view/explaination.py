@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
 import datetime
-import PROJECTS.config as module_config
-from PROJECTS.module_insert import load_data_service
-from PROJECTS.module_todo import load_tasks as load_data_todo
-from PROJECTS.module_view import load_data as load_data_from_all
-from PROJECTS.module_view import format_number as format_number
+import EM_MODULE.config as module_config
+from EM_MODULE.module_insert import load_data_service
+from EM_MODULE.module_todo import load_tasks as load_data_todo
+from EM_MODULE.module_view import load_data as load_data_from_all
+from EM_MODULE.module_view import format_number as format_number
 from LDP_MODULE.ldp_view import load_data_ldp
-import PROJECTS.module_explaination as module_explaination
+import EM_MODULE.module_explaination as module_explaination
 
 with open('src/style_general.css', encoding="utf-8")as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True) 

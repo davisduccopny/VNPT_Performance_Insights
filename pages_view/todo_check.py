@@ -7,10 +7,10 @@ import altair as alt
 import time
 import datetime
 import streamlit.components.v1 as components
-import PROJECTS.config as module_config
-import PROJECTS.module_insert as module_insert
-import PROJECTS.module_todo as module_todo
-import PROJECTS.module_view as module_view
+import EM_MODULE.config as module_config
+import EM_MODULE.module_insert as module_insert
+import EM_MODULE.module_todo as module_todo
+import EM_MODULE.module_view as module_view
 from streamlit_calendar import calendar
 import calendar as calendar_for_lv
 import uuid

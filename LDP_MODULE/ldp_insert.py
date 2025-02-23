@@ -6,7 +6,7 @@ import mysql
 from mysql.connector import pooling, Error
 from mysql.connector import OperationalError, InternalError
 import webbrowser
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 
 
 @st.cache_data

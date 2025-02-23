@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import numpy as np
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import altair as alt
 import plotly.express as px
 

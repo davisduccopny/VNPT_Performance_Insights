@@ -8,8 +8,8 @@ from openpyxl.styles import Font, Border, Side
 from openpyxl import Workbook
 import openpyxl
 import time
-import PROJECTS.module_view as module_view
-import PROJECTS.config as module_config
+import EM_MODULE.module_view as module_view
+import EM_MODULE.config as module_config
 import streamlit.components.v1 as components
 
 # PART LOGIN 
@@ -123,7 +123,7 @@ class DESIGN_FRONTEND():
         selected_year = st.sidebar.selectbox("Chọn năm", kehoach_after_load["year_insert"].astype(int).unique())
         return selected,selected_months,selected_year,selected_loaidoanhthu,line_nv,selected_data_kind
     def table_sidebar_option(self,radio_type_view_table,cols_head_select_option_revenue):
-        selected = cols_head_select_option_revenue[0].pills("🌀",["👩‍💻 Nhân viên", "🌁 Dịch vụ"], key="table_option_view_pills",default="👩‍💻 Nhân viên")
+        selected = cols_head_select_option_revenue[0].pills(" ",["👩‍💻 Nhân viên", "🌁 Dịch vụ"], key="table_option_view_pills",default="👩‍💻 Nhân viên")
         container_sidebar_table = st.sidebar.container(key="container_sidebar_table")
         with container_sidebar_table:
             selected_months = st.selectbox("Chọn tháng",range(1,13), key="selected_months_table")

@@ -4,13 +4,13 @@ import pandas as pd
 import mysql.connector
 from mysql.connector import pooling, Error
 from mysql.connector import OperationalError, InternalError
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 import plotly.express as px
 import datetime
 import time
 import uuid
 import altair as alt
-from PROJECTS.module_view import format_number
+from EM_MODULE.module_view import format_number
 
 @st.cache_data
 def load_tasks():

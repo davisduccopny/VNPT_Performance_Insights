@@ -4,7 +4,7 @@ import mysql.connector
 from mysql.connector import Error
 import os
 from datetime import datetime
-import PROJECTS.config as config_project
+import EM_MODULE.config as config_project
 import time
 
 

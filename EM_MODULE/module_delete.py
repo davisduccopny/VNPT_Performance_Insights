@@ -1,7 +1,7 @@
 import streamlit as st
 import mysql.connector
 from mysql.connector import pooling, Error
-import PROJECTS.config as module_config
+import EM_MODULE.config as module_config
 
 def delete_plan(deleted_data):
     try:

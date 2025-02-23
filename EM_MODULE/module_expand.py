@@ -3,8 +3,8 @@ import numpy as np
 import pandas as pd
 import mysql.connector
 from mysql.connector import pooling, Error
-import PROJECTS.config as module_config
-import PROJECTS.module_view as module_view
+import EM_MODULE.config as module_config
+import EM_MODULE.module_view as module_view
 import bcrypt
 
 @st.cache_data
