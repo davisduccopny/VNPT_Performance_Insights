@@ -53,49 +53,50 @@
 ## Giao diện
 <table>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_login.png" width="250" alt="page_login"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_gioithieu.png" width="250" alt="page_gioithieu"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_quanlicongviec.png" width="250" alt="page_dashboard_quanlicongviec"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_login.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_login.png" width="250" alt="page_login"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_gioithieu.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_gioithieu.png" width="250" alt="page_gioithieu"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_quanlicongviec.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_quanlicongviec.png" width="250" alt="page_dashboard_quanlicongviec"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_congvieccuatoi.png" width="250" alt="page_congvieccuatoi"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_nhanvien.png" width="250" alt="page_dashboard_xem_nhanvien"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_dichvu.png" width="250" alt="page_dashboard_xem_dichvu"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_congvieccuatoi.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_congvieccuatoi.png" width="250" alt="page_congvieccuatoi"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_nhanvien.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_nhanvien.png" width="250" alt="page_dashboard_xem_nhanvien"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_dichvu.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_xem_dichvu.png" width="250" alt="page_dashboard_xem_dichvu"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_nhanvien.png" width="250" alt="page_table_xem_nhanvien"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_dichvu.png" width="250" alt="page_table_xem_dichvu"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_kehoach.png" width="250" alt="page_themdulieu_kehoach"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_nhanvien.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_nhanvien.png" width="250" alt="page_table_xem_nhanvien"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_dichvu.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_xem_dichvu.png" width="250" alt="page_table_xem_dichvu"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_kehoach.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_kehoach.png" width="250" alt="page_themdulieu_kehoach"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_thuchien.png" width="250" alt="page_themdulieu_thuchien"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu.png" width="250" alt="page_xoadulieu"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu_thuchien.png" width="250" alt="page_xoadulieu_thuchien"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_thuchien.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_themdulieu_thuchien.png" width="250" alt="page_themdulieu_thuchien"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu.png" width="250" alt="page_xoadulieu"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu_thuchien.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_xoadulieu_thuchien.png" width="250" alt="page_xoadulieu_thuchien"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlidichvu.png" width="250" alt="page_quanlidichvu"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_bieumau.png" width="250" alt="page_bieumau"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_giaitrinh.png" width="250" alt="page_dashboard_giaitrinh"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlidichvu.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlidichvu.png" width="250" alt="page_quanlidichvu"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_bieumau.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_bieumau.png" width="250" alt="page_bieumau"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_giaitrinh.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_giaitrinh.png" width="250" alt="page_dashboard_giaitrinh"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanligiaitrinh.png" width="250" alt="page_quanligiaitrinh"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlinguoidung.png" width="250" alt="page_quanlinguoidung"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_tailieuhuongdan.png" width="250" alt="page_tailieuhuongdan"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanligiaitrinh.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanligiaitrinh.png" width="250" alt="page_quanligiaitrinh"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlinguoidung.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_quanlinguoidung.png" width="250" alt="page_quanlinguoidung"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_tailieuhuongdan.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_tailieuhuongdan.png" width="250" alt="page_tailieuhuongdan"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_nguoidung.png" width="250" alt="page_dashboard_nguoidung"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_doimatkhau.png" width="250" alt="page_doimatkhau"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hienthi.png" width="250" alt="page_hienthi"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_nguoidung.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_nguoidung.png" width="250" alt="page_dashboard_nguoidung"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_doimatkhau.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_doimatkhau.png" width="250" alt="page_doimatkhau"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hienthi.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hienthi.png" width="250" alt="page_hienthi"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hanhdongnguoidung.png" width="250" alt="page_hanhdongnguoidung"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_capdonvi.png" width="250" alt="page_dashboard_capdonvi"></td>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_theothang.png" width="250" alt="page_table_capdonvi_theothang"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hanhdongnguoidung.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_hanhdongnguoidung.png" width="250" alt="page_hanhdongnguoidung"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_capdonvi.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_dashboard_capdonvi.png" width="250" alt="page_dashboard_capdonvi"></a></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_theothang.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_theothang.png" width="250" alt="page_table_capdonvi_theothang"></a></td>
   </tr>
   <tr>
-    <td><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_tonghop.png" width="250" alt="page_table_capdonvi_tonghop"></td>
+    <td><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_tonghop.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_table_capdonvi_tonghop.png" width="250" alt="page_table_capdonvi_tonghop"></a></td>
   </tr>
 </table>
+
 
 
 
