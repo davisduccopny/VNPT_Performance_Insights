@@ -4,8 +4,8 @@ if "is_logged_in" not in st.session_state or not st.session_state.is_logged_in:
     page_title = "VNPT-PERFORMANCE-INSIGHTS"
 else:
     page_title = None
-st.set_page_config(layout="wide",page_title=page_title, page_icon='src/vnpt.ico', initial_sidebar_state='auto')
-st.logo("src/VNPT_PERFORMANCE_INSIGHTS__2_-removebg-preview.png", icon_image="src/vnpt.ico")
+st.set_page_config(layout="wide",page_title=page_title, page_icon='https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/vnpt.ico', initial_sidebar_state='auto')
+st.logo("https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/VNPT_PERFORMANCE_INSIGHTS__2_-removebg-preview.png", icon_image="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/vnpt.ico")
 
 with st.spinner('Đang tải giao diện...'):
     from EM_MODULE.module_login import login

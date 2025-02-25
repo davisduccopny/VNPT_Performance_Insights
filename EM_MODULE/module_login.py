@@ -70,8 +70,8 @@ def login():
             st.session_state.role_access_admin = False
             st.session_state.line_access = None
             st.session_state.type_process = None
-        background_image_login = config_project.get_relative_file_path("../src/for_style/302938672_434661178647430_3619299105774288951_n.jpg")
-        icon_login_path = config_project.get_relative_file_path("../src/vnpt.png")
+        background_image_login = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/for_style/302938672_434661178647430_3619299105774288951_n.jpg"
+        icon_login_path = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/vnpt.png"
         ctn_child_login_form = container_login.container(key="ctn_child_login_form")
         st.markdown(f"""
                 <style>
@@ -99,7 +99,7 @@ def login():
                         display: inline-block;
                         width: 1.65rem;
                         height: 1.65rem;
-                        background-image: url('data:image/png;base64,{icon_login_path}');
+                        background-image: url('{icon_login_path}');
                         background-size: contain;
                         background-repeat: no-repeat;
                     }}
@@ -107,7 +107,7 @@ def login():
                         background: rgba(0,0,0,0);
                     }}
                     [data-testid="stAppViewContainer"] > .stMain {{
-                        background-image: url("data:image/jpg;base64,{background_image_login}");
+                        background-image: url("{background_image_login}");
                         background-size: cover;
                         background-position: right;
                         background-repeat: no-repeat;
