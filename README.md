@@ -95,7 +95,7 @@
 │   ├── 📁 style_ldp
 
 ```
-<h2 align="center">📌 5. Kết quả đạt được:</h2>
+<h2 align="left">📌 5. Kết quả đạt được:</h2>
 
 #### 2.1 Về mặt giao diện:
 - Giao diện chung:
@@ -138,7 +138,7 @@
 ✅ Hệ thống biểu mẫu và tài liệu hướng dẫn.<br>
 ✅ Cài đặt người dùng.<br>
 
-<h2 align="center">📄 6. Giao diện 🖥📱</h2>
+<h2 align="left">📄 6. Giao diện 🖥📱</h2>
 <table>
   <tr>
     <td align="center"><a href="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_login.png" target="_blank"><img src="https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/readme/page_login.png" width="250" alt="page_login"><div>Login</div></a></td>
@@ -188,7 +188,7 @@
 
 
 
-<h2 align="center">📊 7. Các mục dashboard chính </h2>
+<h2 align="left">📊 7. Các mục dashboard chính </h2>
 
 ### 1. Theo nhân viên (sẽ có các option chọn nhân viên, chọn tháng, line (tổ) lấy theo nhân viên,  chọn năm, chọn loại doanh thu, Chọn tháng (multiple select mặc định là tháng 1))
 - Metric 1 : Tổng doanh thu thực hiện tháng (cộng dồn theo multiple select)
@@ -226,7 +226,7 @@
 - Metric: Doanh thu năm hiện hữu, phát triển mới. Tỉ lệ doanh thu hiện hữu, phát triển mới.
 
 
-<h2 align="center">📋 8. Các mục bảng báo cáo (xuất excel) </h2> 
+<h2 align="left">📋 8. Các mục bảng báo cáo (xuất excel) </h2> 
 
 ### 1. Theo Line:
 - Gồm 2 loại báo cáo là theo nhân viên và theo dịch vụ:
@@ -244,7 +244,7 @@
     - Kế hoạch lũy kế.
 
  
-<h2 align="center"> 🚀 9. Danh Sách Những Tính Năng Cần Phát Triển Tiếp Theo</h2>
+<h2 align="left"> 🚀 9. Danh Sách Những Tính Năng Cần Phát Triển Tiếp Theo</h2>
 📌 Tính Năng Đang Chờ Phát Triển
 
 - 🔜 Tính năng 1: Cải thiện hiệu suất xử lý dữ liệu
@@ -260,7 +260,7 @@
   - Hỗ trợ thông báo trên trình duyệt và ứng dụng di động.
   - Tạo trung tâm thông báo giúp người dùng dễ dàng quản lý.
 
-<h2 align="center"> 💡 10. Đề Xuất Tính Năng Mới </h2>
+<h2 align="left"> 💡 10. Đề Xuất Tính Năng Mới </h2>
 
 Nếu bạn có ý tưởng hoặc đề xuất tính năng mới, vui lòng mở một Issue tại đây và mô tả chi tiết. 🤝  
 
