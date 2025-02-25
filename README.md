@@ -1,4 +1,4 @@
-<h1 style="text-align:center;">VNPT Performance Insights</h1>
+<h1 align="center">VNPT Performance Insights</h1>
 
 ### 1. Yêu cầu cho công cụ:
 - Convert data từ dạng excel để import vào csdl, sau đó tạo ra dạng báo cáo dữ liệu tự động.
