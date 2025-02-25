@@ -10,7 +10,7 @@ from mysql.connector.errors import PoolError
 from st_social_media_links import SocialMediaIcons
 
 # PATH FOR DATABASE
-
+PUBLIC_LINK_CDN = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/"
 def create_db_pool():
     if "db_pool" not in st.session_state or st.session_state.db_pool:
         st.session_state.db_pool = mysql.connector.pooling.MySQLConnectionPool(

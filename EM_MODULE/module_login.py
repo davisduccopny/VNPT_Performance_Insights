@@ -70,8 +70,8 @@ def login():
             st.session_state.role_access_admin = False
             st.session_state.line_access = None
             st.session_state.type_process = None
-        background_image_login = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/for_style/302938672_434661178647430_3619299105774288951_n.jpg"
-        icon_login_path = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/src/vnpt.png"
+        background_image_login = config_project.PUBLIC_LINK_CDN + "src/for_style/302938672_434661178647430_3619299105774288951_n.jpg"
+        icon_login_path = config_project.PUBLIC_LINK_CDN + "src/vnpt.png"
         ctn_child_login_form = container_login.container(key="ctn_child_login_form")
         st.markdown(f"""
                 <style>
