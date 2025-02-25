@@ -19,7 +19,7 @@ def load_data():
     try:
         thuchien = query_to_dataframe(f"SELECT * FROM thuchien WHERE type_process = 'LINE' AND IDnhanvien != 'LDPVNPT';", conn)
         kehoach = query_to_dataframe(f"SELECT * FROM kehoach WHERE type_process = 'LINE';", conn)
-        nhanvien = query_to_dataframe("SELECT * FROM nhanvien", conn)
+        nhanvien = query_to_dataframe(f"SELECT * FROM nhanvien WHERE line_nv = '{st.session_state.line_access}';", conn)
         dichvu = query_to_dataframe("SELECT * FROM dichvu", conn)
         line = query_to_dataframe("SELECT * FROM line_manage WHERE ma_line != 'LDPVNPT';", conn)
         for month in range(1, 13):

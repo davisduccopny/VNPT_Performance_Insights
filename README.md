@@ -185,8 +185,12 @@
   </tr>
 </table>
 
-
-
+<h2 align="left">🎬 7. Sử dụng </h2>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
+    <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg" alt="Video Hướng Dẫn" width="400">
+  </a>
+</p>
 
 <h2 align="left">📊 7. Các mục dashboard chính </h2>
 

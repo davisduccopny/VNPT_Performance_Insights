@@ -11,8 +11,8 @@ import bcrypt
 def load_data():
     conn = module_config.connect_to_mysql()
     try:
-        users = module_view.query_to_dataframe(f"SELECT id,username,line,role,display_name,ma_nv FROM users WHERE role!= 'admin';", conn)
-        users = list(users.to_records(index=False))
+        users = module_view.query_to_dataframe(f"SELECT id,username,line,role,display_name,ma_nv FROM users WHERE role!= 'admin' AND line='{st.session_state.line_access}';", conn)
+        users = list(users.to_records(index=False)) if not users.empty else []
         return users
     finally:
         conn.close()

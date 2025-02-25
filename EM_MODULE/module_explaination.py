@@ -188,21 +188,27 @@ def delete_explain_from_database(id_explain):
 
 
 def data_layer_set(data_task_all,thuchien_after_load,kehoach_after_load,nhanvien_after_load,year_selected,month_selected,loaidoanhthu_selected,nhanvien_selected):
-    data_task_show = data_task_all[(data_task_all["line"]==st.session_state.line_access) &
-                                  (data_task_all["start_date"].dt.year==year_selected) &
-                                  (data_task_all["start_date"].dt.month==month_selected) &
-                                  (data_task_all["loaidoanhthu"]==loaidoanhthu_selected)]
-    thuchien_show = thuchien_after_load[(thuchien_after_load["year_insert"]==year_selected) &
-                                        (thuchien_after_load["thang"]==month_selected)]
-    kehoach_show = kehoach_after_load[(kehoach_after_load["year_insert"]==year_selected) &
-                                        (kehoach_after_load[f"t{month_selected}"]==month_selected)]
-    nhanvien_show = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
-    if nhanvien_selected != "": 
-        data_task_show = data_task_show[data_task_show["employee_id"]==nhanvien_selected]
-        thuchien_show = thuchien_show[thuchien_show["IDnhanvien"]==nhanvien_selected]
-        kehoach_show = kehoach_show[kehoach_show["ma_nv"]==nhanvien_selected]
-        nhanvien_show = nhanvien_show[nhanvien_show["ma_nv"]==nhanvien_selected]
-    data_task_show["name_employee"] = data_task_show["employee_id"].map(nhanvien_show.set_index("ma_nv")["ten_nv"])
+    if not data_task_all.empty:
+        data_task_show = data_task_all[(data_task_all["line"]==st.session_state.line_access) &
+                                    (data_task_all["start_date"].dt.year==year_selected) &
+                                    (data_task_all["start_date"].dt.month==month_selected) &
+                                    (data_task_all["loaidoanhthu"]==loaidoanhthu_selected)]
+        thuchien_show = thuchien_after_load[(thuchien_after_load["year_insert"]==year_selected) &
+                                            (thuchien_after_load["thang"]==month_selected)]
+        kehoach_show = kehoach_after_load[(kehoach_after_load["year_insert"]==year_selected) &
+                                            (kehoach_after_load[f"t{month_selected}"]==month_selected)]
+        nhanvien_show = nhanvien_after_load[nhanvien_after_load["line_nv"]==st.session_state.line_access]
+        if nhanvien_selected != "": 
+            data_task_show = data_task_show[data_task_show["employee_id"]==nhanvien_selected]
+            thuchien_show = thuchien_show[thuchien_show["IDnhanvien"]==nhanvien_selected]
+            kehoach_show = kehoach_show[kehoach_show["ma_nv"]==nhanvien_selected]
+            nhanvien_show = nhanvien_show[nhanvien_show["ma_nv"]==nhanvien_selected]
+        data_task_show["name_employee"] = data_task_show["employee_id"].map(nhanvien_show.set_index("ma_nv")["ten_nv"])
+    else:
+        data_task_show = pd.DataFrame()
+        thuchien_show = pd.DataFrame()
+        kehoach_show = pd.DataFrame()
+        nhanvien_show = pd.DataFrame()
     return data_task_show,thuchien_show,kehoach_show,nhanvien_show
 
 def Column_chart_fisrt_ctn(data_task_show,thuchien_show,nhanvien_show):

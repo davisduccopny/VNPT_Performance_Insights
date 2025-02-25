@@ -85,7 +85,7 @@ class TODOCHECK_UI_DESIGN():
         
         self.em_select = {row["ma_nv"]: row["ten_nv"] for _, row in self.employee_array.iterrows()}
         self.selected_em_key =list(self.em_select.keys())
-        self.time_now_init = data_task_all["end_date"].max()
+        self.time_now_init = data_task_all["end_date"].max() if not data_task_all.empty else datetime.datetime.now().date()
         self.time_now_init  = self.time_now_init.strftime("%Y-%m-%d")
         self.year_select = thuchien_after_load["year_insert"].unique()
         self.month_select = {"Tháng 1" : 1,"Tháng 2" : 2,"Tháng 3" : 3,"Tháng 4" : 4,"Tháng 5" : 5,"Tháng 6" : 6,"Tháng 7" : 7,"Tháng 8" : 8,"Tháng 9" : 9,"Tháng 10" : 10,"Tháng 11" : 11,"Tháng 12" : 12}
@@ -287,44 +287,49 @@ class TODOCHECK_UI_DESIGN():
     
     def calendar_show_first_for_emlv(self,data_task_all,option_show_radio,action_on_board_calendar):
         # event
-        if "employee_id" in st.session_state:
-            data_task_all_show = data_task_all[data_task_all["employee_id"] == st.session_state.employee_id]
-        if option_show_radio != "Theo nhân viên":
-            data_tasks_renamed = data_task_all_show.rename(columns={
-                "start_date": "start",
-                "end_date": "end",
-                "color": "color",
-                "service_id": "resourceId",
-            })
-        else:
-            data_tasks_renamed = data_task_all_show.rename(columns={
-                "start_date": "start",
-                "end_date": "end",
-                "color": "color",
-                "employee_id": "resourceId",
-            })
-        for col in ["start", "end"]:
-            data_tasks_renamed[col] = pd.to_datetime(
-                data_tasks_renamed[col], format="%d/%m/%Y", dayfirst=True
-            ).dt.strftime("%Y-%m-%d")
+        if data_task_all is not None:
+            if "employee_id" in st.session_state:
+                data_task_all_show = data_task_all[data_task_all["employee_id"] == st.session_state.employee_id]
+            if option_show_radio != "Theo nhân viên":
+                data_tasks_renamed = data_task_all_show.rename(columns={
+                    "start_date": "start",
+                    "end_date": "end",
+                    "color": "color",
+                    "service_id": "resourceId",
+                })
+            else:
+                data_tasks_renamed = data_task_all_show.rename(columns={
+                    "start_date": "start",
+                    "end_date": "end",
+                    "color": "color",
+                    "employee_id": "resourceId",
+                })
+            for col in ["start", "end"]:
+                data_tasks_renamed[col] = pd.to_datetime(
+                    data_tasks_renamed[col], format="%d/%m/%Y", dayfirst=True
+                ).dt.strftime("%Y-%m-%d")
 
-        data_tasks_renamed= data_tasks_renamed[["id", "title", "start", "end", "color", "resourceId"]]
-        events = data_tasks_renamed.to_dict('records')
-        # service resource
-        resource_service = self.service_load_not_parent.rename(columns={
-            "ma_dv_id66": "id",
-            "ten_dv": "title",
-        })
-        resource_service = resource_service[["id", "title"]]
-        resource_service = resource_service.to_dict("records")
-        
-        # employee resource
-        resource_employee = self.employee_array.drop(columns=["id"])
-        resource_employee = resource_employee.rename(columns={
-            "ma_nv": "id",
-            "ten_nv": "title",
-        }).loc[:, ["id", "title"]]
-        resource_employee = resource_employee.to_dict("records")
+            data_tasks_renamed= data_tasks_renamed[["id", "title", "start", "end", "color", "resourceId"]]
+            events = data_tasks_renamed.to_dict('records')
+            # service resource
+            resource_service = self.service_load_not_parent.rename(columns={
+                "ma_dv_id66": "id",
+                "ten_dv": "title",
+            })
+            resource_service = resource_service[["id", "title"]]
+            resource_service = resource_service.to_dict("records")
+            
+            # employee resource
+            resource_employee = self.employee_array.drop(columns=["id"])
+            resource_employee = resource_employee.rename(columns={
+                "ma_nv": "id",
+                "ten_nv": "title",
+            }).loc[:, ["id", "title"]]
+            resource_employee = resource_employee.to_dict("records")
+        else:
+            events = []
+            resource_service = ''
+            resource_employee = ''
         
         calendar_options = {
             "editable": "true",
@@ -421,20 +426,23 @@ class TODOCHECK_UI_DESIGN():
     def dashboard_todocheck(self,options_show_radio):
         # part init
         tool_for_ui = TOOL_FOR_UI()
-        data_tasks_show = data_task_all
-        data_tasks_show["ten_dv"] = data_tasks_show["service_id"].map(
-            dichvu_after_load.set_index("ma_dv_id66")["ten_dv"]
-        )
-        data_tasks_show["ten_nv"] = data_tasks_show["employee_id"].map(
-            nhanvien_after_load.set_index("ma_nv")["ten_nv"]
-        )
-        
-        # if search_term:
-        #     data_tasks_show = data_tasks_show[data_tasks_show["title"].str.contains(search_term, case=False)]
-        data_tasks_show["start_date"] = pd.to_datetime(data_tasks_show["start_date"]).dt.strftime("%d/%m/%Y")
-        data_tasks_show["end_date"] = pd.to_datetime(data_tasks_show["end_date"]).dt.strftime("%d/%m/%Y")
-        data_tasks_show["time"] = data_tasks_show["start_date"] + " - " + data_tasks_show["end_date"]
-        data_tasks_show = data_tasks_show[["title", "ten_dv", "ten_nv","employee_id", "status", "time", "revenue", "notes"]]
+        if not data_task_all.empty:
+            data_tasks_show = data_task_all
+            data_tasks_show["ten_dv"] = data_tasks_show["service_id"].map(
+                dichvu_after_load.set_index("ma_dv_id66")["ten_dv"]
+            )
+            data_tasks_show["ten_nv"] = data_tasks_show["employee_id"].map(
+                nhanvien_after_load.set_index("ma_nv")["ten_nv"]
+            )
+                    # if search_term:
+            #     data_tasks_show = data_tasks_show[data_tasks_show["title"].str.contains(search_term, case=False)]
+            data_tasks_show["start_date"] = pd.to_datetime(data_tasks_show["start_date"]).dt.strftime("%d/%m/%Y")
+            data_tasks_show["end_date"] = pd.to_datetime(data_tasks_show["end_date"]).dt.strftime("%d/%m/%Y")
+            data_tasks_show["time"] = data_tasks_show["start_date"] + " - " + data_tasks_show["end_date"]
+            data_tasks_show = data_tasks_show[["title", "ten_dv", "ten_nv","employee_id", "status", "time", "revenue", "notes"]]
+        else:
+            data_tasks_show = pd.DataFrame(columns=["title", "ten_dv", "ten_nv", "employee_id", "status", "start_date", "end_date", "revenue", "notes"])
+
         
         container_main_task_dashboard = st.container(key="container_main_task_dashboard")
         with container_main_task_dashboard:
@@ -443,7 +451,7 @@ class TODOCHECK_UI_DESIGN():
                 action_on_board_calendar = st.selectbox("Hành động với sự kiện được chọn:",["Sửa","Xóa"], key="action_on_board_calendar")
                 tool_for_ui.render_task_view("employee_lv")
             with calendar_first_cols[0]:
-                set_even_set = self.calendar_show_first_for_emlv(data_task_all,options_show_radio,action_on_board_calendar)
+                set_even_set = self.calendar_show_first_for_emlv(data_task_all if not data_task_all.empty else None,options_show_radio,action_on_board_calendar)
             
 
         container_table_second_task_main = st.container(key="container_table_second_task_main")
@@ -689,7 +697,10 @@ class MAIN_TODO():
     def main(self):
         selected = self.sidebar_todocheck()
         if selected == "Dashboard":
-            self.fronend_class.line_check_dashboard()
+            if not data_task_all.empty:
+                self.fronend_class.line_check_dashboard()  
+            else:
+                st.warning("##### Không có dữ liệu công việc!")
         elif selected == "Công việc của tôi":
             option_show_radio_dashboard = self.hearder_todocheck("Công việc của tôi")
             self.fronend_class.dashboard_todocheck(option_show_radio_dashboard)
