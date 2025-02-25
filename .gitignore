@@ -164,7 +164,9 @@ dmypy.json
 cython_debug/
 # orther
 import_data.py
+export_tree.py
 requirement_note.txt
+structure.txt
 reports/
 data/ID606/
 data/input_ldp/
