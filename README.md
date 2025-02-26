@@ -185,7 +185,7 @@
   </tr>
 </table>
 
-<h2 align="left">🎬 7. Sử dụng </h2>
+<h2 align="left">🎬 7. Sử dụng (Xem video bên dưới) </h2>
 <p align="center">
   <a href="https://www.youtube.com/watch?v=URKLvs5CFfE" target="_blank">
     <img src="https://img.youtube.com/vi/URKLvs5CFfE/0.jpg" alt="Video Hướng Dẫn" width="400">
