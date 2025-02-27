@@ -3,7 +3,7 @@
 
 <br>
 <p>Dự án xây dựng công cụ VNPT-PIS giúp tự động hóa quy trình tạo báo cáo từ dữ liệu thô, đồng thời xây dựng dashboard trực quan. Ứng dụng xây dựng trong thời gian thực tập tại Tập đoàn Bưu chính - Viễn thông Việt Nam (VNPT).</p>
-<a src="https://online.fliphtml5.com/tpfov/azqc/">Liên kết báo cáo</a>
+<a href="https://online.fliphtml5.com/tpfov/azqc/">Liên kết báo cáo</a>
 <h2 align="left">📌 1. Yêu cầu cho công cụ</h2>
 
 🎯 Tự động xử lý dữ liệu, chuẩn hóa, loại bỏ lỗi và hợp nhất từ nhiều nguồn.<br>
