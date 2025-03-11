@@ -487,7 +487,8 @@ class TODOCHECK_UI_DESIGN():
         container_first_main_line_level = st.container(key="container_first_main_line_level")
         with container_first_main_line_level:
             cols_first_main = st.columns([4,1.5,1.5,1.5,2])
-            human_presentation_relative = module_config.get_relative_file_path("../src/for_style/human_3_present.png")
+            human_presentation_relative = module_config.measure_test_time_load_api("../src/for_style/human_3_present.png")
+            human_presentation_relative = "data:image/png;base64," + human_presentation_relative if not human_presentation_relative.startswith(module_config.CDN_START_STR) else human_presentation_relative
             with cols_first_main[4]:
                     selected_year = st.selectbox("❄️", self.year_select, index=list(self.year_select).index(self.year_select.max()),key="selected_year_line_level")
                     selected_month = st.selectbox("❄️", self.month_key_show,index=self.month_now_index, key="selected_month_line_level")
@@ -499,7 +500,7 @@ class TODOCHECK_UI_DESIGN():
                 ctn_first_main_title.markdown(f"""
                     <div style="text-align: left;">
                         <div style="display: inline-flex; justify-content: space-between;gap: 10px;">
-                        <img src="data:image/png;base64,{human_presentation_relative}" style="width: 35%; height: auto;">
+                        <img src="{human_presentation_relative}" style="width: 35%; height: auto;">
                         <h4 style="font-weight: bold;font-size:2rem;text-align:left;">❄️Bảng trình bày công việc</h4>
                         </div>
                         <p style="font-size: 1rem;font-weight:bold">Theo dõi tình hình công việc, dịch vụ và nhân viên</p>

@@ -435,8 +435,9 @@ class DESIGN_FRONTEND_MANAGE():
                         if i + j < len(docs):
                             doc = docs[i + j]
                             with cols[j]:
-                                image_file_path = module_config.get_relative_file_path(doc["image"])
-                                st.markdown(f"""<img src="data:image/png;base64,{image_file_path}" style="height:10vh;width:auto;"></img>""", unsafe_allow_html=True)
+                                image_file_path = module_config.measure_test_time_load_api(doc["image"])
+                                image_file_path = "data:image/png;base64," + image_file_path if not image_file_path.startswith(module_config.CDN_START_STR) else image_file_path
+                                st.markdown(f"""<img src="{image_file_path}" style="height:10vh;width:auto;"></img>""", unsafe_allow_html=True)
                                 st.markdown(f"**{doc['title']}**")
                                 st.write(f"Tác giả: **{doc['author']}**")
                                 st.button("Xem chi tiết", icon=":material/description:" ,key=f"doc_{doc['id']}", on_click=show_document_detail, args=(doc["id"],))

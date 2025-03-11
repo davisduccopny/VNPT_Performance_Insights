@@ -88,17 +88,18 @@ class FRONTEND_UI_HOME():
     def main_container_design(self):
         self.create_sidebar_toc()   
         # PART 1: HEADER
-        file_path_image_logo_main = "../src/logo_bar_main.png"
-        file_path_image_logo_main = module_config.get_relative_file_path(file_path_image_logo_main)
-        svg_icon_image_page_home = module_config.get_relative_file_path("../src/for_style/Sno-Blue-Arrow.svg")
+        file_path_image_logo_main = module_config.measure_test_time_load_api("../src/logo_bar_main.png")
+        svg_icon_image_page_home = module_config.measure_test_time_load_api("../src/for_style/Sno-Blue-Arrow.svg")
+        file_path_image_logo_main = 'data:image/png;base64,' + file_path_image_logo_main if not file_path_image_logo_main.startswith(module_config.CDN_START_STR) else file_path_image_logo_main
+        svg_icon_image_page_home = 'data:image/svg+xml;base64,' + svg_icon_image_page_home if not svg_icon_image_page_home.startswith(module_config.CDN_START_STR) else svg_icon_image_page_home
         container_header= st.container()
         container_header.markdown(
             f"""
             <div style="padding: 0;text-align: center;" id="target-section-0">
-                <img src='data:image/png;base64,{file_path_image_logo_main}' width='30%' >
+                <img src='{file_path_image_logo_main}' width='30%' >
                 <h1 style="color: black; font-size: 90px; font-weight: 700; padding-top:0;padding-bottom:10px" >
                     <span style="color: black;">Performance Insights </span>
-                    <img src="data:image/svg+xml;base64,{svg_icon_image_page_home}" id="bono-arrow-slide" height="70" align="center" style="margin-right: -5%; margin-top: -20px;">
+                    <img src="{svg_icon_image_page_home}" id="bono-arrow-slide" height="70" align="center" style="margin-right: -5%; margin-top: -20px;">
                     <span style="color: black; background-color: rgb(41, 181, 232); padding:0px 10px;">
                     VNPT</span> 
                     <span style="color: #00BFFF;">in 2024</span>
@@ -261,9 +262,10 @@ class FRONTEND_UI_HOME():
         )
         col_container_main_5, col_container_main_6 = container_main_second.columns([2,1])
         with col_container_main_5:
-            image_container_section_col1 = module_config.get_relative_file_path("../src/image_ex/data_system.webp")
+            image_container_section_col1 = module_config.measure_test_time_load_api("../src/image_ex/data_system.webp")
+            image_container_section_col1 = "data:image/png;base64," + image_container_section_col1 if not image_container_section_col1.startswith(module_config.CDN_START_STR) else image_container_section_col1
             st.markdown(f"""
-            <img src="data:image/png;base64,{image_container_section_col1}">
+            <img src="{image_container_section_col1}">
                         """, unsafe_allow_html=True)
         with col_container_main_6:
             st.markdown(
@@ -296,9 +298,10 @@ class FRONTEND_UI_HOME():
                 </p>
                 """, unsafe_allow_html=True)
         with col_container_main_8:
-            image_container_section_col2 = module_config.get_relative_file_path("../src/image_ex/image_sudung.jpg")
+            image_container_section_col2 = module_config.measure_test_time_load_api("../src/image_ex/image_sudung.jpg")
+            image_container_section_col2 = "data:image/png;base64," + image_container_section_col2 if not image_container_section_col2.startswith(module_config.CDN_START_STR) else image_container_section_col2
             st.markdown(f"""
-            <img src="data:image/png;base64,{image_container_section_col2}">
+            <img src="{image_container_section_col2}">
                         """, unsafe_allow_html=True)
         self.arrow_down_design("target-section-4")
         # SECTION 4
@@ -314,9 +317,10 @@ class FRONTEND_UI_HOME():
         )
         col_container_main_9, col_container_main_10 = container_main_fourth.columns([3,2])
         with col_container_main_9:
-            image_container_section_col3 = module_config.get_relative_file_path("../src/image_ex/image_hieusuat.png")
+            image_container_section_col3 = module_config.measure_test_time_load_api("../src/image_ex/image_hieusuat.png")
+            image_container_section_col3 = "data:image/png;base64," + image_container_section_col3 if not image_container_section_col3.startswith(module_config.CDN_START_STR) else image_container_section_col3
             st.markdown(f"""
-            <img src="data:image/png;base64,{image_container_section_col3}">
+            <img src="{image_container_section_col3}">
                         """, unsafe_allow_html=True)
         with col_container_main_10:
             st.markdown(
@@ -346,9 +350,10 @@ class FRONTEND_UI_HOME():
                 <p style="font-size: 1rem;">VNPT Performance Insights cung cấp khả năng phân tích hiệu suất các công việc được thực hiện bên trong tổ chức, ngoài ra, ứng dụng còn tích hợp các giải pháp bảo mật hiệu quả như kiểm soát thông tin đăng nhập, theo dõi các hoạt động chỉnh sửa của người dùng trên hệ thống, phân quyền truy cập theo mức độ người dùng nhằm tối ưu hóa việc kiểm soát an toàn thông tin và bảo mật dữ liệu. </p>
                 """, unsafe_allow_html=True)
         with col_container_main_12:
-            image_container_section_col4 = module_config.get_relative_file_path("../src/image_ex/image_baomat.jpg")
+            image_container_section_col4 = module_config.measure_test_time_load_api("../src/image_ex/image_baomat.jpg")
+            image_container_section_col4 = "data:image/png;base64," + image_container_section_col4 if not image_container_section_col4.startswith(module_config.CDN_START_STR) else image_container_section_col4
             st.markdown(f"""
-            <img src="data:image/png;base64,{image_container_section_col4}">
+            <img src="{image_container_section_col4}">
                         """, unsafe_allow_html=True)
         self.arrow_up_design("target-section-0")
 

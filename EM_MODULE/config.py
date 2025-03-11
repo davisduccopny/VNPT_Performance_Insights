@@ -8,9 +8,11 @@ import base64
 import time
 from mysql.connector.errors import PoolError
 from st_social_media_links import SocialMediaIcons
+import requests
 
 # PATH FOR DATABASE
-PUBLIC_LINK_CDN = "https://davisduccopny.github.io/Image_Repo/vnpt-performance-insights/"
+PUBLIC_LINK_CDN = "https://davisduccopny.github.io/VNPT_Performance_Insights/"
+CDN_START_STR = "https://davis"
 def create_db_pool():
     if "db_pool" not in st.session_state or st.session_state.db_pool:
         st.session_state.db_pool = mysql.connector.pooling.MySQLConnectionPool(
@@ -162,6 +164,16 @@ def add_sidebar_footer():
                     
                     </style>
                     """, unsafe_allow_html=True)
+        import psutil
+
+        def get_memory_usage():
+            process = psutil.Process(os.getpid())  # Lấy tiến trình hiện tại
+            mem_usage_mb = process.memory_info().rss / (1024 ** 2)  # Chuyển từ Byte → MB
+            return mem_usage_mb
+
+        app_ram = get_memory_usage()
+
+        st.metric(label="RAM used by Streamlit", value=f"{app_ram:.2f} MB")
 def show_expander_sidebar():
     container_sidebar_expander_show = st.sidebar.container(key="container_sidebar_expander_show")
     click_epander = container_sidebar_expander_show.toggle("Mở rộng", False,key="click_expander_show")
@@ -174,3 +186,24 @@ def show_expander_sidebar():
                     }
                     </style>
                     """,unsafe_allow_html=True)
+        
+def measure_test_time_load_api(link_image):
+    import re
+    start_time = time.time()  
+    cdn_image = PUBLIC_LINK_CDN + re.sub(r'^\.{2}', '', link_image)
+    try:
+        response = requests.get(cdn_image, timeout=10) 
+        end_time = time.time()  
+        load_time = end_time - start_time 
+        if response.status_code == 200 and load_time <= 10:
+            print("su dung cdn image")
+            return cdn_image
+        else:
+            print("su dung local image")
+            return get_relative_file_path(link_image)
+    except requests.exceptions.Timeout:
+        print("su dung local image")
+        return get_relative_file_path(link_image)  
+    except requests.exceptions.RequestException:
+        print("su dung local image")
+        return get_relative_file_path(link_image)

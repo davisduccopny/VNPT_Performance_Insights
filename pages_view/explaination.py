@@ -67,16 +67,18 @@ class Explaination:
         with ctn_second_main_explain:
             cols_second_main_ex = st.columns([1,1])
             with cols_second_main_ex[0]:
-                
-                    data_compare = module_explaination.Table_service_filter(data_task_show,nhanvien_after_load,dichvu_after_load,thuchien_show,select_param)
-                    st.dataframe(data_compare, column_config={
-                        "employee": "Nhân viên",
-                        "service": "Dịch vụ",
-                        "revenue_th": "Thực nhập",
-                        "revenue": "Kế toán",
-                        "rate": "Tỷ lệ",
-                        "subtract": "Chênh lệch"
-                    },height=240,hide_index=True,use_container_width=True)
+                    if select_param is not None:
+                        data_compare = module_explaination.Table_service_filter(data_task_show,nhanvien_after_load,dichvu_after_load,thuchien_show,select_param)
+                        st.dataframe(data_compare, column_config={
+                            "employee": "Nhân viên",
+                            "service": "Dịch vụ",
+                            "revenue_th": "Thực nhập",
+                            "revenue": "Kế toán",
+                            "rate": "Tỷ lệ",
+                            "subtract": "Chênh lệch"
+                        },height=240,hide_index=True,use_container_width=True)
+                    else:
+                        data_compare = None
             with cols_second_main_ex[1]:
                 if data_compare is not None:
                     metric_count_subtract = data_compare[data_compare["subtract"] > 0]["subtract"].count()

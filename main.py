@@ -1,12 +1,12 @@
 import streamlit as st 
 import time
-from EM_MODULE.config import PUBLIC_LINK_CDN
+from EM_MODULE.config import measure_test_time_load_api
 if "is_logged_in" not in st.session_state or not st.session_state.is_logged_in:
     page_title = "VNPT-PERFORMANCE-INSIGHTS"
 else:
     page_title = None
-st.set_page_config(layout="wide",page_title=page_title, page_icon=PUBLIC_LINK_CDN +'src/vnpt.ico', initial_sidebar_state='auto')
-st.logo(PUBLIC_LINK_CDN +"src/VNPT_PERFORMANCE_INSIGHTS__2_-removebg-preview.png", icon_image=PUBLIC_LINK_CDN +"src/vnpt.ico")
+st.set_page_config(layout="wide",page_title=page_title, page_icon=measure_test_time_load_api('src/vnpt.ico'), initial_sidebar_state='auto')
+st.logo(measure_test_time_load_api("src/VNPT_PERFORMANCE_INSIGHTS__2_-removebg-preview.png"), icon_image=measure_test_time_load_api('src/vnpt.ico'))
 
 with st.spinner('Đang tải giao diện...'):
     from EM_MODULE.module_login import login

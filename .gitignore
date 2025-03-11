@@ -165,6 +165,7 @@ cython_debug/
 # orther
 import_data.py
 export_tree.py
+test_slick.py
 requirement_note.txt
 structure.txt
 reports/
