@@ -11,7 +11,7 @@
 🎯 Tạo báo cáo Excel tự động nếu cần.<br>
 🎯 Đánh giá được nhân viên dựa trên dịch vụ, line, và doanh thu theo thời gian.<br>
 🎯 Có hai cấp độ website: 1️⃣ Một cho nhân viên cấp thấp sử dụng theo từng line (tổ). 2️⃣ Hai cho lớp quản lý tầm trung.<br>
-🎯 Bảo mật & phân quyền hợp lý, hhạn chế chỉnh sửa, mã hóa dữ liệu, xác thực đăng nhập.<br>
+🎯 Bảo mật & phân quyền hợp lý, hạn chế chỉnh sửa, mã hóa dữ liệu, xác thực đăng nhập.<br>
 
 <h2 align="left">👨‍💻 2. Công Nghệ chính Sử Dụng</h2>
 
