@@ -164,16 +164,6 @@ def add_sidebar_footer():
                     
                     </style>
                     """, unsafe_allow_html=True)
-        import psutil
-
-        def get_memory_usage():
-            process = psutil.Process(os.getpid())  # Lấy tiến trình hiện tại
-            mem_usage_mb = process.memory_info().rss / (1024 ** 2)  # Chuyển từ Byte → MB
-            return mem_usage_mb
-
-        app_ram = get_memory_usage()
-
-        st.metric(label="RAM used by Streamlit", value=f"{app_ram:.2f} MB")
 def show_expander_sidebar():
     container_sidebar_expander_show = st.sidebar.container(key="container_sidebar_expander_show")
     click_epander = container_sidebar_expander_show.toggle("Mở rộng", False,key="click_expander_show")
