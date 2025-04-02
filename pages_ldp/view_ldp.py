@@ -111,6 +111,7 @@ class VIEW_LDP_DATA_PROCESS():
                                                         (thuchien_after_load["loaidoanhthu"] == selected_loaidoanhthu)]
             thuchien_after_filter = thuchien_after_filter[["nhom_dv", "doanhthu"]]
             thuchien_after_filter["nhom_dv"] = thuchien_after_filter["nhom_dv"].str.strip()
+            thuchien_after_filter = thuchien_after_filter.groupby("nhom_dv", as_index=False).agg({"doanhthu": "sum"})
         else:
             thuchien_after_filter = thuchien_after_load[(thuchien_after_load["type_process"] == radio_data_selected_kind) &
                                                         (thuchien_after_load["line"] == line) &
@@ -118,6 +119,8 @@ class VIEW_LDP_DATA_PROCESS():
                                                         (thuchien_after_load["loaidoanhthu"] == selected_loaidoanhthu)]
             thuchien_after_filter = thuchien_after_filter[["nhom_dv", "doanhthu", "thang","year_insert"]]
             thuchien_after_filter["nhom_dv"] = thuchien_after_filter["nhom_dv"].str.strip()
+            thuchien_after_filter = thuchien_after_filter.groupby(["nhom_dv", "thang","year_insert"], as_index=False).agg({"doanhthu": "sum"})
+            
         return thuchien_after_filter
 
     def filter_kehoach_for_month_view(self,kehoach_after_load, dichvu_after_load,line, selected_month,selected_year,selected_loaidoanhthu,radio_data_selected_kind):
