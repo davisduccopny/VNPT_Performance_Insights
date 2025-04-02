@@ -4,9 +4,9 @@ from mysql.connector import pooling, Error
 import EM_MODULE.config as module_config
 
 def delete_plan(radio_process_plan,deleted_data):
+    conn = module_config.connect_to_mysql()
+    cursor = conn.cursor()
     try:
-        conn = module_config.connect_to_mysql()
-        cursor = conn.cursor()
         for year_insert, line, loaidoanhthu in deleted_data:
             delete_query = """
             DELETE FROM kehoach_linelv
@@ -17,14 +17,11 @@ def delete_plan(radio_process_plan,deleted_data):
         return True
     except Error as e:
         st.error(f"Lỗi khi xóa dữ liệu: {e}")
-    finally:
-        if conn.is_connected():
-            cursor.close()
 
 def delete_thuchien_from_data(radio_process_make,deleted_data):
+    conn = module_config.connect_to_mysql()
+    cursor = conn.cursor()
     try:
-        conn = module_config.connect_to_mysql()
-        cursor = conn.cursor()
         for thang, year_insert, loaidoanhthu in deleted_data:
             delete_query = """
             DELETE FROM thuchien
@@ -35,6 +32,3 @@ def delete_thuchien_from_data(radio_process_make,deleted_data):
         return True
     except Error as e:
         st.error(f"Lỗi khi xóa dữ liệu: {e}")
-    finally:
-        if conn.is_connected():
-            cursor.close()
