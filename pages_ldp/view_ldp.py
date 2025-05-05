@@ -248,7 +248,7 @@ class GENERATE_VIEW():
         except ValueError:
             return "color: black;"
         if val > 0:
-            return "color: green;" 
+            return "color: blue;" 
         elif val < 0:
             return "color: red;"    
         else:
@@ -260,7 +260,7 @@ class GENERATE_VIEW():
         except ValueError:
             return "color: black;"
         if (val - 100) > 0 and val != 100:
-            return "color: green;" 
+            return "color: blue;" 
         elif (val - 100) < 0 and val != 100:
             return "color: red;"    
         else:
